@@ -15,6 +15,6 @@ export class ThreeJsPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.threeJs.render(this.containerRef);
+    this.threeJs.buildScene(this.containerRef);
   }
 }
