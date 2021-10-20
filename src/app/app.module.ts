@@ -9,7 +9,6 @@ import { ThreeJsModule } from './three-js/three-js.module';
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, ThreeJsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
