@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { windowProvider } from '@core/window/window.provider';
+import { ThreeJsModule } from '@modules/three-js/three-js.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ThreeJsModule } from './three-js/three-js.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, ThreeJsModule],
-  providers: [],
+  providers: [windowProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

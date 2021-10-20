@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ThreeJsPageComponent } from './three-js/containers/three-js-page/three-js-page.component';
+import { ThreeJsPageComponent } from '@modules/three-js/containers/three-js-page/three-js-page.component';
 
 const routes: Routes = [
   {
