@@ -1,10 +1,10 @@
+import { RendererDecorator } from '../objects3d/renderer-decorator';
 import { Animation } from './animation';
-import { Renderer } from '../objects3d/renderer';
 
 export class AnimationManager {
   private objectList: Animation[] = [];
 
-  constructor(private renderer: Renderer) {}
+  constructor(private rendererDecorator: RendererDecorator) {}
 
   add(object: Animation): void {
     this.objectList.push(object);
@@ -17,7 +17,7 @@ export class AnimationManager {
   private animation(): void {
     requestAnimationFrame(this.animation);
     this.animateObjectList();
-    this.renderer.render();
+    this.rendererDecorator.render();
   }
 
   private animateObjectList(): void {

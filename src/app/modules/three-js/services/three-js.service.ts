@@ -1,9 +1,9 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { AnimationManager } from '../models/animation-manager';
-import { Camera } from '../objects3d/camera';
-import { Cube } from '../objects3d/cube';
-import { Renderer } from '../objects3d/renderer';
-import { Scene } from '../objects3d/scene';
+import { CameraBuilder } from '../objects3d/camera-builder';
+import { CubeBuilder } from '../objects3d/cube-builder';
+import { RendererBuilder } from '../objects3d/renderer-builder';
+import { SceneBuilder } from '../objects3d/scene-builder';
 
 @Injectable({
   providedIn: 'root',
@@ -19,16 +19,22 @@ export class ThreeJsService {
       return;
     }
 
-    const scene = new Scene();
-    const camera = new Camera(container);
-    const renderer = new Renderer(this.window, container, scene, camera);
+    const sceneDecorator = new SceneBuilder().createDecorator();
+    const cameraDecorator = new CameraBuilder(container).createDecorator();
+    const rendererDecorator = new RendererBuilder(
+      this.window,
+      container,
+      sceneDecorator,
+      cameraDecorator
+    ).createDecorator();
 
-    const cube = new Cube();
-    scene.add(cube);
+    const cubeDecorator = new CubeBuilder().createDecorator();
+    sceneDecorator.scene.add(cubeDecorator.cube);
 
-    const animation = new AnimationManager(renderer);
-    animation.add(cube);
-    animation.start();
+    rendererDecorator.render();
+    // const animation = new AnimationManager(rendererDecorator);
+    // animation.add(cubeDecorator);
+    // animation.start();
   }
 
   private getContainer(containerRef: ElementRef): Element {
