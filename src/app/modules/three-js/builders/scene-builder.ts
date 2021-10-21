@@ -1,5 +1,5 @@
 import { Scene } from 'three';
-import { SceneDecorator } from './scene-decorator';
+import { SceneDecorator } from '../decorators/scene-decorator';
 
 export class SceneBuilder {
   private decorator!: SceneDecorator;
