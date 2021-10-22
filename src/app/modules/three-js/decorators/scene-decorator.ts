@@ -19,7 +19,7 @@ export class SceneDecorator {
     }
   }
 
-  addObjectWithAnimation(object: Animation) {
+  addObjectWithAnimation(object: Animation): void {
     this.animationList.push(object);
   }
 

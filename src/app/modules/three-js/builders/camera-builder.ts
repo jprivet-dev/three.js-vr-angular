@@ -3,12 +3,9 @@ import { CameraDecorator } from '../decorators/camera-decorator';
 import { ContainerDecorator } from '../decorators/container-decorator';
 
 export class CameraBuilder {
-  private decorator!: CameraDecorator;
-
   create(containerDecorator: ContainerDecorator): CameraDecorator {
     const camera = this.newCamera(containerDecorator);
-    this.decorator = new CameraDecorator(camera);
-    return this.decorator;
+    return new CameraDecorator(camera);
   }
 
   private newCamera(containerDecorator: ContainerDecorator): PerspectiveCamera {
