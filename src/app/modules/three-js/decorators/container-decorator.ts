@@ -26,7 +26,7 @@ export class ContainerDecorator {
     return this.width() / this.height();
   }
 
-  appendChild(canvas: HTMLCanvasElement) {
-    this.container.appendChild(canvas);
+  appendChild(child: HTMLElement) {
+    this.container.appendChild(child);
   }
 }

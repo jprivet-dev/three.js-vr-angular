@@ -1,4 +1,8 @@
-import { CameraDecorator, RendererDecorator, SceneDecorator } from '../decorators';
+import {
+  CameraDecorator,
+  RendererDecorator,
+  SceneDecorator,
+} from '../decorators';
 
 export class AnimationLooperManager {
   constructor(
@@ -8,12 +12,9 @@ export class AnimationLooperManager {
   ) {}
 
   start(): void {
-    const animate = () => {
-      requestAnimationFrame(animate);
+    this.renderer.setAnimationLoop(() => {
       this.scene.animate();
       this.renderer.render(this.scene, this.camera);
-    };
-
-    animate();
+    });
   }
 }
