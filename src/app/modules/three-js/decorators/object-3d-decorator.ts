@@ -6,4 +6,8 @@ export class Object3DDecorator {
   get object3D(): Object3D {
     return this.object;
   }
+
+  hasAnimation() {
+    return 'animate' in this;
+  }
 }

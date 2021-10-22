@@ -32,15 +32,8 @@ export class ThreeJsService {
 
     renderer.start(container, scene, camera);
 
-    const animation = new AnimationManager(renderer);
-    animation.add(cube);
-    // animation.start();
-
-    const animate = function () {
-      requestAnimationFrame(animate);
-      animation.animateObjectList();
-      renderer.render(scene, camera);
-    };
+    const animation = new AnimationManager(scene, camera, renderer);
+    animation.start();
 
     // function onWindowResize() {
     //   cameraDecorator.resize();
@@ -48,6 +41,5 @@ export class ThreeJsService {
     // }
     //
     // this.window.addEventListener('resize', onWindowResize);
-    animate();
   }
 }

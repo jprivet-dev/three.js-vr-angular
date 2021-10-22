@@ -1,19 +1,19 @@
-import { RendererDecorator } from '../decorators';
-import { Animation } from '../models/animation';
+import { CameraDecorator, RendererDecorator, SceneDecorator } from '../decorators';
 
 export class AnimationManager {
-  private objectList: Animation[] = [];
-
-  constructor(private rendererDecorator: RendererDecorator) {}
-
-  add(object: Animation) {
-    this.objectList.push(object);
-  }
+  constructor(
+    private scene: SceneDecorator,
+    private camera: CameraDecorator,
+    private renderer: RendererDecorator
+  ) {}
 
   start() {
-  }
+    const animate = () => {
+      requestAnimationFrame(animate);
+      this.scene.animate();
+      this.renderer.render(this.scene, this.camera);
+    };
 
-  animateObjectList(): void {
-    this.objectList.forEach((object) => object.animate());
+    animate();
   }
 }
