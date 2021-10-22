@@ -28,7 +28,7 @@ export class ThreeJsService {
     const renderer = new RendererBuilder().create();
 
     const cube = new CubeBuilder().create();
-    scene.add(cube.cube);
+    scene.add(cube);
 
     renderer.start(container, scene, camera);
 

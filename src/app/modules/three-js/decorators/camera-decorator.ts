@@ -11,8 +11,8 @@ export class CameraDecorator implements Resize {
     return this._camera;
   }
 
-  resize(containerDecorator: ContainerDecorator) {
-    this._camera.aspect = containerDecorator.ratio();
+  resize(container: ContainerDecorator) {
+    this._camera.aspect = container.ratio();
     this._camera.updateProjectionMatrix();
   }
 }

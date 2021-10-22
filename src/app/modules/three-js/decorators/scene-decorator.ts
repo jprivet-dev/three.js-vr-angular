@@ -1,4 +1,5 @@
-import { Object3D, Scene } from 'three';
+import { Scene } from 'three';
+import { Object3DDecorator } from './object-3d-decorator';
 
 export class SceneDecorator {
   constructor(private _scene: Scene) {}
@@ -7,7 +8,7 @@ export class SceneDecorator {
     return this._scene;
   }
 
-  add(object: Object3D): void {
-    this._scene.add(object);
+  add(decorator: Object3DDecorator): void {
+    this._scene.add(decorator.object3D());
   }
 }
