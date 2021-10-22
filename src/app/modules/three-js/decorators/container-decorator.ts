@@ -12,4 +12,8 @@ export class ContainerDecorator {
   ratio(): number {
     return this.width() / this.height();
   }
+
+  appendChild(canvas: HTMLCanvasElement) {
+    this.container.appendChild(canvas);
+  }
 }

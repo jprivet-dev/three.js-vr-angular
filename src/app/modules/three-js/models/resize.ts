@@ -1,3 +1,5 @@
+import { ContainerDecorator } from '../decorators/container-decorator';
+
 export interface Resize {
-  resize(): void;
+  resize(containerDecorator: ContainerDecorator): void;
 }

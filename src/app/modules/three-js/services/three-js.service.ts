@@ -6,6 +6,7 @@ import {
   SceneBuilder,
 } from '../builders';
 import { ContainerDecorator } from '../decorators/container-decorator';
+import { AnimationManager } from '../managers/animation-manager';
 
 @Injectable({
   providedIn: 'root',
@@ -14,42 +15,39 @@ export class ThreeJsService {
   constructor(private window: Window) {}
 
   buildScene(containerRef: ElementRef): void {
-    const container: HTMLDivElement = containerRef?.nativeElement;
+    const containerNativeElement: HTMLDivElement = containerRef?.nativeElement;
 
-    if (!container) {
+    if (!containerNativeElement) {
       console.error('`container` is indefined.');
       return;
     }
 
-    const containerDecorator = new ContainerDecorator(container);
-    const sceneDecorator = new SceneBuilder().createDecorator();
-    const cameraDecorator = new CameraBuilder().createDecorator(containerDecorator);
-    const rendererDecorator = new RendererBuilder().createDecorator(
-      this.window,
-      containerDecorator,
-      sceneDecorator,
-      cameraDecorator
-    );
+    const container = new ContainerDecorator(containerNativeElement);
+    const scene = new SceneBuilder().create();
+    const camera = new CameraBuilder().create(container);
+    const renderer = new RendererBuilder().create();
 
-    rendererDecorator.resize();
+    const cube = new CubeBuilder().create();
+    scene.add(cube.cube);
 
-    container.appendChild(rendererDecorator.renderer.domElement);
+    renderer.start(container, scene, camera);
 
-    const cubeDecorator = new CubeBuilder().createDecorator();
-    sceneDecorator.scene.add(cubeDecorator.cube);
+    const animation = new AnimationManager(renderer);
+    animation.add(cube);
+    // animation.start();
 
     const animate = function () {
       requestAnimationFrame(animate);
-      cubeDecorator.animate();
-      rendererDecorator.render();
+      animation.animateObjectList();
+      renderer.render(scene, camera);
     };
 
-    function onWindowResize() {
-      cameraDecorator.resize();
-      rendererDecorator.resize();
-    }
-
-    this.window.addEventListener('resize', onWindowResize);
+    // function onWindowResize() {
+    //   cameraDecorator.resize();
+    //   rendererDecorator.resize();
+    // }
+    //
+    // this.window.addEventListener('resize', onWindowResize);
     animate();
   }
 }
