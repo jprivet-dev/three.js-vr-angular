@@ -1,0 +1,28 @@
+= angular-threejs-earth
+
+== Install three.js
+
+* https://threejs.org/docs/#manual/en/introduction/Installation
+* https://medium.com/geekculture/hello-cube-your-first-three-js-scene-in-angular-176c44b9c6c0
+
+```
+$ npm install --save three
+$ npm install --save @types/three
+```
+
+```
+// Option 1: Import the entire three.js core library.
+import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+```
+
+```
+// Option 2: Import just the parts you need.
+import { Scene } from 'three';
+
+const scene = new Scene();
+```
+
+
+
