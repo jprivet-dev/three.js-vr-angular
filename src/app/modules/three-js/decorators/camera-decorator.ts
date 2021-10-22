@@ -4,15 +4,15 @@ import { ContainerDecorator } from './container-decorator';
 
 export class CameraDecorator implements Resize {
   constructor(
-    private _camera: PerspectiveCamera
+    private camera: PerspectiveCamera
   ) {}
 
-  get camera(): PerspectiveCamera {
-    return this._camera;
+  get object3D(): PerspectiveCamera {
+    return this.camera;
   }
 
   resize(container: ContainerDecorator) {
-    this._camera.aspect = container.ratio();
-    this._camera.updateProjectionMatrix();
+    this.camera.aspect = container.ratio();
+    this.camera.updateProjectionMatrix();
   }
 }

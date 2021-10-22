@@ -8,7 +8,7 @@ export class CubeDecorator extends Object3DDecorator implements Animation {
   }
 
   animate(): void {
-    this.object3D().rotation.x += 0.01;
-    this.object3D().rotation.y += 0.01;
+    this.object3D.rotation.x += 0.01;
+    this.object3D.rotation.y += 0.01;
   }
 }

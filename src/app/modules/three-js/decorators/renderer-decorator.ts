@@ -5,33 +5,29 @@ import { ContainerDecorator } from './container-decorator';
 import { SceneDecorator } from './scene-decorator';
 
 export class RendererDecorator implements Resize {
-  constructor(private _renderer: WebGLRenderer) {}
-
-  get renderer(): WebGLRenderer {
-    return this._renderer;
-  }
+  constructor(private webGLRenderer: WebGLRenderer) {}
 
   start(
-    containerDecorator: ContainerDecorator,
-    sceneDecorator: SceneDecorator,
-    cameraDecorator: CameraDecorator
+    container: ContainerDecorator,
+    scene: SceneDecorator,
+    camera: CameraDecorator
   ): void {
-    this.resize(containerDecorator);
-    this.render(sceneDecorator, cameraDecorator);
-    containerDecorator.appendChild(this._renderer.domElement);
+    this.resize(container);
+    this.render(scene, camera);
+    container.appendChild(this.webGLRenderer.domElement);
   }
 
   render(
-    sceneDecorator: SceneDecorator,
-    cameraDecorator: CameraDecorator
+    scene: SceneDecorator,
+    camera: CameraDecorator
   ): void {
-    this._renderer.render(sceneDecorator.scene, cameraDecorator.camera);
+    this.webGLRenderer.render(scene.object3D, camera.object3D);
   }
 
-  resize(containerDecorator: ContainerDecorator): void {
-    this._renderer.setSize(
-      containerDecorator.width(),
-      containerDecorator.height()
+  resize(container: ContainerDecorator): void {
+    this.webGLRenderer.setSize(
+      container.width(),
+      container.height()
     );
   }
 }

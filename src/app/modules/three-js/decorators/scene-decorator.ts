@@ -2,13 +2,13 @@ import { Scene } from 'three';
 import { Object3DDecorator } from './object-3d-decorator';
 
 export class SceneDecorator {
-  constructor(private _scene: Scene) {}
+  constructor(private scene: Scene) {}
 
-  get scene(): Scene {
-    return this._scene;
+  get object3D(): Scene {
+    return this.scene;
   }
 
   add(decorator: Object3DDecorator): void {
-    this._scene.add(decorator.object3D());
+    this.scene.add(decorator.object3D);
   }
 }
