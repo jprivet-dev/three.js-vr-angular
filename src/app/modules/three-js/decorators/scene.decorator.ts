@@ -1,6 +1,7 @@
-import { CubeTexture, Scene } from 'three';
+import { Scene } from 'three';
 import { Animation } from '../models/three-js.model';
 import { Object3DDecorator } from './object-3d.decorator';
+import { SkyboxDecorator } from './skybox.decorator';
 
 export class SceneDecorator {
   private animationList: Animation[] = [];
@@ -11,20 +12,25 @@ export class SceneDecorator {
     return this.scene;
   }
 
-  add(decorator: Object3DDecorator): void {
-    this.scene.add(decorator.object3D());
+  addSkybox(skybox: SkyboxDecorator): this {
+    this.scene.background = skybox.cubeTexture;
+    return this;
+  }
 
-    if (decorator.hasAnimation()) {
-      this.addObjectWithAnimation(decorator as unknown as Animation);
-    }
+  add(...decorator: Object3DDecorator[]): this {
+    decorator.map((d) => {
+      this.scene.add(d.object3D());
+
+      if (d.hasAnimation()) {
+        this.addObjectWithAnimation(d as unknown as Animation);
+      }
+    });
+
+    return this;
   }
 
   animate(delta: number): void {
     this.animationList.forEach((object) => object.animate(delta));
-  }
-
-  addCubeTexture(cubeTexture: CubeTexture): void {
-    this.scene.background = cubeTexture;
   }
 
   private addObjectWithAnimation(object: Animation): void {
