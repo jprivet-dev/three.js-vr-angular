@@ -1,6 +1,6 @@
 import { PerspectiveCamera } from 'three';
-import { CameraDecorator } from '../decorators/camera-decorator';
-import { ContainerDecorator } from '../decorators/container-decorator';
+import { CameraDecorator } from '../decorators/camera.decorator';
+import { ContainerDecorator } from '../decorators/container.decorator';
 
 export abstract class CameraBuilder {
   static create(container: ContainerDecorator): CameraDecorator {

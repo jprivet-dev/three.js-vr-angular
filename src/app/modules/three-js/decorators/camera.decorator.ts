@@ -1,6 +1,6 @@
 import { PerspectiveCamera } from 'three';
 import { Resize } from '../models/three-js.model';
-import { ContainerDecorator } from './container-decorator';
+import { ContainerDecorator } from './container.decorator';
 
 export class CameraDecorator implements Resize {
   constructor(

@@ -1,5 +1,5 @@
 import { CubeTexture, CubeTextureLoader } from 'three';
-import { SkyboxDecorator } from '../decorators/skybox-decorator';
+import { SkyboxDecorator } from '../decorators/skybox.decorator';
 
 export abstract class SkyboxBuilder {
   private static assetsPath = 'assets/textures/skybox/';

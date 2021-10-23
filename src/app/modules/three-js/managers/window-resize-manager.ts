@@ -1,5 +1,5 @@
 import { CameraDecorator, RendererDecorator } from '../decorators';
-import { ContainerDecorator } from '../decorators/container-decorator';
+import { ContainerDecorator } from '../decorators/container.decorator';
 
 export class WindowResizeManager {
   constructor(

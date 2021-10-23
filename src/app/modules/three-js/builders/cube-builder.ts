@@ -1,5 +1,5 @@
 import { BoxGeometry, Mesh, MeshBasicMaterial } from 'three';
-import { CubeDecorator } from '../decorators/cube-decorator';
+import { CubeDecorator } from '../decorators/cube.decorator';
 
 export class CubeBuilder {
   create(): CubeDecorator {

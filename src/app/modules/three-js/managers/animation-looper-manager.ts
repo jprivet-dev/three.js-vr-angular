@@ -1,6 +1,6 @@
 import { Clock } from 'three';
 import { RendererDecorator, SceneDecorator } from '../decorators';
-import { OrbitControlsDecorator } from '../decorators/orbit-controls-decorator';
+import { OrbitControlsDecorator } from '../decorators/orbit-controls.decorator';
 
 export class AnimationLooperManager {
   private clock = new Clock();

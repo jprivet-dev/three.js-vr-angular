@@ -1,6 +1,6 @@
 import { CubeTexture, Scene } from 'three';
 import { Animation } from '../models/three-js.model';
-import { Object3DDecorator } from './object-3d-decorator';
+import { Object3DDecorator } from './object-3d.decorator';
 
 export class SceneDecorator {
   private animationList: Animation[] = [];
