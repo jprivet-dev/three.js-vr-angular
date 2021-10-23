@@ -23,7 +23,7 @@ export class SceneDecorator {
     this.animationList.push(object);
   }
 
-  animate(): void {
-    this.animationList.forEach((object) => object.animate());
+  animate(delta: number): void {
+    this.animationList.forEach((object) => object.animate(delta));
   }
 }

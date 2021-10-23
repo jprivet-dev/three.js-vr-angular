@@ -23,7 +23,7 @@ export class ThreeJsService {
     const cube = new CubeBuilder().create();
     scene.add(cube);
 
-    renderer.start(container, scene, camera);
+    renderer.start(this.window, container, scene, camera);
     new AnimationLooperManager(scene, camera, renderer).start();
     new WindowResizeManager(this.window, container, camera, renderer).start();
   }

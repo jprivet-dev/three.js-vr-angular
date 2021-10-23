@@ -1,3 +1,3 @@
 export interface Animation {
-  animate(): void;
+  animate(delta: number): void;
 }
