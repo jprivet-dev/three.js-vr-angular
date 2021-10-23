@@ -1,10 +1,10 @@
 import { Clock } from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import {
   CameraDecorator,
   RendererDecorator,
   SceneDecorator,
 } from '../decorators';
+import { OrbitControlsDecorator } from '../decorators/orbit-controls-decorator';
 
 export class AnimationLooperManager {
   private clock = new Clock();
@@ -13,7 +13,7 @@ export class AnimationLooperManager {
     private scene: SceneDecorator,
     private camera: CameraDecorator,
     private renderer: RendererDecorator,
-    private controls: OrbitControls
+    private controls: OrbitControlsDecorator
   ) {}
 
   start(): void {
