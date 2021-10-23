@@ -1,11 +1,7 @@
 import { ElementRef, Injectable } from '@angular/core';
-import {
-  CameraBuilder,
-  CubeBuilder,
-  RendererBuilder,
-  SceneBuilder,
-} from '../builders';
+import { CameraBuilder, RendererBuilder, SceneBuilder } from '../builders';
 import { ContainerBuilder } from '../builders/container-builder';
+import { EarthBuilder } from '../builders/earth-builder';
 import { OrbitControlsBuilder } from '../builders/orbit-controls-builder';
 import { SkyboxBuilder } from '../builders/skybox-builder';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
@@ -14,7 +10,8 @@ import { AnimationLooperManager, WindowResizeManager } from '../managers';
   providedIn: 'root',
 })
 export class ThreeJsService {
-  constructor(private window: Window) {}
+  constructor(private window: Window) {
+  }
 
   buildScene(containerRef: ElementRef): void {
     const container = new ContainerBuilder().create(this.window, containerRef);
@@ -23,8 +20,8 @@ export class ThreeJsService {
     const renderer = new RendererBuilder().create().insertVRButton(container);
     const controls = new OrbitControlsBuilder().create(camera, renderer);
 
-    const cube = new CubeBuilder().create();
-    scene.add(cube);
+    const earth = new EarthBuilder().create();
+    scene.add(earth);
 
     const skybox = new SkyboxBuilder().create();
     scene.addCubeTexture(skybox.cubeTexture);
