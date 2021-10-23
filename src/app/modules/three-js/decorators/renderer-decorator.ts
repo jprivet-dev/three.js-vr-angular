@@ -21,7 +21,7 @@ export class RendererDecorator implements Resize {
   }
 
   render(scene: SceneDecorator, camera: CameraDecorator): void {
-    this.renderer.render(scene.object3D, camera.object3D);
+    this.renderer.render(scene.object3D(), camera.object3D());
   }
 
   resize(container: ContainerDecorator): void {
@@ -30,6 +30,10 @@ export class RendererDecorator implements Resize {
 
   setAnimationLoop(callback: XRAnimationLoopCallback): void {
     this.renderer.setAnimationLoop(callback);
+  }
+
+  domElement(): HTMLCanvasElement {
+    return this.renderer.domElement;
   }
 
   /**

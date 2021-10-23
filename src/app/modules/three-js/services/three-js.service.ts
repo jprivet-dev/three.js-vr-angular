@@ -6,6 +6,7 @@ import {
   SceneBuilder,
 } from '../builders';
 import { ContainerBuilder } from '../builders/container-builder';
+import { OrbitControlsBuilder } from '../builders/orbit-controls-builder';
 import { SkyboxBuilder } from '../builders/skybox-builder';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
 
@@ -20,6 +21,7 @@ export class ThreeJsService {
     const scene = new SceneBuilder().create();
     const camera = new CameraBuilder().create(container);
     const renderer = new RendererBuilder().create().insertVRButton(container);
+    const controls = new OrbitControlsBuilder().create(camera, renderer);
 
     const cube = new CubeBuilder().create();
     scene.add(cube);
@@ -28,7 +30,7 @@ export class ThreeJsService {
     scene.addCubeTexture(skybox.cubeTexture);
 
     renderer.start(container, scene, camera);
-    new AnimationLooperManager(scene, camera, renderer).start();
+    new AnimationLooperManager(scene, camera, renderer, controls).start();
     new WindowResizeManager(container, camera, renderer).start();
   }
 }

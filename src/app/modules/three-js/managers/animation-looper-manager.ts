@@ -1,4 +1,5 @@
 import { Clock } from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import {
   CameraDecorator,
   RendererDecorator,
@@ -11,11 +12,13 @@ export class AnimationLooperManager {
   constructor(
     private scene: SceneDecorator,
     private camera: CameraDecorator,
-    private renderer: RendererDecorator
+    private renderer: RendererDecorator,
+    private controls: OrbitControls,
   ) {}
 
   start(): void {
     this.renderer.setAnimationLoop(() => {
+      this.controls.update();
       this.scene.animate(this.delta());
       this.renderer.render(this.scene, this.camera);
     });
