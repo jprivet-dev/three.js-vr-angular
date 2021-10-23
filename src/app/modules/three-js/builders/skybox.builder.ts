@@ -12,7 +12,7 @@ export abstract class SkyboxBuilder {
       .load(this.filenameList());
   }
 
-  private static filenameList() {
+  private static filenameList(): string[] {
     const list = ['posx', 'negx', 'posy', 'negy', 'posz', 'negz'];
     return list.map((position) => this.filename(position));
   }

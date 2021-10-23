@@ -1,5 +1,4 @@
 import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
-import { Texture } from 'three/src/textures/Texture';
 import { EarthDecorator } from '../decorators';
 
 export abstract class EarthBuilder {
@@ -15,15 +14,11 @@ export abstract class EarthBuilder {
       bumpScale: 0.01,
       specular: 0x2d4ea0,
       shininess: 6,
-      map: this.loadTexture(loader, 'earth_map_1024x512.jpg'),
-      bumpMap: this.loadTexture(loader, 'earth_bump_1024x512.jpg'),
-      specularMap: this.loadTexture(loader, 'earth_specular_1024x512.jpg'),
+      map: loader.load('earth_map_1024x512.jpg'),
+      bumpMap: loader.load('earth_bump_1024x512.jpg'),
+      specularMap: loader.load('earth_specular_1024x512.jpg'),
     });
 
     return new Mesh(geometry, material);
-  }
-
-  private static loadTexture(loader: TextureLoader, filename: string): Texture {
-    return loader.load(filename);
   }
 }

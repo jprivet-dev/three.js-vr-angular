@@ -1,4 +1,5 @@
-import { DirectionalLight } from 'three';
+import { DirectionalLight, TextureLoader } from 'three';
+import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare';
 import { SunDecorator } from '../decorators';
 
 export abstract class SunBuilder {
@@ -7,12 +8,21 @@ export abstract class SunBuilder {
   }
 
   private static newSun(): DirectionalLight {
-    const dirLight = new DirectionalLight(0xffffff, 1.3);
+    const light = new DirectionalLight(0xffffff, 1.3);
+    light.position.set(-250, 0, -1000);
+    this.addLensFlare(light);
 
-    dirLight.position.set(-1, 0, -1).normalize();
-
-    return dirLight;
+    return light;
   }
 
-  private static createLensFlare() {}
+  private static addLensFlare(light: DirectionalLight) {
+    const loader = new TextureLoader().setPath('assets/textures/sun/');
+    const lensflare = new Lensflare();
+
+    lensflare.addElement(
+      new LensflareElement(loader.load('sun_512x512.jpg'), 1000, 0)
+    );
+
+    light.add(lensflare);
+  }
 }
