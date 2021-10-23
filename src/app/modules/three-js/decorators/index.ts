@@ -1,4 +1,5 @@
 export * from './camera.decorator';
+export * from './clouds.decorator';
 export * from './container.decorator';
 export * from './cube.decorator';
 export * from './earth.decorator';

@@ -15,7 +15,7 @@ export abstract class EarthBuilder {
   }
 
   private static newEarth(): Mesh {
-    const geometry = new SphereGeometry(1, 64, 52);
+    const geometry = new SphereGeometry(1, 64, 32);
 
     const material = new MeshPhongMaterial({
       wireframe: false,

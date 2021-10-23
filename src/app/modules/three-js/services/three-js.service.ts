@@ -1,6 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import {
-  CameraBuilder,
+  CameraBuilder, CloudsBuilder,
   ContainerBuilder,
   EarthBuilder,
   OrbitControlsBuilder,
@@ -27,9 +27,10 @@ export class ThreeJsService {
 
     const skybox = SkyboxBuilder.create();
     const sun = SunBuilder.create();
+    const clouds = CloudsBuilder.create();
     const earth = EarthBuilder.create();
 
-    scene.addSkybox(skybox).add(sun, earth);
+    scene.addSkybox(skybox).add(sun, clouds, earth);
     renderer.enableVRButton().start();
 
     new AnimationLooperManager(scene, renderer, controls).start();

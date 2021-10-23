@@ -1,4 +1,5 @@
 export * from './camera.builder';
+export * from './clouds.builder';
 export * from './container.builder';
 export * from './cube.builder';
 export * from './earth.builder';
