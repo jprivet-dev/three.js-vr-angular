@@ -5,6 +5,7 @@ import {
   RendererBuilder,
   SceneBuilder,
 } from '../builders';
+import { SkyboxBuilder } from '../builders/skybox-builder';
 import { ContainerDecorator } from '../decorators';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
 
@@ -22,6 +23,9 @@ export class ThreeJsService {
 
     const cube = new CubeBuilder().create();
     scene.add(cube);
+
+    const skybox = new SkyboxBuilder().create();
+    scene.addCubeTexture(skybox.cubeTexture);
 
     renderer.start(container, scene, camera);
     new AnimationLooperManager(scene, camera, renderer).start();
