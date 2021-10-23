@@ -10,13 +10,13 @@ export class CameraBuilder {
 
   private newCamera(containerDecorator: ContainerDecorator): PerspectiveCamera {
     const camera = new PerspectiveCamera(
-      75,
+      50,
       containerDecorator.ratio(),
       0.1,
-      1000
+      10
     );
 
-    camera.position.z = 5;
+    camera.position.set( 0, 0, 5 );
 
     return camera;
   }

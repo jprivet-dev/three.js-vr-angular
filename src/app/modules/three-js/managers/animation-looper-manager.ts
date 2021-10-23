@@ -1,6 +1,13 @@
-import { CameraDecorator, RendererDecorator, SceneDecorator } from '../decorators';
+import { Clock } from 'three';
+import {
+  CameraDecorator,
+  RendererDecorator,
+  SceneDecorator,
+} from '../decorators';
 
 export class AnimationLooperManager {
+  private clock = new Clock();
+
   constructor(
     private scene: SceneDecorator,
     private camera: CameraDecorator,
@@ -8,12 +15,13 @@ export class AnimationLooperManager {
   ) {}
 
   start(): void {
-    const animate = () => {
-      requestAnimationFrame(animate);
-      this.scene.animate();
+    this.renderer.setAnimationLoop(() => {
+      this.scene.animate(this.delta());
       this.renderer.render(this.scene, this.camera);
-    };
+    });
+  }
 
-    animate();
+  delta(): number {
+    return this.clock.getDelta(); // Get the seconds passed since the time oldTime was set and sets oldTime to the current time.
   }
 }

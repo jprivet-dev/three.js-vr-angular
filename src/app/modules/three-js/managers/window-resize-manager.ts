@@ -3,7 +3,6 @@ import { ContainerDecorator } from '../decorators/container-decorator';
 
 export class WindowResizeManager {
   constructor(
-    private window: Window,
     private container: ContainerDecorator,
     private camera: CameraDecorator,
     private renderer: RendererDecorator
@@ -15,6 +14,6 @@ export class WindowResizeManager {
       this.renderer.resize(this.container);
     }
 
-    this.window.addEventListener('resize', onWindowResize);
+    this.container.window().addEventListener('resize', onWindowResize);
   }
 }

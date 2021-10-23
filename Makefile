@@ -3,6 +3,9 @@ MAKE_S = $(MAKE) -s
 USER_ID = $(shell id -u)
 GROUP_ID = $(shell id -g)
 
+
+NG_DEPLOY_BASE_HREF = /angular-threejs-earth/
+
 ## PROJECT
 
 .PHONY: start
@@ -23,12 +26,26 @@ bash: ## App bash access (current user).
 bash@root: ## App bash access (root).
 	docker-compose exec --user 0 node bash
 
+deploy_current: ## Deploy current branch to GitHub pages (it will be automatically built in production mode).
+	# !!! Use local node for the moment
+	ng deploy --base-href=$(NG_DEPLOY_BASE_HREF)
+
+deploy_main: ## Deploy main branch to GitHub pages (it will be automatically built in production mode).
+	git checkout main
+	git pull origin main
+	# !!! Use local node for the moment
+	ng deploy --base-href=$(NG_DEPLOY_BASE_HREF)
+
+.PHONY: prod
+prod: # Build the project (production build)
+	ng build --prod
+
 ## NPM
 
 npm_test: ## Execute the unit tests via Jest.
   # ERROR [launcher]: Chrome stderr: Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted
 	#docker-compose exec --user $(USER_ID):$(GROUP_ID) node npm test
-	# Use local node for the moment
+	# !!! Use local node for the moment
 	ng test
 
 ## DOCKER
