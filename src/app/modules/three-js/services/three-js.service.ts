@@ -5,8 +5,8 @@ import {
   RendererBuilder,
   SceneBuilder,
 } from '../builders';
+import { ContainerBuilder } from '../builders/container-builder';
 import { SkyboxBuilder } from '../builders/skybox-builder';
-import { ContainerDecorator } from '../decorators';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class ThreeJsService {
   constructor(private window: Window) {}
 
   buildScene(containerRef: ElementRef): void {
-    const container = new ContainerDecorator(this.window, containerRef);
+    const container = new ContainerBuilder().create(this.window, containerRef);
     const scene = new SceneBuilder().create();
     const camera = new CameraBuilder().create(container);
     const renderer = new RendererBuilder().create().insertVRButton(container);
