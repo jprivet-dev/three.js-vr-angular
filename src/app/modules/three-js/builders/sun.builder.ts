@@ -1,5 +1,7 @@
 import { DirectionalLight, TextureLoader } from 'three';
-import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare';
+import {
+  Lensflare, LensflareElement,
+} from 'three/examples/jsm/objects/Lensflare';
 import { SunDecorator } from '../decorators';
 
 export abstract class SunBuilder {
@@ -17,11 +19,20 @@ export abstract class SunBuilder {
 
   private static addLensFlare(light: DirectionalLight) {
     const loader = new TextureLoader().setPath('assets/textures/sun/');
-    const lensflare = new Lensflare();
+    const sun = loader.load('sun_512x512.jpg');
+    const circle = loader.load('lens_flare_circle_32x32.jpg');
+    const hexagone = loader.load('lens_flare_hexagon_256x256.jpg');
 
-    lensflare.addElement(
-      new LensflareElement(loader.load('sun_512x512.jpg'), 1000, 0)
-    );
+    const lensflare = new Lensflare();
+    lensflare.addElement(new LensflareElement(sun, 1000, 0));
+    lensflare.addElement(new LensflareElement(circle, 20, 0.63));
+    lensflare.addElement(new LensflareElement(circle, 40, 0.64));
+    lensflare.addElement(new LensflareElement(hexagone, 70, 0.7));
+    lensflare.addElement(new LensflareElement(hexagone, 110, 0.8));
+    lensflare.addElement(new LensflareElement(circle, 60, 0.85));
+    lensflare.addElement(new LensflareElement(circle, 30, 0.86));
+    lensflare.addElement(new LensflareElement(hexagone, 120, 0.9));
+    lensflare.addElement(new LensflareElement(hexagone, 260, 1));
 
     light.add(lensflare);
   }
