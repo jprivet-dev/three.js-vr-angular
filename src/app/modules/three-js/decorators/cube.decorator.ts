@@ -3,8 +3,8 @@ import { Animation } from '../models/three-js.model';
 import { Object3DDecorator } from './object-3d.decorator';
 
 export class CubeDecorator extends Object3DDecorator implements Animation {
-  constructor(cube: Mesh) {
-    super(cube);
+  constructor(mesh: Mesh) {
+    super(mesh);
   }
 
   animate(delta: number): void {

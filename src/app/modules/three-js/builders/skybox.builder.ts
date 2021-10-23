@@ -2,10 +2,12 @@ import { CubeTexture, CubeTextureLoader } from 'three';
 import { SkyboxDecorator } from '../decorators';
 
 export abstract class SkyboxBuilder {
-  private static assetsPath = 'assets/textures/skybox/';
-  private static positionList = ['posx', 'negx', 'posy', 'negy', 'posz', 'negz'];
-  private static tag = '{pos}';
-  private static filenameWithTag = 'skybox_{pos}_512x512.jpg';
+  private static config = {
+    assetsPath: 'assets/textures/skybox/',
+    positionList: ['posx', 'negx', 'posy', 'negy', 'posz', 'negz'],
+    tag: '{pos}',
+    filenameWithTag: 'skybox_{pos}_512x512.jpg',
+  };
 
   static create(): SkyboxDecorator {
     return new SkyboxDecorator(this.newCubeTexture());
@@ -13,15 +15,15 @@ export abstract class SkyboxBuilder {
 
   private static newCubeTexture(): CubeTexture {
     return new CubeTextureLoader()
-      .setPath(this.assetsPath)
+      .setPath(this.config.assetsPath)
       .load(this.filenameList());
   }
 
   private static filenameList() {
-    return this.positionList.map((position) => this.filename(position));
+    return this.config.positionList.map((position) => this.filename(position));
   }
 
   private static filename(position: string): string {
-    return this.filenameWithTag.replace(this.tag, position);
+    return this.config.filenameWithTag.replace(this.config.tag, position);
   }
 }
