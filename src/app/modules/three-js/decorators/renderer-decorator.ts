@@ -1,6 +1,6 @@
 import { WebGLRenderer, XRAnimationLoopCallback } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
-import { Resize } from '../models/resize';
+import { Resize } from '../models/three-js.model';
 import { CameraDecorator } from './camera-decorator';
 import { ContainerDecorator } from './container-decorator';
 import { SceneDecorator } from './scene-decorator';

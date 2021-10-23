@@ -1,5 +1,5 @@
 import { Scene } from 'three';
-import { Animation } from '../models/animation';
+import { Animation } from '../models/three-js.model';
 import { Object3DDecorator } from './object-3d-decorator';
 
 export class SceneDecorator {
