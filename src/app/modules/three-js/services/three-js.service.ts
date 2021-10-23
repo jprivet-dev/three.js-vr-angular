@@ -1,6 +1,7 @@
 import { ElementRef, Injectable } from '@angular/core';
 import {
-  CameraBuilder, CloudsBuilder,
+  CameraBuilder,
+  CloudsBuilder,
   ContainerBuilder,
   EarthBuilder,
   OrbitControlsBuilder,
@@ -15,8 +16,7 @@ import { AnimationLooperManager, WindowResizeManager } from '../managers';
   providedIn: 'root',
 })
 export class ThreeJsService {
-  constructor(private window: Window) {
-  }
+  constructor(private window: Window) {}
 
   buildScene(containerRef: ElementRef): void {
     const container = ContainerBuilder.create(this.window, containerRef);
@@ -30,7 +30,7 @@ export class ThreeJsService {
     const clouds = CloudsBuilder.create();
     const earth = EarthBuilder.create();
 
-    scene.addSkybox(skybox).add(sun, clouds, earth);
+    scene.addSkybox(skybox).add(sun, earth, clouds);
     renderer.enableVRButton().start();
 
     new AnimationLooperManager(scene, renderer, controls).start();

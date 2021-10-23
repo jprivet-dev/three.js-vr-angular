@@ -3,38 +3,27 @@ import { Texture } from 'three/src/textures/Texture';
 import { EarthDecorator } from '../decorators';
 
 export abstract class EarthBuilder {
-  private static config = {
-    assetsPath: 'assets/textures/earth/',
-    map: 'earth_map_1024x512.jpg',
-    bumpMap: 'earth_bump_1024x512.jpg',
-    specularMap: 'earth_specular_1024x512.jpg',
-  };
-
   static create(): EarthDecorator {
     return new EarthDecorator(this.newEarth());
   }
 
   private static newEarth(): Mesh {
+    const loader = new TextureLoader().setPath('assets/textures/earth/');
     const geometry = new SphereGeometry(1, 64, 32);
-
     const material = new MeshPhongMaterial({
       wireframe: false,
       bumpScale: 0.01,
       specular: 0x2d4ea0,
       shininess: 6,
-      map: this.loadTexture(this.config.map),
-      bumpMap: this.loadTexture(this.config.bumpMap),
-      specularMap: this.loadTexture(this.config.specularMap),
+      map: this.loadTexture(loader, 'earth_map_1024x512.jpg'),
+      bumpMap: this.loadTexture(loader, 'earth_bump_1024x512.jpg'),
+      specularMap: this.loadTexture(loader, 'earth_specular_1024x512.jpg'),
     });
 
     return new Mesh(geometry, material);
   }
 
-  private static loadTexture(filename: string): Texture {
-    return new TextureLoader().load(this.path(filename));
-  }
-
-  private static path(filename: string): string {
-    return this.config.assetsPath + filename;
+  private static loadTexture(loader: TextureLoader, filename: string): Texture {
+    return loader.load(filename);
   }
 }
