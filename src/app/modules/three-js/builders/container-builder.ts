@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ContainerDecorator } from '../decorators/container.decorator';
+import { ContainerDecorator } from '../decorators';
 
 export abstract class ContainerBuilder {
   static create(window: Window, containerRef: ElementRef): ContainerDecorator {

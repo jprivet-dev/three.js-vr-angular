@@ -1,6 +1,10 @@
 import { WebGLRenderer } from 'three';
-import { CameraDecorator, ContainerDecorator, SceneDecorator } from '../decorators';
-import { RendererDecorator } from '../decorators/renderer.decorator';
+import {
+  CameraDecorator,
+  ContainerDecorator,
+  RendererDecorator,
+  SceneDecorator,
+} from '../decorators';
 
 export abstract class RendererBuilder {
   static create(

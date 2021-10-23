@@ -1,6 +1,6 @@
 import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { Texture } from 'three/src/textures/Texture';
-import { EarthDecorator } from '../decorators/earth.decorator';
+import { EarthDecorator } from '../decorators';
 
 export abstract class EarthBuilder {
   private static assetsPath = 'assets/textures/earth/';

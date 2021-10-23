@@ -1,5 +1,5 @@
 import { DirectionalLight } from 'three';
-import { SunDecorator } from '../decorators/sun.decorator';
+import { SunDecorator } from '../decorators';
 
 export abstract class SunBuilder {
   static create(): SunDecorator {

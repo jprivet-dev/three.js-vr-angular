@@ -1,5 +1,5 @@
 import { Scene } from 'three';
-import { SceneDecorator } from '../decorators/scene.decorator';
+import { SceneDecorator } from '../decorators';
 
 export abstract class SceneBuilder {
   static create(): SceneDecorator {
