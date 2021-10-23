@@ -1,9 +1,11 @@
 import { ElementRef } from '@angular/core';
 
 export class ContainerDecorator {
+  private _window: Window;
   private container!: Element;
 
-  constructor(containerRef: ElementRef) {
+  constructor(window: Window, containerRef: ElementRef) {
+    this._window = window;
     const containerNativeElement: HTMLDivElement = containerRef?.nativeElement;
 
     if (containerNativeElement) {
@@ -12,6 +14,10 @@ export class ContainerDecorator {
     }
 
     console.error('containerRef.nativeElement is undefined.');
+  }
+
+  window(): Window {
+    return this._window;
   }
 
   width(): number {

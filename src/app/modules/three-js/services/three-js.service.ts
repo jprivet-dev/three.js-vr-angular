@@ -15,7 +15,7 @@ export class ThreeJsService {
   constructor(private window: Window) {}
 
   buildScene(containerRef: ElementRef): void {
-    const container = new ContainerDecorator(containerRef);
+    const container = new ContainerDecorator(this.window, containerRef);
     const scene = new SceneBuilder().create();
     const camera = new CameraBuilder().create(container);
     const renderer = new RendererBuilder().create().insertVRButton(container);
@@ -23,8 +23,8 @@ export class ThreeJsService {
     const cube = new CubeBuilder().create();
     scene.add(cube);
 
-    renderer.start(this.window, container, scene, camera);
+    renderer.start(container, scene, camera);
     new AnimationLooperManager(scene, camera, renderer).start();
-    new WindowResizeManager(this.window, container, camera, renderer).start();
+    new WindowResizeManager(container, camera, renderer).start();
   }
 }

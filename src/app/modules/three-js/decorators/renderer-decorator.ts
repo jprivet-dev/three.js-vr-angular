@@ -9,12 +9,11 @@ export class RendererDecorator implements Resize {
   constructor(private renderer: WebGLRenderer) {}
 
   start(
-    window: Window,
     container: ContainerDecorator,
     scene: SceneDecorator,
     camera: CameraDecorator
   ): void {
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(container.window().devicePixelRatio);
     this.resize(container);
     this.render(scene, camera);
 
