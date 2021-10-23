@@ -1,9 +1,5 @@
 import { Clock } from 'three';
-import {
-  CameraDecorator,
-  RendererDecorator,
-  SceneDecorator,
-} from '../decorators';
+import { RendererDecorator, SceneDecorator } from '../decorators';
 import { OrbitControlsDecorator } from '../decorators/orbit-controls-decorator';
 
 export class AnimationLooperManager {
@@ -11,7 +7,6 @@ export class AnimationLooperManager {
 
   constructor(
     private scene: SceneDecorator,
-    private camera: CameraDecorator,
     private renderer: RendererDecorator,
     private controls: OrbitControlsDecorator
   ) {}
@@ -20,7 +15,7 @@ export class AnimationLooperManager {
     this.renderer.setAnimationLoop(() => {
       this.controls.update();
       this.scene.animate(this.delta());
-      this.renderer.render(this.scene, this.camera);
+      this.renderer.render();
     });
   }
 

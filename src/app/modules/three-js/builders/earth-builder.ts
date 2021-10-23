@@ -2,19 +2,19 @@ import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { Texture } from 'three/src/textures/Texture';
 import { EarthDecorator } from '../decorators/earth-decorator';
 
-export class EarthBuilder {
-  private assetsPath = 'assets/textures/earth/';
-  private textures = {
+export abstract class EarthBuilder {
+  private static assetsPath = 'assets/textures/earth/';
+  private static textures = {
     map: 'earth_map_1024x512.jpg',
     bumpMap: 'earth_bump_1024x512.jpg',
     specularMap: 'earth_specular_1024x512.jpg',
   };
 
-  create(): EarthDecorator {
+  static create(): EarthDecorator {
     return new EarthDecorator(this.newEarth());
   }
 
-  private newEarth(): Mesh {
+  private static newEarth(): Mesh {
     const geometry = new SphereGeometry(1, 64, 52);
 
     const material = new MeshPhongMaterial({
@@ -30,11 +30,11 @@ export class EarthBuilder {
     return new Mesh(geometry, material);
   }
 
-  private loadTexture(filename: string): Texture {
+  private static loadTexture(filename: string): Texture {
     return new TextureLoader().load(this.path(filename));
   }
 
-  private path(filename: string): string {
+  private static path(filename: string): string {
     return this.assetsPath + filename;
   }
 }

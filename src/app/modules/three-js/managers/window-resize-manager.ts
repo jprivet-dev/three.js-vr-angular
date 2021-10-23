@@ -10,8 +10,8 @@ export class WindowResizeManager {
 
   start(): void {
     const onWindowResize = () => {
-      this.camera.resize(this.container);
-      this.renderer.resize(this.container);
+      this.camera.resize();
+      this.renderer.resize();
     };
 
     this.container.window().addEventListener('resize', onWindowResize);

@@ -14,23 +14,23 @@ export class ThreeJsService {
   constructor(private window: Window) {}
 
   buildScene(containerRef: ElementRef): void {
-    const container = new ContainerBuilder().create(this.window, containerRef);
-    const scene = new SceneBuilder().create();
-    const camera = new CameraBuilder().create(container);
-    const renderer = new RendererBuilder().create().insertVRButton(container);
-    const controls = new OrbitControlsBuilder().create(camera, renderer);
+    const container = ContainerBuilder.create(this.window, containerRef);
+    const scene = SceneBuilder.create();
+    const camera = CameraBuilder.create(container);
+    const renderer = RendererBuilder.create(container, scene, camera).enableVRButton();
+    const controls = OrbitControlsBuilder.create(camera, renderer);
 
-    const skybox = new SkyboxBuilder().create();
+    const skybox = SkyboxBuilder.create();
     scene.addCubeTexture(skybox.cubeTexture);
 
-    const sun = new SunBuilder().create();
+    const sun = SunBuilder.create();
     scene.add(sun);
 
-    const earth = new EarthBuilder().create();
+    const earth = EarthBuilder.create();
     scene.add(earth);
 
-    renderer.start(container, scene, camera);
-    new AnimationLooperManager(scene, camera, renderer, controls).start();
+    renderer.start();
+    new AnimationLooperManager(scene, renderer, controls).start();
     new WindowResizeManager(container, camera, renderer).start();
   }
 }

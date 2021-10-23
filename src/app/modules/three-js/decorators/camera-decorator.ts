@@ -3,14 +3,17 @@ import { Resize } from '../models/three-js.model';
 import { ContainerDecorator } from './container-decorator';
 
 export class CameraDecorator implements Resize {
-  constructor(private camera: PerspectiveCamera) {}
+  constructor(
+    private container: ContainerDecorator,
+    private camera: PerspectiveCamera
+  ) {}
 
   object3D(): PerspectiveCamera {
     return this.camera;
   }
 
-  resize(container: ContainerDecorator) {
-    this.camera.aspect = container.ratio();
+  resize() {
+    this.camera.aspect = this.container.ratio();
     this.camera.updateProjectionMatrix();
   }
 }

@@ -6,26 +6,27 @@ import { ContainerDecorator } from './container-decorator';
 import { SceneDecorator } from './scene-decorator';
 
 export class RendererDecorator implements Resize {
-  constructor(private renderer: WebGLRenderer) {}
+  constructor(
+    private container: ContainerDecorator,
+    private scene: SceneDecorator,
+    private camera: CameraDecorator,
+    private renderer: WebGLRenderer
+  ) {}
 
-  start(
-    container: ContainerDecorator,
-    scene: SceneDecorator,
-    camera: CameraDecorator
-  ): void {
-    this.renderer.setPixelRatio(container.window().devicePixelRatio);
-    this.resize(container);
-    this.render(scene, camera);
+  start(): void {
+    this.renderer.setPixelRatio(this.container.window().devicePixelRatio);
+    this.resize();
+    this.render();
 
-    container.appendChild(this.renderer.domElement);
+    this.container.appendChild(this.renderer.domElement);
   }
 
-  render(scene: SceneDecorator, camera: CameraDecorator): void {
-    this.renderer.render(scene.object3D(), camera.object3D());
+  render(): void {
+    this.renderer.render(this.scene.object3D(), this.camera.object3D());
   }
 
-  resize(container: ContainerDecorator): void {
-    this.renderer.setSize(container.width(), container.height());
+  resize(): void {
+    this.renderer.setSize(this.container.width(), this.container.height());
   }
 
   setAnimationLoop(callback: XRAnimationLoopCallback): void {
@@ -39,9 +40,9 @@ export class RendererDecorator implements Resize {
   /**
    * {@link https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content How to create VR content}
    */
-  insertVRButton(container: ContainerDecorator): this {
+  enableVRButton(): this {
     const button = VRButton.createButton(this.renderer);
-    container.appendChild(button);
+    this.container.appendChild(button);
     this.renderer.xr.enabled = true; // enable XR rendering
     return this;
   }
