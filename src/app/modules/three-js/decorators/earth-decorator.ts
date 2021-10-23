@@ -7,6 +7,5 @@ export class EarthDecorator extends Object3DDecorator implements Animation {
     super(mesh);
   }
 
-  animate(delta: number): void {
-  }
+  animate(delta: number): void {}
 }

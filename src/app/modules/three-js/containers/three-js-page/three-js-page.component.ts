@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ThreeJsService } from '../../services/three-js.service';
 
 @Component({
@@ -11,8 +17,7 @@ export class ThreeJsPageComponent implements OnInit, AfterViewInit {
 
   constructor(private threeJs: ThreeJsService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.threeJs.buildScene(this.containerRef);

@@ -11,8 +11,7 @@ import { AnimationLooperManager, WindowResizeManager } from '../managers';
   providedIn: 'root',
 })
 export class ThreeJsService {
-  constructor(private window: Window) {
-  }
+  constructor(private window: Window) {}
 
   buildScene(containerRef: ElementRef): void {
     const container = new ContainerBuilder().create(this.window, containerRef);

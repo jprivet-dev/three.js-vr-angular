@@ -13,7 +13,7 @@ export class AnimationLooperManager {
     private scene: SceneDecorator,
     private camera: CameraDecorator,
     private renderer: RendererDecorator,
-    private controls: OrbitControls,
+    private controls: OrbitControls
   ) {}
 
   start(): void {

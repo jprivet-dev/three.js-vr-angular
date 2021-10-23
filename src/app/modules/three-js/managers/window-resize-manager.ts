@@ -1,4 +1,4 @@
-import { CameraDecorator, RendererDecorator, SceneDecorator } from '../decorators';
+import { CameraDecorator, RendererDecorator } from '../decorators';
 import { ContainerDecorator } from '../decorators/container-decorator';
 
 export class WindowResizeManager {
@@ -12,7 +12,7 @@ export class WindowResizeManager {
     const onWindowResize = () => {
       this.camera.resize(this.container);
       this.renderer.resize(this.container);
-    }
+    };
 
     this.container.window().addEventListener('resize', onWindowResize);
   }

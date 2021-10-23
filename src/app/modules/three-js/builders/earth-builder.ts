@@ -11,6 +11,10 @@ export class EarthBuilder {
   };
 
   create(): EarthDecorator {
+    return new EarthDecorator(this.newEarth());
+  }
+
+  private newEarth(): Mesh {
     const geometry = new SphereGeometry(1, 64, 52);
 
     const material = new MeshPhongMaterial({
@@ -23,8 +27,7 @@ export class EarthBuilder {
       specularMap: this.loadTexture(this.textures.specularMap),
     });
 
-    const mesh = new Mesh(geometry, material);
-    return new EarthDecorator(mesh);
+    return new Mesh(geometry, material);
   }
 
   private loadTexture(filename: string): Texture {
