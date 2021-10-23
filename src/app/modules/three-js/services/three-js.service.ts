@@ -1,10 +1,14 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { CameraBuilder, RendererBuilder, SceneBuilder } from '../builders';
-import { ContainerBuilder } from '../builders/container-builder';
-import { EarthBuilder } from '../builders/earth-builder';
-import { OrbitControlsBuilder } from '../builders/orbit-controls-builder';
-import { SkyboxBuilder } from '../builders/skybox-builder';
-import { SunBuilder } from '../builders/sun-builder';
+import {
+  CameraBuilder,
+  ContainerBuilder,
+  EarthBuilder,
+  OrbitControlsBuilder,
+  RendererBuilder,
+  SceneBuilder,
+  SkyboxBuilder,
+  SunBuilder,
+} from '../builders';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
 
 @Injectable({
@@ -17,7 +21,11 @@ export class ThreeJsService {
     const container = ContainerBuilder.create(this.window, containerRef);
     const scene = SceneBuilder.create();
     const camera = CameraBuilder.create(container);
-    const renderer = RendererBuilder.create(container, scene, camera).enableVRButton();
+    const renderer = RendererBuilder.create(
+      container,
+      scene,
+      camera
+    ).enableVRButton();
     const controls = OrbitControlsBuilder.create(camera, renderer);
 
     const skybox = SkyboxBuilder.create();
