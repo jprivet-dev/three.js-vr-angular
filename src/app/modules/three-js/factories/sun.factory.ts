@@ -40,12 +40,12 @@ export abstract class SunFactory {
   private static addLensFlare(store: StoreService, light: DirectionalLight) {
     const loader = new TextureLoader().setPath('assets/textures/sun/');
     const lensflare = new Lensflare();
-    const lensflareList: TypedLensflare[] = [];
+    let lensflareList: TypedLensflare[] = [];
 
     // Which is the best way to unsubscribe it ?
     store.textureDef$.subscribe((textureDef) => {
       if (!lensflareList.length) {
-        this.createLensflare(loader, textureDef, lensflare, lensflareList);
+        lensflareList = this.createLensflare(loader, textureDef, lensflare, lensflareList);
         return;
       }
       lensflareList.map((currentLensflare) => {
@@ -63,7 +63,7 @@ export abstract class SunFactory {
     textureDef: TextureDef,
     lensflare: Lensflare,
     lensflareList: TypedLensflare[]
-  ) {
+  ): TypedLensflare[] {
     const sun = loader.load(this.textures.sun[textureDef]);
     const circle = loader.load(this.textures.circle[textureDef]);
     const hexagon = loader.load(this.textures.hexagon[textureDef]);
@@ -110,5 +110,7 @@ export abstract class SunFactory {
     lensflareList.map((currentLensflare) => {
       lensflare.addElement(currentLensflare.element);
     });
+
+    return lensflareList;
   }
 }
