@@ -3,6 +3,7 @@ export * from './clouds.factory';
 export * from './container.factory';
 export * from './cube.factory';
 export * from './earth.factory';
+export * from './lensfare.factory';
 export * from './orbit-controls.factory';
 export * from './renderer.factory';
 export * from './scene.factory';

@@ -1,9 +1,9 @@
 import { StoreService } from '@core/store/store.service';
 import { Mesh } from 'three';
 import { Animation } from '../models';
-import { Object3DDecorator } from './object-3d.decorator';
+import { Decorator } from './decorator';
 
-export class CloudsDecorator extends Object3DDecorator implements Animation {
+export class CloudsDecorator extends Decorator implements Animation {
   private rotationsYPerSecond = 0.008;
 
   constructor(private store: StoreService, private mesh: Mesh) {
@@ -11,7 +11,7 @@ export class CloudsDecorator extends Object3DDecorator implements Animation {
   }
 
   animate(delta: number): void {
-    this.object3D().rotation.y +=
+    this.object().rotation.y +=
       delta * 2 * Math.PI * this.rotationsYPerSecond;
   }
 }

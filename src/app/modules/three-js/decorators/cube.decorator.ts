@@ -1,16 +1,16 @@
 import { StoreService } from '@core/store/store.service';
 import { Mesh } from 'three';
 import { Animation } from '../models';
-import { Object3DDecorator } from './object-3d.decorator';
+import { Decorator } from './decorator';
 
-export class CubeDecorator extends Object3DDecorator implements Animation {
+export class CubeDecorator extends Decorator implements Animation {
   constructor(private store: StoreService, private mesh: Mesh) {
     super(mesh);
   }
 
   animate(delta: number): void {
     const step = delta * 0.1;
-    this.object3D().rotation.x += step;
-    this.object3D().rotation.y += step;
+    this.object().rotation.x += step;
+    this.object().rotation.y += step;
   }
 }

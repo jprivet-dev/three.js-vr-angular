@@ -1,6 +1,6 @@
 import { Scene } from 'three';
 import { Animation } from '../models';
-import { Object3DDecorator } from './object-3d.decorator';
+import { Decorator } from './decorator';
 import { SkyboxDecorator } from './skybox.decorator';
 
 export class SceneDecorator {
@@ -17,9 +17,9 @@ export class SceneDecorator {
     return this;
   }
 
-  add(...decorator: Object3DDecorator[]): this {
+  add(...decorator: Decorator[]): this {
     decorator.map((d) => {
-      this.scene.add(d.object3D());
+      this.scene.add(d.object());
 
       if (d.hasAnimation()) {
         this.addObjectWithAnimation(d as unknown as Animation);

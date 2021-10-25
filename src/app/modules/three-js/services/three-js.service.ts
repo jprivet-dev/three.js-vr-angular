@@ -4,7 +4,7 @@ import {
   CameraFactory,
   CloudsFactory,
   ContainerFactory,
-  EarthFactory,
+  EarthFactory, LensfareFactory,
   OrbitControlsFactory,
   RendererFactory,
   SceneFactory,
@@ -33,6 +33,9 @@ export class ThreeJsService {
     });
 
     const sun = (new SunFactory(this.store)).create();
+    const lensflare = (new LensfareFactory(this.store)).create();
+    sun.add(lensflare);
+
     const clouds = CloudsFactory.create(this.store);
     const earth = EarthFactory.create(this.store);
     scene.add(sun, earth, clouds);
