@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TextureDef } from '@core/store/store.model';
 import { StoreService } from '@core/store/store.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-button-texture-def',
@@ -12,7 +14,13 @@ export class ButtonTextureDefComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onChangeTextureDef(textureDef: TextureDef) {
+  active$(textureDef: TextureDef): Observable<boolean> {
+    return this.store.textureDef$.pipe(
+      map((currentTextureDev) => currentTextureDev === textureDef)
+    );
+  }
+
+  onChangeTextureDef(textureDef: TextureDef): void {
     this.store.changeTextureDef(textureDef);
   }
 }

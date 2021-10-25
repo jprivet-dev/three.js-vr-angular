@@ -9,6 +9,10 @@ export interface Resize {
   resize(containerDecorator: ContainerDecorator): void;
 }
 
+export type SkyboxDimensions = {
+  [key in TextureDef]: string;
+}
+
 export type EarthTexturesKey = 'map' | 'bumpMap' | 'specularMap';
 
 export type EarthTextures = {

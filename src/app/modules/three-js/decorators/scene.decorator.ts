@@ -12,7 +12,7 @@ export class SceneDecorator {
     return this.scene;
   }
 
-  addSkybox(skybox: SkyboxDecorator): this {
+  setSkybox(skybox: SkyboxDecorator): this {
     this.scene.background = skybox.cubeTexture;
     return this;
   }

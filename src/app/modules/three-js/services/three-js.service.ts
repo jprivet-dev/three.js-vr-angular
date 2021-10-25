@@ -26,12 +26,16 @@ export class ThreeJsService {
     const renderer = RendererBuilder.create(container, scene, camera);
     const controls = OrbitControlsBuilder.create(camera, renderer);
 
-    const skybox = SkyboxBuilder.create(this.store);
+    this.store.textureDef$.subscribe((textureDev) => {
+      const skybox = SkyboxBuilder.create(textureDev);
+      scene.setSkybox(skybox);
+    });
+
     const sun = SunBuilder.create(this.store);
     const clouds = CloudsBuilder.create(this.store);
     const earth = EarthBuilder.create(this.store);
+    scene.add(sun, earth, clouds);
 
-    scene.addSkybox(skybox).add(sun, earth, clouds);
     renderer.enableVRButton().start();
 
     new AnimationLooperManager(scene, renderer, controls).start();

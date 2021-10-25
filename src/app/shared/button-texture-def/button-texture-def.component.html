@@ -1,2 +1,2 @@
-<button (click)="onChangeTextureDef('sd')">SD</button>
-<button (click)="onChangeTextureDef('hd')">HD</button>
+<button (click)="onChangeTextureDef('sd')" [class.active]="active$('sd') | async">SD</button>
+<button (click)="onChangeTextureDef('hd')" [class.active]="active$('hd') | async">HD</button>
