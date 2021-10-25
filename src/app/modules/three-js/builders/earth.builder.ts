@@ -5,6 +5,7 @@ import { Texture } from 'three/src/textures/Texture';
 import { EarthDecorator } from '../decorators';
 import { EarthTextures, EarthTexturesKey } from '../models/three-js.model';
 
+// Here abstract is it a good idea ?
 export abstract class EarthBuilder {
   private static textures: EarthTextures = {
     map: {
@@ -38,6 +39,7 @@ export abstract class EarthBuilder {
     const earth = new Mesh(geometry, material);
     earth.position.x = 2;
 
+    // Which is the best way to unsubscribe it ?
     store.textureDef$.subscribe((textureDef) => {
       this.updateAllTextures(material, loader, textureDef);
     });

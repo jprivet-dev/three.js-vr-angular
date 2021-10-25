@@ -3,6 +3,7 @@ import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { Texture } from 'three/src/textures/Texture';
 import { CloudsDecorator } from '../decorators';
 
+// Here abstract is it a good idea ?
 export abstract class CloudsBuilder {
   private static config = {
     assetsPath: 'assets/textures/clouds/',

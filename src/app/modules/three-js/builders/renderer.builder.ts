@@ -6,6 +6,7 @@ import {
   SceneDecorator,
 } from '../decorators';
 
+// Here abstract is it a good idea ?
 export abstract class RendererBuilder {
   static create(
     container: ContainerDecorator,

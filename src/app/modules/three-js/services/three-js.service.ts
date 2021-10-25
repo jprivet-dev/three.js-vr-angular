@@ -26,6 +26,7 @@ export class ThreeJsService {
     const renderer = RendererBuilder.create(container, scene, camera);
     const controls = OrbitControlsBuilder.create(camera, renderer);
 
+    // Which is the best way to unsubscribe it ?
     this.store.textureDef$.subscribe((textureDev) => {
       const skybox = SkyboxBuilder.create(textureDev);
       scene.setSkybox(skybox);

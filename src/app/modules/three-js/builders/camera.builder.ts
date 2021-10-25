@@ -1,6 +1,7 @@
 import { PerspectiveCamera } from 'three';
 import { CameraDecorator, ContainerDecorator } from '../decorators';
 
+// Here abstract is it a good idea ?
 export abstract class CameraBuilder {
   static create(container: ContainerDecorator): CameraDecorator {
     return new CameraDecorator(container, this.newCamera(container));

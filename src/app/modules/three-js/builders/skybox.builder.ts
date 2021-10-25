@@ -3,6 +3,7 @@ import { CubeTexture, CubeTextureLoader } from 'three';
 import { SkyboxDecorator } from '../decorators';
 import { SkyboxDimensions } from '../models/three-js.model';
 
+// Here abstract is it a good idea ?
 export abstract class SkyboxBuilder {
   private static dimensions: SkyboxDimensions = {
     sd: '512x512',
