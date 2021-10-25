@@ -6,11 +6,63 @@ import {
   LensflareElement,
 } from 'three/examples/jsm/objects/Lensflare';
 import { SunDecorator } from '../decorators';
-import { SunTextures, TypedLensflare } from '../models/three-js.model';
+import {
+  SunLensflareParams,
+  SunTexturesParams,
+  TypedLensflare,
+} from '../models';
 
-// Here abstract is it a good idea ?
-export abstract class SunFactory {
-  private static textures: SunTextures = {
+// Here is it a good idea ?
+export class SunFactory {
+  private LensflareParams: SunLensflareParams[] = [
+    {
+      type: 'sun',
+      size: 1000,
+      distance: 0,
+    },
+    {
+      type: 'circle',
+      size: 20,
+      distance: 0.63,
+    },
+    {
+      type: 'circle',
+      size: 40,
+      distance: 0.64,
+    },
+    {
+      type: 'hexagon',
+      size: 70,
+      distance: 0.7,
+    },
+    {
+      type: 'hexagon',
+      size: 110,
+      distance: 0.8,
+    },
+    {
+      type: 'circle',
+      size: 60,
+      distance: 0.85,
+    },
+    {
+      type: 'circle',
+      size: 30,
+      distance: 0.86,
+    },
+    {
+      type: 'hexagon',
+      size: 120,
+      distance: 0.9,
+    },
+    {
+      type: 'hexagon',
+      size: 260,
+      distance: 1,
+    },
+  ];
+
+  private textures: SunTexturesParams = {
     sun: {
       sd: 'sun_512x512.jpg',
       hd: 'sun_1024x1024.jpg',
@@ -25,92 +77,77 @@ export abstract class SunFactory {
     },
   };
 
-  static create(store: StoreService): SunDecorator {
-    return new SunDecorator(store, this.newSun(store));
+  private loader = new TextureLoader().setPath('assets/textures/sun/');
+
+  constructor(private store: StoreService) {}
+
+  create(): SunDecorator {
+    return new SunDecorator(this.store, this.newSun());
   }
 
-  private static newSun(store: StoreService): DirectionalLight {
+  private newSun(): DirectionalLight {
     const light = new DirectionalLight(0xffffff, 1.3);
     light.position.set(-250, 0, -1000);
-    this.addLensFlare(store, light);
+    this.addLensFlare(light);
 
     return light;
   }
 
-  private static addLensFlare(store: StoreService, light: DirectionalLight) {
-    const loader = new TextureLoader().setPath('assets/textures/sun/');
+  private addLensFlare(light: DirectionalLight) {
     const lensflare = new Lensflare();
     let lensflareList: TypedLensflare[] = [];
 
     // Which is the best way to unsubscribe it ?
-    store.textureDef$.subscribe((textureDef) => {
-      if (!lensflareList.length) {
-        lensflareList = this.createLensflare(loader, textureDef, lensflare, lensflareList);
-        return;
-      }
-      lensflareList.map((currentLensflare) => {
-        currentLensflare.element.texture = loader.load(
-          this.textures[currentLensflare.type][textureDef]
-        );
-      });
+    this.store.textureDef$.subscribe((textureDef) => {
+      this.onChangeTextureDef(lensflareList, textureDef, lensflare);
     });
 
     light.add(lensflare);
   }
 
-  private static createLensflare(
-    loader: TextureLoader,
+  private createLensflare(
     textureDef: TextureDef,
     lensflare: Lensflare,
     lensflareList: TypedLensflare[]
   ): TypedLensflare[] {
-    const sun = loader.load(this.textures.sun[textureDef]);
-    const circle = loader.load(this.textures.circle[textureDef]);
-    const hexagon = loader.load(this.textures.hexagon[textureDef]);
+    const loaders = {
+      sun: this.loader.load(this.textures.sun[textureDef]),
+      circle: this.loader.load(this.textures.circle[textureDef]),
+      hexagon: this.loader.load(this.textures.hexagon[textureDef]),
+    };
 
-    lensflareList = [
-      {
-        type: 'sun',
-        element: new LensflareElement(sun, 1000, 0),
-      },
-      {
-        type: 'circle',
-        element: new LensflareElement(circle, 20, 0.63),
-      },
-      {
-        type: 'circle',
-        element: new LensflareElement(circle, 40, 0.64),
-      },
-      {
-        type: 'hexagon',
-        element: new LensflareElement(hexagon, 70, 0.7),
-      },
-      {
-        type: 'hexagon',
-        element: new LensflareElement(hexagon, 110, 0.8),
-      },
-      {
-        type: 'circle',
-        element: new LensflareElement(circle, 60, 0.85),
-      },
-      {
-        type: 'circle',
-        element: new LensflareElement(circle, 30, 0.86),
-      },
-      {
-        type: 'hexagon',
-        element: new LensflareElement(hexagon, 120, 0.9),
-      },
-      {
-        type: 'hexagon',
-        element: new LensflareElement(hexagon, 260, 1),
-      },
-    ];
+    this.LensflareParams.map((params) => {
+      lensflareList.push({
+        type: params.type,
+        element: new LensflareElement(
+          loaders[params.type],
+          params.size,
+          params.distance
+        ),
+      });
+    });
 
     lensflareList.map((currentLensflare) => {
       lensflare.addElement(currentLensflare.element);
     });
 
     return lensflareList;
+  }
+
+  onChangeTextureDef(lensflareList: TypedLensflare[], textureDef: TextureDef, lensflare: Lensflare) {
+    if (!lensflareList.length) {
+      lensflareList = this.createLensflare(
+        textureDef,
+        lensflare,
+        lensflareList
+      );
+      return;
+    }
+
+    lensflareList.map((currentLensflare) => {
+      currentLensflare.element.texture = this.loader.load(
+        this.textures[currentLensflare.type][textureDef]
+      );
+    });
   }
 }

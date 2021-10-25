@@ -1,6 +1,6 @@
 import { StoreService } from '@core/store/store.service';
 import { Mesh } from 'three';
-import { Animation } from '../models/three-js.model';
+import { Animation } from '../models';
 import { Object3DDecorator } from './object-3d.decorator';
 
 export class CubeDecorator extends Object3DDecorator implements Animation {

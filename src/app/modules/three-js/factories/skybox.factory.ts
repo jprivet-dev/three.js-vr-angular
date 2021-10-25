@@ -1,7 +1,7 @@
 import { TextureDef } from '@core/store/store.model';
 import { CubeTexture, CubeTextureLoader } from 'three';
 import { SkyboxDecorator } from '../decorators';
-import { SkyboxDimensions } from '../models/three-js.model';
+import { SkyboxDimensions } from '../models';
 
 // Here abstract is it a good idea ?
 export abstract class SkyboxFactory {

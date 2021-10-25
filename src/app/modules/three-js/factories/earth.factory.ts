@@ -3,7 +3,7 @@ import { StoreService } from '@core/store/store.service';
 import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { Texture } from 'three/src/textures/Texture';
 import { EarthDecorator } from '../decorators';
-import { EarthTextures, EarthTexturesKey } from '../models/three-js.model';
+import { EarthTextures, EarthTexturesKey } from '../models';
 
 // Here abstract is it a good idea ?
 export abstract class EarthFactory {

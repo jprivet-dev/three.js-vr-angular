@@ -32,10 +32,13 @@ export class ThreeJsService {
       scene.setSkybox(skybox);
     });
 
-    const sun = SunFactory.create(this.store);
+    const sun = (new SunFactory(this.store)).create();
     const clouds = CloudsFactory.create(this.store);
     const earth = EarthFactory.create(this.store);
     scene.add(sun, earth, clouds);
+
+    this.store.textureDef$.subscribe((textureDef) => {
+    });
 
     renderer.enableVRButton().start();
 
