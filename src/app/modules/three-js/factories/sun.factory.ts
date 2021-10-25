@@ -9,7 +9,7 @@ import { SunDecorator } from '../decorators';
 import { SunTextures, TypedLensflare } from '../models/three-js.model';
 
 // Here abstract is it a good idea ?
-export abstract class SunBuilder {
+export abstract class SunFactory {
   private static textures: SunTextures = {
     sun: {
       sd: 'sun_512x512.jpg',

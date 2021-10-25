@@ -1,16 +1,16 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import {
-  CameraBuilder,
-  CloudsBuilder,
-  ContainerBuilder,
-  EarthBuilder,
-  OrbitControlsBuilder,
-  RendererBuilder,
-  SceneBuilder,
-  SkyboxBuilder,
-  SunBuilder,
-} from '../builders';
+  CameraFactory,
+  CloudsFactory,
+  ContainerFactory,
+  EarthFactory,
+  OrbitControlsFactory,
+  RendererFactory,
+  SceneFactory,
+  SkyboxFactory,
+  SunFactory,
+} from '../factories';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
 
 @Injectable({
@@ -20,21 +20,21 @@ export class ThreeJsService {
   constructor(private window: Window, private store: StoreService) {}
 
   buildScene(containerRef: ElementRef): void {
-    const container = ContainerBuilder.create(this.window, containerRef);
-    const scene = SceneBuilder.create();
-    const camera = CameraBuilder.create(container);
-    const renderer = RendererBuilder.create(container, scene, camera);
-    const controls = OrbitControlsBuilder.create(camera, renderer);
+    const container = ContainerFactory.create(this.window, containerRef);
+    const scene = SceneFactory.create();
+    const camera = CameraFactory.create(container);
+    const renderer = RendererFactory.create(container, scene, camera);
+    const controls = OrbitControlsFactory.create(camera, renderer);
 
     // Which is the best way to unsubscribe it ?
     this.store.textureDef$.subscribe((textureDev) => {
-      const skybox = SkyboxBuilder.create(textureDev);
+      const skybox = SkyboxFactory.create(textureDev);
       scene.setSkybox(skybox);
     });
 
-    const sun = SunBuilder.create(this.store);
-    const clouds = CloudsBuilder.create(this.store);
-    const earth = EarthBuilder.create(this.store);
+    const sun = SunFactory.create(this.store);
+    const clouds = CloudsFactory.create(this.store);
+    const earth = EarthFactory.create(this.store);
     scene.add(sun, earth, clouds);
 
     renderer.enableVRButton().start();

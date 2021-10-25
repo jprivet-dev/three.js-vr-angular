@@ -6,7 +6,7 @@ import { EarthDecorator } from '../decorators';
 import { EarthTextures, EarthTexturesKey } from '../models/three-js.model';
 
 // Here abstract is it a good idea ?
-export abstract class EarthBuilder {
+export abstract class EarthFactory {
   private static textures: EarthTextures = {
     map: {
       sd: 'earth_map_1024x512.jpg',

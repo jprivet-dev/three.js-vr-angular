@@ -4,7 +4,7 @@ import { SkyboxDecorator } from '../decorators';
 import { SkyboxDimensions } from '../models/three-js.model';
 
 // Here abstract is it a good idea ?
-export abstract class SkyboxBuilder {
+export abstract class SkyboxFactory {
   private static dimensions: SkyboxDimensions = {
     sd: '512x512',
     hd: '1024x1024',

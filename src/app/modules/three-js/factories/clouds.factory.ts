@@ -4,7 +4,7 @@ import { Texture } from 'three/src/textures/Texture';
 import { CloudsDecorator } from '../decorators';
 
 // Here abstract is it a good idea ?
-export abstract class CloudsBuilder {
+export abstract class CloudsFactory {
   private static config = {
     assetsPath: 'assets/textures/clouds/',
     alphaMap: 'clouds_1024x512.jpg',

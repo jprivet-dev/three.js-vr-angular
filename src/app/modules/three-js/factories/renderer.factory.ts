@@ -7,7 +7,7 @@ import {
 } from '../decorators';
 
 // Here abstract is it a good idea ?
-export abstract class RendererBuilder {
+export abstract class RendererFactory {
   static create(
     container: ContainerDecorator,
     scene: SceneDecorator,
