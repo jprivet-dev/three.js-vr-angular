@@ -1,3 +1,4 @@
+import { StoreService } from '@core/store/store.service';
 import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { Texture } from 'three/src/textures/Texture';
 import { CloudsDecorator } from '../decorators';
@@ -8,8 +9,8 @@ export abstract class CloudsBuilder {
     alphaMap: 'clouds_1024x512.jpg',
   };
 
-  static create(): CloudsDecorator {
-    return new CloudsDecorator(this.newClouds());
+  static create(store: StoreService): CloudsDecorator {
+    return new CloudsDecorator(store, this.newClouds());
   }
 
   private static newClouds(): Mesh {
@@ -23,7 +24,10 @@ export abstract class CloudsBuilder {
       alphaMap: this.loadTexture(this.config.alphaMap),
     });
 
-    return new Mesh(geometry, material);
+    const clouds = new Mesh(geometry, material);
+    clouds.position.x = 2;
+
+    return clouds;
   }
 
   private static loadTexture(filename: string): Texture {

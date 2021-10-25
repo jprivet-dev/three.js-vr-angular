@@ -8,7 +8,7 @@ export abstract class CameraBuilder {
 
   private static newCamera(container: ContainerDecorator): PerspectiveCamera {
     const camera = new PerspectiveCamera(80, container.ratio(), 1, 8000);
-    camera.position.set(0, 0, 10);
+    camera.position.set(0, 0, 5);
 
     return camera;
   }

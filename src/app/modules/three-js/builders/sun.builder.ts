@@ -1,3 +1,4 @@
+import { StoreService } from '@core/store/store.service';
 import { DirectionalLight, TextureLoader } from 'three';
 import {
   Lensflare, LensflareElement,
@@ -5,8 +6,8 @@ import {
 import { SunDecorator } from '../decorators';
 
 export abstract class SunBuilder {
-  static create(): SunDecorator {
-    return new SunDecorator(this.newSun());
+  static create(store: StoreService): SunDecorator {
+    return new SunDecorator(store, this.newSun());
   }
 
   private static newSun(): DirectionalLight {

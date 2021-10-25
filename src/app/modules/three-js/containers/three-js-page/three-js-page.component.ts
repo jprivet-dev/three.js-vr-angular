@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { StoreService } from '@core/store/store.service';
 import { ThreeJsService } from '../../services/three-js.service';
 
 @Component({
@@ -15,7 +16,7 @@ import { ThreeJsService } from '../../services/three-js.service';
 export class ThreeJsPageComponent implements OnInit, AfterViewInit {
   @ViewChild('container') private containerRef!: ElementRef;
 
-  constructor(private threeJs: ThreeJsService) {}
+  constructor(private store: StoreService, private threeJs: ThreeJsService) {}
 
   ngOnInit(): void {}
 

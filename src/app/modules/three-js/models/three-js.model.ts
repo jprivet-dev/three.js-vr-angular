@@ -1,3 +1,4 @@
+import { TextureDef } from '@core/store/store.model';
 import { ContainerDecorator } from '../decorators';
 
 export interface Animation {
@@ -7,3 +8,11 @@ export interface Animation {
 export interface Resize {
   resize(containerDecorator: ContainerDecorator): void;
 }
+
+export type EarthTexturesKey = 'map' | 'bumpMap' | 'specularMap';
+
+export type EarthTextures = {
+  [key in EarthTexturesKey]: {
+    [key in TextureDef]: string;
+  };
+};

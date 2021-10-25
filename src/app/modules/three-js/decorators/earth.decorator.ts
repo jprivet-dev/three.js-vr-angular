@@ -1,3 +1,4 @@
+import { StoreService } from '@core/store/store.service';
 import { Mesh } from 'three';
 import { Animation } from '../models/three-js.model';
 import { Object3DDecorator } from './object-3d.decorator';
@@ -5,7 +6,7 @@ import { Object3DDecorator } from './object-3d.decorator';
 export class EarthDecorator extends Object3DDecorator implements Animation {
   private rotationsYPerSecond = 0.01;
 
-  constructor(mesh: Mesh) {
+  constructor(private store: StoreService, private mesh: Mesh) {
     super(mesh);
   }
 

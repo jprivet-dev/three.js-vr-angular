@@ -1,9 +1,10 @@
+import { StoreService } from '@core/store/store.service';
 import { CubeTexture, CubeTextureLoader } from 'three';
 import { SkyboxDecorator } from '../decorators';
 
 export abstract class SkyboxBuilder {
-  static create(): SkyboxDecorator {
-    return new SkyboxDecorator(this.newCubeTexture());
+  static create(store: StoreService): SkyboxDecorator {
+    return new SkyboxDecorator(store, this.newCubeTexture());
   }
 
   private static newCubeTexture(): CubeTexture {
