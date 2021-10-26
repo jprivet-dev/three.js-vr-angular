@@ -37,7 +37,6 @@ export abstract class EarthFactory {
     });
 
     const earth = new Mesh(geometry, material);
-    earth.position.x = 2;
 
     // Which is the best way to unsubscribe it ?
     store.textureDef$.subscribe((textureDef) => {
