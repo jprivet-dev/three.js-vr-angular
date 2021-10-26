@@ -2,6 +2,7 @@ export * from './camera.factory';
 export * from './clouds.factory';
 export * from './container.factory';
 export * from './cube.factory';
+export * from './dolly.factory';
 export * from './earth.factory';
 export * from './lensfare.factory';
 export * from './orbit-controls.factory';
