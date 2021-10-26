@@ -11,10 +11,7 @@ export abstract class OrbitControlsFactory {
     camera: CameraDecorator,
     renderer: RendererDecorator
   ): OrbitControlsDecorator {
-    const controls = new OrbitControls(
-      camera.object3D(),
-      renderer.domElement()
-    );
+    const controls = new OrbitControls(camera.object(), renderer.domElement());
     return new OrbitControlsDecorator(controls);
   }
 }

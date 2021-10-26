@@ -21,8 +21,12 @@ export class RendererDecorator implements Resize {
     this.container.appendChild(this.renderer.domElement);
   }
 
+  object(): WebGLRenderer {
+    return this.renderer;
+  }
+
   render(): void {
-    this.renderer.render(this.scene.object3D(), this.camera.object3D());
+    this.renderer.render(this.scene.object(), this.camera.object());
   }
 
   resize(): void {

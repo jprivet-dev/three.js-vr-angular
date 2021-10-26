@@ -8,7 +8,7 @@ export class CameraDecorator implements Resize {
     private camera: PerspectiveCamera
   ) {}
 
-  object3D(): PerspectiveCamera {
+  object(): PerspectiveCamera {
     return this.camera;
   }
 

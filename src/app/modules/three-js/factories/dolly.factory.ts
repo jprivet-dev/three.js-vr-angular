@@ -5,11 +5,11 @@ import { CameraDecorator, DollyDecorator } from '../decorators';
 export abstract class DollyFactory {
   static create(camera: CameraDecorator): DollyDecorator {
     const dolly = new Object3D();
-    dolly.position.set(-2, 0, -1);
-    dolly.add(camera.object3D());
+    dolly.position.set(0, 0, 0);
+    dolly.add(camera.object());
 
     const dummyCam = new Object3D();
-    camera.object3D().add(dummyCam);
+    camera.object().add(dummyCam);
 
     return new DollyDecorator(dolly);
   }

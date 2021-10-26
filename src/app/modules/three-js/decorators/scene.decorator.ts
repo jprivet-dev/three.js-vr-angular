@@ -8,7 +8,7 @@ export class SceneDecorator {
 
   constructor(private scene: Scene) {}
 
-  object3D(): Scene {
+  object(): Scene {
     return this.scene;
   }
 

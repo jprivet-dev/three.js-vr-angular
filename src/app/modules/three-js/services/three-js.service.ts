@@ -4,7 +4,9 @@ import {
   CameraFactory,
   CloudsFactory,
   ContainerFactory,
-  EarthFactory, LensfareFactory,
+  DollyFactory,
+  EarthFactory,
+  LensfareFactory,
   OrbitControlsFactory,
   RendererFactory,
   SceneFactory,
@@ -17,14 +19,17 @@ import { AnimationLooperManager, WindowResizeManager } from '../managers';
   providedIn: 'root',
 })
 export class ThreeJsService {
-  constructor(private window: Window, private store: StoreService) {}
+  constructor(private window: Window, private store: StoreService) {
+  }
 
   buildScene(containerRef: ElementRef): void {
     const container = ContainerFactory.create(this.window, containerRef);
     const scene = SceneFactory.create();
     const camera = CameraFactory.create(container);
     const renderer = RendererFactory.create(container, scene, camera);
-    const controls = OrbitControlsFactory.create(camera, renderer);
+
+    const dolly = DollyFactory.create(camera);
+    scene.add(dolly);
 
     // Which is the best way to unsubscribe it ?
     this.store.textureDef$.subscribe((textureDev) => {
@@ -32,8 +37,8 @@ export class ThreeJsService {
       scene.setSkybox(skybox);
     });
 
-    const sun = (new SunFactory(this.store)).create();
-    const lensflare = (new LensfareFactory(this.store)).create();
+    const sun = new SunFactory(this.store).create();
+    const lensflare = new LensfareFactory(this.store).create();
     sun.add(lensflare);
 
     const earth = EarthFactory.create(this.store);
@@ -47,7 +52,24 @@ export class ThreeJsService {
 
     renderer.enableVRButton().start();
 
+    const controls = OrbitControlsFactory.create(camera, renderer);
+    controls.enableAutoRotate();
+
     new AnimationLooperManager(scene, renderer, controls).start();
     new WindowResizeManager(container, camera, renderer).start();
+
+    renderer.object().xr.addEventListener('sessionstart', function (event) {
+      console.log('VR SESSION START');
+      dolly.object().position.set(-2.5, 0, 0);
+      camera.object().position.set(0, 0, 0);
+      renderer.render();
+    });
+
+    renderer.object().xr.addEventListener('sessionend', function (event) {
+      console.log('VR SESSION END');
+      dolly.object().position.set(0, 0, 0);
+      camera.object().position.set(0, 0, 5);
+      renderer.render();
+    });
   }
 }

@@ -1,9 +1,9 @@
+import { Object3D, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export class OrbitControlsDecorator {
   constructor(private controls: OrbitControls) {
     controls.autoRotateSpeed = 0.2;
-    this.enableAutoRotate();
   }
 
   enableAutoRotate() {
