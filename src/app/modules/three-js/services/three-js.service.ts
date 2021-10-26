@@ -36,9 +36,11 @@ export class ThreeJsService {
     const lensflare = (new LensfareFactory(this.store)).create();
     sun.add(lensflare);
 
-    const clouds = CloudsFactory.create(this.store);
     const earth = EarthFactory.create(this.store);
-    scene.add(sun, earth, clouds);
+    const clouds = CloudsFactory.create(this.store);
+    earth.add(clouds);
+
+    scene.add(sun, earth);
 
     this.store.textureDef$.subscribe((textureDef) => {
     });

@@ -25,10 +25,7 @@ export abstract class CloudsFactory {
       alphaMap: this.loadTexture(this.config.alphaMap),
     });
 
-    const clouds = new Mesh(geometry, material);
-    clouds.position.x = 2;
-
-    return clouds;
+    return new Mesh(geometry, material);
   }
 
   private static loadTexture(filename: string): Texture {
