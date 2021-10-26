@@ -44,6 +44,7 @@ export class RendererDecorator implements Resize {
     const button = VRButton.createButton(this.renderer);
     this.container.appendChild(button);
     this.renderer.xr.enabled = true; // enable XR rendering
+    this.renderer.xr.setReferenceSpaceType('local');
     return this;
   }
 
