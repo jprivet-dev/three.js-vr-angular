@@ -1,6 +1,6 @@
 import { Container } from '@shared/models/container.model';
 import { FactoryRenderer } from '@shared/models/factory.model';
-import { RendererVRButton } from '../renderers/renderer-vr-button';
+import { RendererVRButton } from '../threejs';
 
 export class RendererFactory implements FactoryRenderer {
   constructor(private container: Container) {}

@@ -8,9 +8,8 @@ describe('EarthPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EarthPageComponent ]
-    })
-    .compileComponents();
+      declarations: [EarthPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

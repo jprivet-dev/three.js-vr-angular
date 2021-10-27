@@ -6,6 +6,6 @@ export interface DollyCameraParams {
   position: {
     x: number;
     y: number;
-    z: number
-  }
+    z: number;
+  };
 }

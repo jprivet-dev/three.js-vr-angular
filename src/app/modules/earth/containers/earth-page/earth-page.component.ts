@@ -10,11 +10,9 @@ import { EarthService } from '../../services/earth.service';
 export class EarthPageComponent implements OnInit {
   @ViewChild('container') private containerRef!: ElementRef;
 
-  constructor(private window: Window, private service: EarthService) {
-  }
+  constructor(private window: Window, private service: EarthService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     const container = new Container(this.window, this.containerRef);

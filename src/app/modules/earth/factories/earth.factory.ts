@@ -1,6 +1,6 @@
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { Earth } from '../objects3d/earth';
+import { Earth } from '../threejs';
 
 export class EarthFactory implements FactoryObject3D {
   create(): Earth {

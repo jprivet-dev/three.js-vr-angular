@@ -1,5 +1,5 @@
 import { Object3D, PerspectiveCamera } from 'three';
-import { DollyCameraParams } from '../models/earth.model';
+import { DollyCameraParams } from '../../models/earth.model';
 
 export class DollyCamera extends Object3D {
   public camera: PerspectiveCamera;

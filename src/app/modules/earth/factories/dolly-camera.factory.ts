@@ -1,7 +1,7 @@
 import { Container } from '@shared/models/container.model';
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { DollyCameraParams } from '../models/earth.model';
-import { DollyCamera } from '../objects3d';
+import { DollyCamera } from '../threejs';
 
 export class DollyCameraFactory implements FactoryObject3D {
   constructor(private container: Container) {}
