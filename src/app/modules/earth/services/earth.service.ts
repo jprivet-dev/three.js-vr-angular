@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Container } from '@shared/models/container.model';
 import {
   DollyCameraFactory,
+  EarthFactory,
   RendererFactory,
   SpaceFactory,
 } from '../factories';
@@ -19,6 +20,11 @@ export class EarthService {
 
     space.add(dolly);
 
-    renderer.render(space, dolly.camera);
+    const earth = new EarthFactory().create();
+    space.add(earth);
+
+    renderer.setAnimationLoop(() => {
+      renderer.render(space, dolly.camera);
+    });
   }
 }
