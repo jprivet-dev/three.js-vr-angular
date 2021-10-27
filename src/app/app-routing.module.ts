@@ -4,12 +4,17 @@ import { ThreeJsPageComponent } from '@modules/three-js/containers/three-js-page
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'earth',
+    loadChildren: () =>
+      import('./modules/earth/earth.module').then((m) => m.EarthModule),
+  },
+  {
+    path: 'old-earth',
     component: ThreeJsPageComponent,
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'earth',
     pathMatch: 'full',
   },
 ];
