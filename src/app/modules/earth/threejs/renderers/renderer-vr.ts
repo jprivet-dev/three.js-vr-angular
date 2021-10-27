@@ -1,9 +1,13 @@
 import { Container } from '@shared/models/container.model';
-import { WebGLRenderer } from 'three';
+import { Camera, Scene, WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 
-export class RendererVRButton extends WebGLRenderer {
-  constructor(private container: Container) {
+export class RendererVR extends WebGLRenderer {
+  constructor(
+    private container: Container,
+    private scene: Scene,
+    private camera: Camera
+  ) {
     super();
 
     this.setPixelRatio(this.container.window.devicePixelRatio);
@@ -20,5 +24,13 @@ export class RendererVRButton extends WebGLRenderer {
     this.container.appendChild(button);
 
     return this;
+  }
+
+  getScene(): Scene {
+    return this.scene;
+  }
+
+  getCamera(): Camera {
+    return this.camera;
   }
 }

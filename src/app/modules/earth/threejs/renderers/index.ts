@@ -1,1 +1,1 @@
-export * from './renderer-vr-button';
+export * from './renderer-vr';

@@ -1,30 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Container } from '@shared/models/container.model';
 import {
-  DollyCameraFactory,
-  EarthFactory,
-  RendererFactory,
-  SpaceFactory,
+  DollyCameraFactory, EarthFactory, RendererVRFactory, SpaceFactory,
 } from '../factories';
+import { AnimationLooperManager } from '../managers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EarthService {
-  constructor() {}
+  constructor() {
+  }
 
   buildScene(container: Container): void {
     const space = new SpaceFactory().create();
     const dolly = new DollyCameraFactory(container).create();
-    const renderer = new RendererFactory(container).create();
-
     space.add(dolly);
+    const renderer = new RendererVRFactory(container).create(space, dolly);
+
+    const looper = new AnimationLooperManager(renderer);
 
     const earth = new EarthFactory().create();
     space.add(earth);
+    looper.add(earth);
 
-    renderer.setAnimationLoop(() => {
-      renderer.render(space, dolly.camera);
-    });
+    looper.start();
   }
 }
