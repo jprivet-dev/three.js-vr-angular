@@ -3,7 +3,7 @@ import { Container } from '@shared/models/container.model';
 import {
   DollyCameraFactory,
   EarthFactory,
-  RendererVRFactory,
+  VRRendererFactory,
   SpaceFactory,
   SunFactory,
 } from '../factories';
@@ -22,7 +22,7 @@ export class EarthService {
     const dolly = new DollyCameraFactory(container).create();
     space.add(dolly);
 
-    const renderer = new RendererVRFactory(container).create(space, dolly);
+    const renderer = new VRRendererFactory(container).create(space, dolly);
     const looper = new AnimationLooperManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
     const session = new VRSessionManager(renderer);

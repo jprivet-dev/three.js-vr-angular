@@ -1,10 +1,10 @@
-import { DollyCamera } from '@modules/earth/threejs';
-import { Object3D, Renderer, Scene } from 'three';
+import { DollyCamera, VRRenderer } from '@modules/earth/threejs';
+import { Object3D, Scene } from 'three';
 
 export interface FactoryObject3D {
   create(): Object3D;
 }
 
-export interface FactoryRendererVR {
-  create(scene: Scene, dolly: DollyCamera): Renderer;
+export interface FactoryVRRenderer {
+  create(scene: Scene, dolly: DollyCamera): VRRenderer;
 }
