@@ -3,7 +3,7 @@ import { Camera, Scene, WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WindowResize } from '../../models/window-resize.model';
 
-export class RendererVR extends WebGLRenderer implements WindowResize {
+export class VRRenderer extends WebGLRenderer implements WindowResize {
   constructor(
     private container: Container,
     private scene: Scene,

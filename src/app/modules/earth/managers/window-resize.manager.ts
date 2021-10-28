@@ -1,6 +1,6 @@
 import { Container } from '@shared/models/container.model';
 import { WindowResize } from '../models/window-resize.model';
-import { DollyCamera, RendererVR } from '../threejs';
+import { DollyCamera, VRRenderer } from '../threejs';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];
@@ -8,7 +8,7 @@ export class WindowResizeManager implements WindowResize {
   constructor(
     private container: Container,
     dollyCamera: DollyCamera,
-    renderer: RendererVR
+    renderer: VRRenderer
   ) {
     this.add(dollyCamera);
     this.add(renderer);

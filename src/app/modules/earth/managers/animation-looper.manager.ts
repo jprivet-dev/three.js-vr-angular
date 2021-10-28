@@ -1,10 +1,10 @@
 import { Loop } from '../models/loop.model';
-import { RendererVR } from '../threejs';
+import { VRRenderer } from '../threejs';
 
 export class AnimationLooperManager implements Loop {
   private list: Loop[] = [];
 
-  constructor(private renderer: RendererVR) {
+  constructor(private renderer: VRRenderer) {
   }
 
   add(element: Loop): void {

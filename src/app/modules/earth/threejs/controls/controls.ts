@@ -1,10 +1,10 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Loop } from '../../models/loop.model';
 import { DollyCamera } from '../objects3d';
-import { RendererVR } from '../renderers';
+import { VRRenderer } from '../renderers';
 
 export class Controls extends OrbitControls implements Loop {
-  constructor(private dolly: DollyCamera, private renderer: RendererVR) {
+  constructor(private dolly: DollyCamera, private renderer: VRRenderer) {
     super(dolly.camera, renderer.domElement);
     this.autoRotateSpeed = 0.2;
   }
