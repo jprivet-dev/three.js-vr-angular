@@ -1,7 +1,7 @@
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
 import { Earth } from '../threejs';
-import { EarthTexturesLoader } from '../threejs/loaders/earth-textures.loader';
+import { EarthTextureLoader } from '../threejs/loaders/earth-texture.loader';
 
 export class EarthFactory implements FactoryObject3D {
   create(): Earth {
@@ -13,7 +13,7 @@ export class EarthFactory implements FactoryObject3D {
       shininess: 6,
     });
 
-    const loader = new EarthTexturesLoader(material);
+    const loader = new EarthTextureLoader(material);
     loader.loadByDefinition('sd');
 
     return new Earth(geometry, material);

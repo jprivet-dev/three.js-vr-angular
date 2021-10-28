@@ -5,7 +5,7 @@ import {
 } from '../../models/earth-texture.model';
 import { TextureByDefinition } from '../../models/texture-by-definition.model';
 
-export class EarthTexturesLoader extends TextureLoader implements TextureByDefinition {
+export class EarthTextureLoader extends TextureLoader implements TextureByDefinition {
   private texture: EarthTextures = {
     map: {
       sd: 'earth_map_1024x512.jpg', hd: 'earth_map_2048x1024.jpg',
