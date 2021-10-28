@@ -27,13 +27,13 @@ export class EarthTexturesLoader extends TextureLoader {
     this.setPath('assets/textures/earth/');
   }
 
-  loadTextures(definition: Definition) {
-    this.material.map = this.loadTexture('map', definition);
-    this.material.bumpMap = this.loadTexture('bumpMap', definition);
-    this.material.specularMap = this.loadTexture('specularMap', definition);
+  loadByDefinition(definition: Definition) {
+    this.material.map = this.load(this.filename('map', definition));
+    this.material.bumpMap = this.load(this.filename('bumpMap', definition));
+    this.material.specularMap = this.load(this.filename('specularMap', definition));
   }
 
-  private loadTexture(key: EarthTexturesKeys, definition: Definition): Texture {
-    return this.load(this.texture[key][definition]);
+  private filename(key: EarthTexturesKeys, definition: Definition): string {
+    return this.texture[key][definition];
   }
 }

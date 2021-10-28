@@ -14,7 +14,7 @@ export class EarthFactory implements FactoryObject3D {
     });
 
     const loader = new EarthTexturesLoader(material);
-    loader.loadTextures('sd');
+    loader.loadByDefinition('sd');
 
     return new Earth(geometry, material);
   }

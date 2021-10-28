@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Container } from '@shared/models/container.model';
 import {
-  DollyCameraFactory,
-  EarthFactory,
-  VRRendererFactory,
-  SpaceFactory,
-  SunFactory,
+  DollyCameraFactory, EarthFactory, VRRendererFactory, SpaceFactory, SunFactory, CloudsFactory,
 } from '../factories';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
 import { VRSessionManager } from '../managers/vr-session.manager';
@@ -38,6 +34,10 @@ export class EarthService {
     const earth = new EarthFactory().create();
     space.add(earth);
     looper.add(earth);
+
+    const clouds = new CloudsFactory().create();
+    earth.add(clouds);
+    looper.add(clouds);
 
     looper.start();
     resize.start();
