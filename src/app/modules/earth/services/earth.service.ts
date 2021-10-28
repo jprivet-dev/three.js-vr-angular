@@ -8,6 +8,7 @@ import {
   SunFactory,
 } from '../factories';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
+import { Controls } from '../threejs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class EarthService {
     const renderer = new RendererVRFactory(container).create(space, dolly);
     const looper = new AnimationLooperManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
+
+    const controls = new Controls(dolly, renderer);
+    controls.enableAutoRotate();
+    looper.add(controls);
 
     const sun = new SunFactory().create();
     space.add(sun);
