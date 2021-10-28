@@ -36,20 +36,20 @@ export class ThreeJsService {
       const skybox = SkyboxFactory.create(textureDev);
       scene.setSkybox(skybox);
     });
-    //
-    // const sun = new SunFactory(this.store).create();
-    // const lensflare = new LensfareFactory(this.store).create();
-    // sun.add(lensflare);
-    //
-    // const earth = EarthFactory.create(this.store);
-    // const clouds = CloudsFactory.create(this.store);
-    // earth.add(clouds);
-    //
-    // scene.add(sun, earth);
-    //
-    // this.store.textureDef$.subscribe((textureDef) => {
-    // });
-    //
+
+    const sun = new SunFactory(this.store).create();
+    const lensflare = new LensfareFactory(this.store).create();
+    sun.add(lensflare);
+
+    const earth = EarthFactory.create(this.store);
+    const clouds = CloudsFactory.create(this.store);
+    earth.add(clouds);
+
+    scene.add(sun, earth);
+
+    this.store.textureDef$.subscribe((textureDef) => {
+    });
+
     renderer.enableVRButton().start();
 
     const controls = OrbitControlsFactory.create(camera, renderer);
@@ -57,19 +57,19 @@ export class ThreeJsService {
 
     new AnimationLooperManager(scene, renderer, controls).start();
     new WindowResizeManager(container, camera, renderer).start();
-    //
-    // renderer.object().xr.addEventListener('sessionstart', function (event) {
-    //   console.log('VR SESSION START');
-    //   dolly.object().position.set(-2.5, 0, 0);
-    //   camera.object().position.set(0, 0, 0);
-    //   renderer.render();
-    // });
-    //
-    // renderer.object().xr.addEventListener('sessionend', function (event) {
-    //   console.log('VR SESSION END');
-    //   dolly.object().position.set(0, 0, 0);
-    //   camera.object().position.set(0, 0, 5);
-    //   renderer.render();
-    // });
+
+    renderer.object().xr.addEventListener('sessionstart', function (event) {
+      console.log('VR SESSION START');
+      dolly.object().position.set(-2.5, 0, 0);
+      camera.object().position.set(0, 0, 0);
+      renderer.render();
+    });
+
+    renderer.object().xr.addEventListener('sessionend', function (event) {
+      console.log('VR SESSION END');
+      dolly.object().position.set(0, 0, 0);
+      camera.object().position.set(0, 0, 5);
+      renderer.render();
+    });
   }
 }
