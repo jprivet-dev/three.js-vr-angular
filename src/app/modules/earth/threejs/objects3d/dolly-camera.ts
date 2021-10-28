@@ -1,9 +1,10 @@
 import { Container } from '@shared/models/container.model';
 import { Object3D, PerspectiveCamera } from 'three';
 import { DollyCameraParams } from '../../models/earth.model';
+import { VRSession } from '../../models/vr-session.model';
 import { WindowResize } from '../../models/window-resize.model';
 
-export class DollyCamera extends Object3D implements WindowResize {
+export class DollyCamera extends Object3D implements WindowResize, VRSession {
   public camera: PerspectiveCamera;
   public dummyCam: Object3D;
 
@@ -22,5 +23,15 @@ export class DollyCamera extends Object3D implements WindowResize {
   resize() {
     this.camera.aspect = this.container.ratio();
     this.camera.updateProjectionMatrix();
+  }
+
+  onVRSessionStart() {
+    this.camera.position.set(0, 0, 0);
+    this.position.set(-2.5, 0, 0);
+  }
+
+  onVRSessionEnd() {
+    this.camera.position.set(0, 0, 5);
+    this.position.set(0, 0, 0);
   }
 }

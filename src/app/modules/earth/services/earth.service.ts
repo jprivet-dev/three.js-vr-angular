@@ -8,6 +8,7 @@ import {
   SunFactory,
 } from '../factories';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
+import { VRSessionManager } from '../managers/vr-session.manager';
 import { Controls } from '../threejs';
 
 @Injectable({
@@ -24,6 +25,8 @@ export class EarthService {
     const renderer = new RendererVRFactory(container).create(space, dolly);
     const looper = new AnimationLooperManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
+    const session = new VRSessionManager(renderer);
+    session.add(dolly);
 
     const controls = new Controls(dolly, renderer);
     controls.enableAutoRotate();
@@ -38,5 +41,6 @@ export class EarthService {
 
     looper.start();
     resize.start();
+    session.start();
   }
 }
