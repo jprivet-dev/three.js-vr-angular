@@ -1,8 +1,9 @@
 import { Container } from '@shared/models/container.model';
 import { Camera, Scene, WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
+import { WindowResize } from '../../models/window-resize.model';
 
-export class RendererVR extends WebGLRenderer {
+export class RendererVR extends WebGLRenderer implements WindowResize {
   constructor(
     private container: Container,
     private scene: Scene,
@@ -32,5 +33,9 @@ export class RendererVR extends WebGLRenderer {
 
   getCamera(): Camera {
     return this.camera;
+  }
+
+  resize() {
+    this.setSize(this.container.width(), this.container.height());
   }
 }

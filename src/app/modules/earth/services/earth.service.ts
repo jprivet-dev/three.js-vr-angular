@@ -3,7 +3,7 @@ import { Container } from '@shared/models/container.model';
 import {
   DollyCameraFactory, EarthFactory, RendererVRFactory, SpaceFactory,
 } from '../factories';
-import { AnimationLooperManager } from '../managers';
+import { AnimationLooperManager, WindowResizeManager } from '../managers';
 
 @Injectable({
   providedIn: 'root',
@@ -16,14 +16,16 @@ export class EarthService {
     const space = new SpaceFactory().create();
     const dolly = new DollyCameraFactory(container).create();
     space.add(dolly);
-    const renderer = new RendererVRFactory(container).create(space, dolly);
 
+    const renderer = new RendererVRFactory(container).create(space, dolly);
     const looper = new AnimationLooperManager(renderer);
+    const resize = new WindowResizeManager(container, dolly, renderer);
 
     const earth = new EarthFactory().create();
     space.add(earth);
     looper.add(earth);
 
     looper.start();
+    resize.start();
   }
 }

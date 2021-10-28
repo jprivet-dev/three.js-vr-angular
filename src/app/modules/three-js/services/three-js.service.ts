@@ -56,7 +56,7 @@ export class ThreeJsService {
     controls.enableAutoRotate();
 
     new AnimationLooperManager(scene, renderer, controls).start();
-    // new WindowResizeManager(container, camera, renderer).start();
+    new WindowResizeManager(container, camera, renderer).start();
     //
     // renderer.object().xr.addEventListener('sessionstart', function (event) {
     //   console.log('VR SESSION START');

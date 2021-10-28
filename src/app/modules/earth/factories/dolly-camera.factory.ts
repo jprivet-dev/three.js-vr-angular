@@ -19,6 +19,6 @@ export class DollyCameraFactory implements FactoryObject3D {
       },
     };
 
-    return new DollyCamera(params);
+    return new DollyCamera(this.container, params);
   }
 }
