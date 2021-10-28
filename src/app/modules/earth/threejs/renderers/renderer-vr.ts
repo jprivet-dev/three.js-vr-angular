@@ -12,7 +12,7 @@ export class RendererVR extends WebGLRenderer implements WindowResize {
     super();
 
     this.setPixelRatio(this.container.window.devicePixelRatio);
-    this.setSize(this.container.width(), this.container.height());
+    this.resize();
   }
 
   /**

@@ -11,7 +11,9 @@ export class RendererVRFactory implements FactoryRendererVR {
       this.container,
       scene,
       dolly.camera
-    ).createVRButton();
+    );
+
+    renderer.createVRButton();
     this.container.appendChild(renderer.domElement);
 
     return renderer;
