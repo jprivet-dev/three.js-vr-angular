@@ -1,3 +1,3 @@
 export interface Loop {
-  loop(): void;
+  loop(delta: number): void;
 }

@@ -1,7 +1,9 @@
+import { Clock } from 'three';
 import { Loop } from '../models/loop.model';
 import { VRRenderer } from '../threejs';
 
 export class AnimationLooperManager implements Loop {
+  private clock = new Clock();
   private list: Loop[] = [];
 
   constructor(private renderer: VRRenderer) {
@@ -19,13 +21,13 @@ export class AnimationLooperManager implements Loop {
     this.list.splice(index, 1);
   }
 
-  loop(): void {
-    this.list.forEach((element) => element.loop());
+  loop(delta: number): void {
+    this.list.forEach((element) => element.loop(delta));
   }
 
   start(): void {
     this.renderer.setAnimationLoop(() => {
-      this.loop();
+      this.loop(this.clock.getDelta());
       this.renderer.render(this.renderer.getScene(), this.renderer.getCamera());
     });
   }
