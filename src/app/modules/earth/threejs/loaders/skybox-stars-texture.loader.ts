@@ -12,9 +12,7 @@ export class SkyboxStarsTextureLoader extends CubeTextureLoader {
     this.setPath('assets/textures/skybox/');
   }
 
-  getTexture(): CubeTexture {
-    const definition: Definition = 'sd';
-
+  getTextureByDefinition(definition: Definition): CubeTexture {
     const list = ['posx', 'negx', 'posy', 'negy', 'posz', 'negz'];
 
     const filenameList = list.map((position) => {

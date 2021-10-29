@@ -24,7 +24,7 @@ export class EarthService {
   constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
-    const space = new SpaceFactory().create();
+    const space = new SpaceFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create();
     space.add(dolly);
 
