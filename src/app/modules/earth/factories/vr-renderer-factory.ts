@@ -7,11 +7,7 @@ export class VRRendererFactory implements FactoryVRRenderer {
   constructor(private container: Container) {}
 
   create(scene: Scene, dolly: DollyCamera): VRRenderer {
-    const renderer = new VRRenderer(
-      this.container,
-      scene,
-      dolly.camera
-    );
+    const renderer = new VRRenderer(this.container, scene, dolly.camera);
 
     renderer.createVRButton();
     this.container.appendChild(renderer.domElement);

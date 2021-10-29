@@ -1,7 +1,6 @@
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { CloudsTextureLoader } from '../threejs';
-import { Clouds } from '../threejs/objects3d/clouds';
+import { Clouds, CloudsTextureLoader } from '../threejs';
 
 export class CloudsFactory implements FactoryObject3D {
   create(): Clouds {

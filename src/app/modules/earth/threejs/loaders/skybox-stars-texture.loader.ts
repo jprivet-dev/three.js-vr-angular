@@ -2,14 +2,15 @@ import { Definition } from '@shared/models/definition.model';
 import { CubeTexture, CubeTextureLoader } from 'three';
 
 export class SkyboxStarsTextureLoader extends CubeTextureLoader {
+  private dimensions = {
+    sd: '512x512',
+    hd: '1024x1024',
+  };
+
   constructor() {
     super();
     this.setPath('assets/textures/skybox/');
   }
-
-  private dimensions = {
-    sd: '512x512', hd: '1024x1024',
-  };
 
   getTexture(): CubeTexture {
     const definition: Definition = 'sd';

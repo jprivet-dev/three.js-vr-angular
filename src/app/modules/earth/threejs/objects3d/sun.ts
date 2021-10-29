@@ -1,4 +1,3 @@
 import { DirectionalLight } from 'three';
 
-export class Sun extends DirectionalLight {
-}
+export class Sun extends DirectionalLight {}

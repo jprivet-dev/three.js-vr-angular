@@ -4,8 +4,7 @@ import { VRRenderer } from '../threejs';
 export class VRSessionManager implements VRSession {
   private list: VRSession[] = [];
 
-  constructor(private renderer: VRRenderer) {
-  }
+  constructor(private renderer: VRRenderer) {}
 
   add(element: VRSession): void {
     this.list.push(element);

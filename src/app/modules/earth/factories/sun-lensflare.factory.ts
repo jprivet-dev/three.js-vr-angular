@@ -1,9 +1,11 @@
 import { Definition } from '@shared/models/definition.model';
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { SunLensflareTexturesParams } from '../models/texture.model';
-import { SunLensflareTextureLoader } from '../threejs/loaders/sun-lensflare-texture.loader';
-import { SunLensflare } from '../threejs/objects3d/sun-lensflare';
-import { SunLensflareElement } from '../threejs/objects3d/sun-lensflare-element';
+import {
+  SunLensflare,
+  SunLensflareElement,
+  SunLensflareTextureLoader,
+} from '../threejs';
 
 export class SunLensflareFactory implements FactoryObject3D {
   private elements: SunLensflareTexturesParams[] = [

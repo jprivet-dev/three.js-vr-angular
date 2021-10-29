@@ -23,7 +23,9 @@ export class CloudsTextureLoader
   }
 
   loadByDefinition(definition: Definition): void {
-    this.material.alphaMap = this.load(this.getFilename('alphaMap', definition));
+    this.material.alphaMap = this.load(
+      this.getFilename('alphaMap', definition)
+    );
   }
 
   private getFilename(

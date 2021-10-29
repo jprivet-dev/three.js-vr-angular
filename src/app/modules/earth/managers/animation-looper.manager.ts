@@ -6,8 +6,7 @@ export class AnimationLooperManager implements Loop {
   private clock = new Clock();
   private list: Loop[] = [];
 
-  constructor(private renderer: VRRenderer) {
-  }
+  constructor(private renderer: VRRenderer) {}
 
   add(element: Loop): void {
     this.list.push(element);

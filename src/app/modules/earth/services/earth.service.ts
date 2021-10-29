@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Container } from '@shared/models/container.model';
 import {
-  DollyCameraFactory, EarthFactory, VRRendererFactory, SpaceFactory, SunFactory, CloudsFactory,
+  CloudsFactory,
+  DollyCameraFactory,
+  EarthFactory,
+  SpaceFactory,
+  SunFactory,
+  VRRendererFactory,
 } from '../factories';
 import { SunLensflareFactory } from '../factories/sun-lensflare.factory';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
@@ -30,9 +35,10 @@ export class EarthService {
     looper.add(controls);
 
     const sun = new SunFactory().create();
+    space.add(sun);
+
     const lensflare = new SunLensflareFactory().create();
     sun.add(lensflare);
-    space.add(sun);
 
     const earth = new EarthFactory().create();
     space.add(earth);
