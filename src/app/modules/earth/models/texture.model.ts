@@ -30,6 +30,14 @@ export type SunLensflareTexturesByDefinition = {
   };
 };
 
+export type JupiterTexturesByDefinitionKeys = 'map';
+
+export type JupiterTexturesByDefinition = {
+  [key in JupiterTexturesByDefinitionKeys]: {
+    [key in Definition]: string;
+  };
+};
+
 export interface TextureByDefinition {
   loadByDefinition(definition: Definition): void;
 }

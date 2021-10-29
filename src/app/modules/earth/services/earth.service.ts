@@ -4,7 +4,7 @@ import { Container } from '@shared/models/container.model';
 import {
   CloudsFactory,
   DollyCameraFactory,
-  EarthFactory,
+  EarthFactory, JupiterFactory,
   SpaceFactory,
   SunFactory,
   SunLensflareFactory,
@@ -61,6 +61,10 @@ export class EarthService {
     const clouds = new CloudsFactory(this.store).create();
     earth.add(clouds);
     looper.add(clouds);
+
+    const jupiter = new JupiterFactory(this.store).create();
+    space.add(jupiter);
+    looper.add(jupiter);
 
     looper.start();
     resize.start();
