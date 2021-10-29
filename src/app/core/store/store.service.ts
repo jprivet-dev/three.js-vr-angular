@@ -6,11 +6,18 @@ import { Definition } from './store.model';
   providedIn: 'root',
 })
 export class StoreService {
-  private _definition = new BehaviorSubject<Definition>('sd');
-  public definition$ = this._definition.asObservable();
+  private definition = new BehaviorSubject<Definition>('sd');
+  public definition$ = this.definition.asObservable();
 
   changeDefinition(definition: Definition) {
-    this._definition.next(definition);
+    this.definition.next(definition);
+  }
+
+  private antialias = new BehaviorSubject<boolean>(false);
+  public antialias$ = this.antialias.asObservable();
+
+  switchAntialias() {
+    this.antialias.next(!this.antialias.getValue());
   }
 
   constructor() {}

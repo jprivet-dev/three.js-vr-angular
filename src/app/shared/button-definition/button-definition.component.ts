@@ -16,7 +16,7 @@ export class ButtonDefinitionComponent implements OnInit {
 
   active$(definition: Definition): Observable<boolean> {
     return this.store.definition$.pipe(
-      map((currentTextureDev) => currentTextureDev === definition)
+      map((currentDefinition) => currentDefinition === definition)
     );
   }
 

@@ -31,4 +31,8 @@ export class Container {
   appendChild(child: HTMLElement) {
     this.container.appendChild(child);
   }
+
+  empty() {
+    this.container.innerHTML = '';
+  }
 }

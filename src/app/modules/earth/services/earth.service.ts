@@ -24,11 +24,21 @@ export class EarthService {
   constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
+    this.store.antialias$.subscribe((antialias) => {
+      this.onAntialiasChange(container, antialias);
+    });
+  }
+
+  private onAntialiasChange(container: Container, antialias: boolean) {
+    container.empty();
+
     const space = new SpaceFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create();
     space.add(dolly);
 
-    const renderer = new VRRendererFactory(container).create(space, dolly);
+    const renderer = new VRRendererFactory(container).create(space, dolly, {
+      antialias,
+    });
     const looper = new AnimationLooperManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
     const session = new VRSessionManager(renderer);

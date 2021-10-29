@@ -1,15 +1,17 @@
 import { Container } from '@shared/models/container.model';
 import { Camera, Scene, WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
+import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { WindowResize } from '../../models/window-resize.model';
 
 export class VRRenderer extends WebGLRenderer implements WindowResize {
   constructor(
     private container: Container,
     private scene: Scene,
-    private camera: Camera
+    private camera: Camera,
+    parameters?: WebGLRendererParameters
   ) {
-    super();
+    super(parameters);
 
     this.setPixelRatio(this.container.window.devicePixelRatio);
     this.resize();
