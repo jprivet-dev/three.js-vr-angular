@@ -48,7 +48,7 @@ export class EarthService {
     space.add(earth);
     looper.add(earth);
 
-    const clouds = new CloudsFactory().create();
+    const clouds = new CloudsFactory(this.store).create();
     earth.add(clouds);
     looper.add(clouds);
 
