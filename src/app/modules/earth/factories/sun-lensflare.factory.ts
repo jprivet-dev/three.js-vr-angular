@@ -1,4 +1,5 @@
 import { Definition } from '@core/store/store.model';
+import { StoreService } from '@core/store/store.service';
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { SunLensflareTexturesParams } from '../models/texture.model';
 import {
@@ -56,19 +57,30 @@ export class SunLensflareFactory implements FactoryObject3D {
     },
   ];
 
+  constructor(private store: StoreService) {}
+
   create(): SunLensflare {
     const definition: Definition = 'sd';
 
     const sunLensflare = new SunLensflare();
     const loader = new SunLensflareTextureLoader();
+    const list: SunLensflareElement[] = [];
 
-    this.elements.map((element) => {
-      sunLensflare.addElement(
-        new SunLensflareElement(
-          loader.getTexture(element.type, definition),
-          element
-        )
+    this.elements.map((current) => {
+      const element = new SunLensflareElement(
+        loader.getTexture(current.type, definition),
+        current
       );
+
+      list.push(element);
+      sunLensflare.addElement(element);
+    });
+
+    // Refresh texture on definition changing
+    this.store.definition$.subscribe((definition) => {
+      list.map(current => {
+        current.texture = loader.getTexture(current.type, definition);
+      })
     });
 
     return sunLensflare;

@@ -41,7 +41,7 @@ export class EarthService {
     const sun = new SunFactory().create();
     space.add(sun);
 
-    const lensflare = new SunLensflareFactory().create();
+    const lensflare = new SunLensflareFactory(this.store).create();
     sun.add(lensflare);
 
     const earth = new EarthFactory().create();
