@@ -1,8 +1,11 @@
+import { StoreService } from '@core/store/store.service';
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
 import { Earth, EarthTextureLoader } from '../threejs';
 
 export class EarthFactory implements FactoryObject3D {
+  constructor(private store: StoreService) {}
+
   create(): Earth {
     const geometry = new SphereGeometry(1, 64, 32);
     const material = new MeshPhongMaterial({
@@ -13,7 +16,10 @@ export class EarthFactory implements FactoryObject3D {
     });
 
     const loader = new EarthTextureLoader(material);
-    loader.loadByDefinition('sd');
+
+    this.store.definition$.subscribe((definition) => {
+      loader.loadByDefinition(definition);
+    });
 
     return new Earth(geometry, material);
   }

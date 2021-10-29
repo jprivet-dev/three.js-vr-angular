@@ -44,7 +44,7 @@ export class EarthService {
     const lensflare = new SunLensflareFactory(this.store).create();
     sun.add(lensflare);
 
-    const earth = new EarthFactory().create();
+    const earth = new EarthFactory(this.store).create();
     space.add(earth);
     looper.add(earth);
 
