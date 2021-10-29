@@ -1,4 +1,4 @@
-import { Definition } from '@shared/models/definition.model';
+import { Definition } from '@core/store/store.model';
 import { CubeTexture, CubeTextureLoader } from 'three';
 
 export class SkyboxStarsTextureLoader extends CubeTextureLoader {

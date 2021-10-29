@@ -1,9 +1,9 @@
-import { TextureDef } from '@core/store/store.model';
+import { Definition } from '@core/store/store.model';
 
 export type SunTexturesKey = 'sun' | 'circle' | 'hexagon';
 
 export type SunTexturesParams = {
   [key in SunTexturesKey]: {
-    [key in TextureDef]: string;
+    [key in Definition]: string;
   };
 };

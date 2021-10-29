@@ -1,1 +1,1 @@
-export type TextureDef = 'sd' | 'hd';
+export type Definition = 'sd' | 'hd';

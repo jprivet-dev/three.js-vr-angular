@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ButtonTextureDefComponent } from './button-texture-def/button-texture-def.component';
+import { ButtonDefinitionComponent } from './button-definition/button-definition.component';
 
 @NgModule({
-  declarations: [ButtonTextureDefComponent],
+  declarations: [ButtonDefinitionComponent],
   imports: [CommonModule],
-  exports: [ButtonTextureDefComponent],
+  exports: [ButtonDefinitionComponent],
 })
 export class SharedModule {}

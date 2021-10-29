@@ -1,4 +1,4 @@
-import { Definition } from '@shared/models/definition.model';
+import { Definition } from '@core/store/store.model';
 import { FactoryObject3D } from '@shared/models/factory.model';
 import { SunLensflareTexturesParams } from '../models/texture.model';
 import {

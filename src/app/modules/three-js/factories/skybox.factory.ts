@@ -1,4 +1,4 @@
-import { TextureDef } from '@core/store/store.model';
+import { Definition } from '@core/store/store.model';
 import { CubeTexture, CubeTextureLoader } from 'three';
 import { SkyboxDecorator } from '../decorators';
 import { SkyboxDimensions } from '../models';
@@ -10,25 +10,25 @@ export abstract class SkyboxFactory {
     hd: '1024x1024',
   }
 
-  static create(textureDef: TextureDef): SkyboxDecorator {
-    return new SkyboxDecorator(this.newCubeTexture(textureDef));
+  static create(definition: Definition): SkyboxDecorator {
+    return new SkyboxDecorator(this.newCubeTexture(definition));
   }
 
-  private static newCubeTexture(textureDef: TextureDef): CubeTexture {
+  private static newCubeTexture(definition: Definition): CubeTexture {
     const cubeTexture = new CubeTextureLoader()
       .setPath('assets/textures/skybox/')
-      .load(this.filenameList(textureDef));
+      .load(this.filenameList(definition));
 
     return cubeTexture;
   }
 
-  private static filenameList(textureDef: TextureDef): string[] {
+  private static filenameList(definition: Definition): string[] {
     const list = ['posx', 'negx', 'posy', 'negy', 'posz', 'negz'];
-    return list.map((position) => this.filename(position, textureDef));
+    return list.map((position) => this.filename(position, definition));
   }
 
-  private static filename(position: string, textureDef: TextureDef): string {
-    const dimension = this.dimensions[textureDef];
+  private static filename(position: string, definition: Definition): string {
+    const dimension = this.dimensions[definition];
     return `skybox_${position}_${dimension}.jpg`;
   }
 }

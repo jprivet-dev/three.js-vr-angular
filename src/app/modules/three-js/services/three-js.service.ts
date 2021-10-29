@@ -32,8 +32,8 @@ export class ThreeJsService {
     scene.add(dolly);
 
     // Which is the best way to unsubscribe it ?
-    this.store.textureDef$.subscribe((textureDev) => {
-      const skybox = SkyboxFactory.create(textureDev);
+    this.store.definition$.subscribe((definition) => {
+      const skybox = SkyboxFactory.create(definition);
       scene.setSkybox(skybox);
     });
 
@@ -47,7 +47,7 @@ export class ThreeJsService {
 
     scene.add(sun, earth);
 
-    this.store.textureDef$.subscribe((textureDef) => {
+    this.store.definition$.subscribe((definition) => {
     });
 
     renderer.enableVRButton().start();

@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/models/container.model';
 import { EarthService } from '../../services/earth.service';
 
@@ -10,7 +11,11 @@ import { EarthService } from '../../services/earth.service';
 export class EarthPageComponent implements OnInit {
   @ViewChild('container') private containerRef!: ElementRef;
 
-  constructor(private window: Window, private service: EarthService) {}
+  constructor(
+    private window: Window,
+    private store: StoreService,
+    private service: EarthService
+  ) {}
 
   ngOnInit(): void {}
 

@@ -1,5 +1,5 @@
-import { TextureDef } from '@core/store/store.model';
+import { Definition } from '@core/store/store.model';
 
 export type SkyboxDimensions = {
-  [key in TextureDef]: string;
+  [key in Definition]: string;
 }

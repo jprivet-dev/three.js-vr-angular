@@ -1,4 +1,4 @@
-import { TextureDef } from '@core/store/store.model';
+import { Definition } from '@core/store/store.model';
 import { StoreService } from '@core/store/store.service';
 import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { Texture } from 'three/src/textures/Texture';
@@ -39,28 +39,28 @@ export abstract class EarthFactory {
     const earth = new Mesh(geometry, material);
 
     // Which is the best way to unsubscribe it ?
-    store.textureDef$.subscribe((textureDef) => {
-      this.updateAllTextures(material, loader, textureDef);
+    store.definition$.subscribe((definition) => {
+      this.updateAllTextures(material, loader, definition);
     });
 
     return earth;
   }
 
-  private static updateAllTextures(material: MeshPhongMaterial, loader: TextureLoader, textureDef: TextureDef) {
-    material.map = this.loadTexture(loader, 'map', textureDef);
-    material.bumpMap = this.loadTexture(loader, 'bumpMap', textureDef);
+  private static updateAllTextures(material: MeshPhongMaterial, loader: TextureLoader, definition: Definition) {
+    material.map = this.loadTexture(loader, 'map', definition);
+    material.bumpMap = this.loadTexture(loader, 'bumpMap', definition);
     material.specularMap = this.loadTexture(
       loader,
       'specularMap',
-      textureDef
+      definition
     );
   }
 
   private static loadTexture(
     loader: TextureLoader,
     key: EarthTexturesKey,
-    textureDef: TextureDef
+    definition: Definition
   ): Texture {
-    return loader.load(this.textures[key][textureDef]);
+    return loader.load(this.textures[key][definition]);
   }
 }

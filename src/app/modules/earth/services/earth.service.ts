@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/models/container.model';
 import {
   CloudsFactory,
@@ -6,18 +7,21 @@ import {
   EarthFactory,
   SpaceFactory,
   SunFactory,
+  SunLensflareFactory,
   VRRendererFactory,
 } from '../factories';
-import { SunLensflareFactory } from '../factories/sun-lensflare.factory';
-import { AnimationLooperManager, WindowResizeManager } from '../managers';
-import { VRSessionManager } from '../managers/vr-session.manager';
+import {
+  AnimationLooperManager,
+  VRSessionManager,
+  WindowResizeManager,
+} from '../managers';
 import { Controls } from '../threejs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EarthService {
-  constructor() {}
+  constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
     const space = new SpaceFactory().create();

@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { TextureDef } from './store.model';
+import { Definition } from './store.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StoreService {
-  private _textureDef = new BehaviorSubject<TextureDef>('sd');
-  public textureDef$ = this._textureDef.asObservable();
+  private _definition = new BehaviorSubject<Definition>('sd');
+  public definition$ = this._definition.asObservable();
 
-  changeTextureDef(textureDef: TextureDef) {
-    this._textureDef.next(textureDef);
+  changeDefinition(definition: Definition) {
+    this._definition.next(definition);
   }
 
   constructor() {}

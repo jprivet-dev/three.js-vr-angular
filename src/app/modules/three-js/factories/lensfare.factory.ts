@@ -1,4 +1,4 @@
-import { TextureDef } from '@core/store/store.model';
+import { Definition } from '@core/store/store.model';
 import { StoreService } from '@core/store/store.service';
 import { TextureLoader } from 'three';
 import {
@@ -86,22 +86,22 @@ export class LensfareFactory {
     let lensflareList: LensflareTyped[] = [];
 
     // Which is the best way to unsubscribe it ?
-    this.store.textureDef$.subscribe((textureDef) => {
-      this.onChangeTextureDef(lensflareList, textureDef, lensflare);
+    this.store.definition$.subscribe((definition) => {
+      this.onChangeDefinition(lensflareList, definition, lensflare);
     });
 
     return lensflare;
   }
 
   private createLensflare(
-    textureDef: TextureDef,
+    definition: Definition,
     lensflare: Lensflare,
     lensflareList: LensflareTyped[]
   ): LensflareTyped[] {
     const loaders = {
-      sun: this.loader.load(this.textures.sun[textureDef]),
-      circle: this.loader.load(this.textures.circle[textureDef]),
-      hexagon: this.loader.load(this.textures.hexagon[textureDef]),
+      sun: this.loader.load(this.textures.sun[definition]),
+      circle: this.loader.load(this.textures.circle[definition]),
+      hexagon: this.loader.load(this.textures.hexagon[definition]),
     };
 
     this.LensflareParams.map((params) => {
@@ -122,14 +122,14 @@ export class LensfareFactory {
     return lensflareList;
   }
 
-  onChangeTextureDef(
+  onChangeDefinition(
     lensflareList: LensflareTyped[],
-    textureDef: TextureDef,
+    definition: Definition,
     lensflare: Lensflare
   ) {
     if (!lensflareList.length) {
       lensflareList = this.createLensflare(
-        textureDef,
+        definition,
         lensflare,
         lensflareList
       );
@@ -138,7 +138,7 @@ export class LensfareFactory {
 
     lensflareList.map((currentLensflare) => {
       currentLensflare.element.texture = this.loader.load(
-        this.textures[currentLensflare.type][textureDef]
+        this.textures[currentLensflare.type][definition]
       );
     });
   }
