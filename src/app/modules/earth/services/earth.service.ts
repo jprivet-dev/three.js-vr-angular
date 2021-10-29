@@ -3,6 +3,7 @@ import { Container } from '@shared/models/container.model';
 import {
   DollyCameraFactory, EarthFactory, VRRendererFactory, SpaceFactory, SunFactory, CloudsFactory,
 } from '../factories';
+import { SunLensflareFactory } from '../factories/sun-lensflare.factory';
 import { AnimationLooperManager, WindowResizeManager } from '../managers';
 import { VRSessionManager } from '../managers/vr-session.manager';
 import { Controls } from '../threejs';
@@ -29,6 +30,8 @@ export class EarthService {
     looper.add(controls);
 
     const sun = new SunFactory().create();
+    const lensflare = new SunLensflareFactory().create();
+    sun.add(lensflare);
     space.add(sun);
 
     const earth = new EarthFactory().create();

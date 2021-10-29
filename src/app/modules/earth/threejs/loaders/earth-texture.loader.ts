@@ -1,18 +1,27 @@
 import { Definition } from '@shared/models/definition.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
 import {
-  EarthTextures, EarthTexturesKeys,
-} from '../../models/earth-texture.model';
-import { TextureByDefinition } from '../../models/texture-by-definition.model';
+  EarthTexturesByDefinition,
+  EarthTexturesByDefinitionKeys,
+  TextureByDefinition,
+} from '../../models/texture.model';
 
-export class EarthTextureLoader extends TextureLoader implements TextureByDefinition {
-  private texture: EarthTextures = {
+export class EarthTextureLoader
+  extends TextureLoader
+  implements TextureByDefinition
+{
+  private textures: EarthTexturesByDefinition = {
     map: {
-      sd: 'earth_map_1024x512.jpg', hd: 'earth_map_2048x1024.jpg',
-    }, bumpMap: {
-      sd: 'earth_bump_1024x512.jpg', hd: 'earth_bump_2048x1024.jpg',
-    }, specularMap: {
-      sd: 'earth_specular_1024x512.jpg', hd: 'earth_specular_2048x1024.jpg',
+      sd: 'earth_map_1024x512.jpg',
+      hd: 'earth_map_2048x1024.jpg',
+    },
+    bumpMap: {
+      sd: 'earth_bump_1024x512.jpg',
+      hd: 'earth_bump_2048x1024.jpg',
+    },
+    specularMap: {
+      sd: 'earth_specular_1024x512.jpg',
+      hd: 'earth_specular_2048x1024.jpg',
     },
   };
 
@@ -22,12 +31,17 @@ export class EarthTextureLoader extends TextureLoader implements TextureByDefini
   }
 
   loadByDefinition(definition: Definition) {
-    this.material.map = this.load(this.getTexture('map', definition));
-    this.material.bumpMap = this.load(this.getTexture('bumpMap', definition));
-    this.material.specularMap = this.load(this.getTexture('specularMap', definition));
+    this.material.map = this.load(this.getFilename('map', definition));
+    this.material.bumpMap = this.load(this.getFilename('bumpMap', definition));
+    this.material.specularMap = this.load(
+      this.getFilename('specularMap', definition)
+    );
   }
 
-  private getTexture(key: EarthTexturesKeys, definition: Definition): string {
-    return this.texture[key][definition];
+  private getFilename(
+    key: EarthTexturesByDefinitionKeys,
+    definition: Definition
+  ): string {
+    return this.textures[key][definition];
   }
 }

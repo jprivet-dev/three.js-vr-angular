@@ -1,12 +1,16 @@
 import { Definition } from '@shared/models/definition.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
-import { TextureByDefinition } from '../../models/texture-by-definition.model';
+import {
+  CloudsTexturesByDefinition,
+  CloudsTexturesByDefinitionKeys,
+  TextureByDefinition,
+} from '../../models/texture.model';
 
 export class CloudsTextureLoader
   extends TextureLoader
   implements TextureByDefinition
 {
-  private texture = {
+  private textures: CloudsTexturesByDefinition = {
     alphaMap: {
       sd: 'clouds_1024x512.jpg',
       hd: 'clouds_2048x1024.jpg',
@@ -19,10 +23,13 @@ export class CloudsTextureLoader
   }
 
   loadByDefinition(definition: Definition): void {
-    this.material.alphaMap = this.load(this.getTexture(definition));
+    this.material.alphaMap = this.load(this.getFilename('alphaMap', definition));
   }
 
-  private getTexture(definition: Definition): string {
-    return this.texture.alphaMap[definition];
+  private getFilename(
+    key: CloudsTexturesByDefinitionKeys,
+    definition: Definition
+  ): string {
+    return this.textures[key][definition];
   }
 }
