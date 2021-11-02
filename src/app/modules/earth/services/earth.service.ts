@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/models/container.model';
 import {
+  CloudsFactory,
   Controls,
   EarthFactory,
   LoopManager,
@@ -9,7 +10,6 @@ import {
   WindowResizeManager,
 } from '@shared/threejs';
 import {
-  CloudsFactory,
   DollyCameraFactory,
   JupiterFactory,
   SpaceFactory,

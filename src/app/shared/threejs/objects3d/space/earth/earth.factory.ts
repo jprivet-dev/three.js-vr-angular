@@ -1,6 +1,6 @@
 import { StoreService } from '@core/store/store.service';
-import { FactoryObject3D } from '../../../../models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
+import { FactoryObject3D } from '../../../../models/factory.model';
 import { Earth } from './earth';
 import { EarthTextureLoader } from './earth-texture.loader';
 

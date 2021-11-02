@@ -1,5 +1,5 @@
-import { VRRenderer } from '../index';
 import { Clock } from 'three';
+import { VRRenderer } from '../index';
 import { Loop } from './loop.model';
 
 export class LoopManager implements Loop {

@@ -1,11 +1,11 @@
 import { StoreService } from '@core/store/store.service';
-import { FactoryObject3D } from '@shared/models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { Clouds, CloudsTextureLoader } from '../threejs';
+import { FactoryObject3D } from '../../../../models/factory.model';
+import { Clouds } from './clouds';
+import { CloudsTextureLoader } from './clouds-texture.loader';
 
 export class CloudsFactory implements FactoryObject3D {
-  constructor(private store: StoreService) {
-  }
+  constructor(private store: StoreService) {}
 
   create(): Clouds {
     const geometry = new SphereGeometry(1.005, 64, 32);

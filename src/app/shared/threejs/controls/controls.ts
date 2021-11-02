@@ -1,5 +1,5 @@
-import { DollyCamera, VRRenderer } from '../index';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { DollyCamera, VRRenderer } from '../index';
 import { Loop } from '../managers/loop.model';
 
 export class Controls extends OrbitControls implements Loop {

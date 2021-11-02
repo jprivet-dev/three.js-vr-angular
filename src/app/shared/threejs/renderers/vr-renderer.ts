@@ -1,7 +1,7 @@
-import { Container } from '../../models/container.model';
 import { Camera, Scene, WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
+import { Container } from '../../models/container.model';
 import { WindowResize } from '../managers';
 
 export class VRRenderer extends WebGLRenderer implements WindowResize {

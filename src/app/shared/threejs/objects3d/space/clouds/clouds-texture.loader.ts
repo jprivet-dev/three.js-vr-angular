@@ -1,10 +1,10 @@
 import { Definition } from '@core/store/store.model';
-import { MeshPhongMaterial, TextureLoader } from 'three';
 import {
   CloudsTexturesByDefinition,
   CloudsTexturesByDefinitionKeys,
   TextureByDefinition,
-} from '../../models/texture.model';
+} from '@modules/earth/models/texture.model';
+import { MeshPhongMaterial, TextureLoader } from 'three';
 
 export class CloudsTextureLoader
   extends TextureLoader
