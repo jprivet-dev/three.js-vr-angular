@@ -1,5 +1,5 @@
 import { Mesh } from 'three';
-import { Loop } from '@shared/threejs/managers/loop.model';
+import { Loop } from '../../../managers';
 
 export class Earth extends Mesh implements Loop {
   private rotationsYPerSecond = 0.01;

@@ -1,6 +1,5 @@
 export * from './clouds.factory';
 export * from './dolly-camera.factory';
-export * from './earth.factory';
 export * from './jupiter.factory';
 export * from './space.factory';
 export * from './sun.factory';

@@ -1,7 +1,8 @@
 import { StoreService } from '@core/store/store.service';
-import { FactoryObject3D } from '@shared/models/factory.model';
+import { FactoryObject3D } from '../../../../models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { Earth, EarthTextureLoader } from '../threejs';
+import { Earth } from './earth';
+import { EarthTextureLoader } from './earth-texture.loader';
 
 export class EarthFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}

@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/models/container.model';
 import {
-  LoopManager,
   Controls,
+  EarthFactory,
+  LoopManager,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
 import {
   CloudsFactory,
   DollyCameraFactory,
-  EarthFactory,
   JupiterFactory,
   SpaceFactory,
   SunFactory,

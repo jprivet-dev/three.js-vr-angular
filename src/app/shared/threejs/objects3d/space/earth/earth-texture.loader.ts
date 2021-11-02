@@ -4,7 +4,7 @@ import {
   EarthTexturesByDefinition,
   EarthTexturesByDefinitionKeys,
   TextureByDefinition,
-} from '../../models/texture.model';
+} from '@modules/earth/models/texture.model';
 
 export class EarthTextureLoader
   extends TextureLoader
