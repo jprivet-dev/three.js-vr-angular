@@ -1,4 +1,4 @@
-import { FactoryObject3D } from '../../../../models/factory.model';
+import { FactoryObject3D } from '../../../models';
 import { Sun } from './sun';
 
 export class SunFactory implements FactoryObject3D {

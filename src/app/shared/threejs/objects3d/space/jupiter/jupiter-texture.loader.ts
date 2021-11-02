@@ -1,10 +1,10 @@
 import { Definition } from '@core/store/store.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
+import { TextureByDefinition } from '../../../models';
 import {
   JupiterTexturesByDefinition,
   JupiterTexturesByDefinitionKeys,
-  TextureByDefinition,
-} from '@modules/earth/models/texture.model';
+} from './jupiter.model';
 
 export class JupiterTextureLoader
   extends TextureLoader

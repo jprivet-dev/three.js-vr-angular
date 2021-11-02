@@ -1,6 +1,6 @@
 import { Object3D, PerspectiveCamera } from 'three';
-import { Container } from '../../../models/container.model';
 import { VRSession, WindowResize } from '../../managers';
+import { Container } from '../../models';
 import { DollyCameraParams } from './dolly-camera.model';
 
 export class DollyCamera extends Object3D implements WindowResize, VRSession {

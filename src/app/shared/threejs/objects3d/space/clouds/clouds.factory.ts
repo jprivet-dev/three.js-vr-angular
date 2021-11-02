@@ -1,6 +1,6 @@
 import { StoreService } from '@core/store/store.service';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { FactoryObject3D } from '../../../../models/factory.model';
+import { FactoryObject3D } from '../../../models';
 import { Clouds } from './clouds';
 import { CloudsTextureLoader } from './clouds-texture.loader';
 

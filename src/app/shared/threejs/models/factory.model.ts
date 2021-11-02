@@ -1,5 +1,6 @@
 import { Object3D, Scene } from 'three';
-import { DollyCamera, VRRenderer } from '../threejs';
+import { DollyCamera } from '../cameras';
+import { VRRenderer } from '../renderers';
 
 export interface FactoryObject3D {
   create(): Object3D;

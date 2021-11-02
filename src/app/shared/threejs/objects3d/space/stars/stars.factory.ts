@@ -1,5 +1,5 @@
 import { StoreService } from '@core/store/store.service';
-import { FactoryObject3D } from '../../../../models/factory.model';
+import { FactoryObject3D } from '../../../models';
 import { Stars } from './stars';
 import { StarsTextureLoader } from './stars-texture.loader';
 

@@ -1,6 +1,9 @@
-import { Container } from '../../../models/container.model';
-import { FactoryObject3D } from '../../../models/factory.model';
-import { DollyCamera, DollyCameraParams } from '../../index';
+import {
+  Container,
+  DollyCamera,
+  DollyCameraParams,
+  FactoryObject3D,
+} from '../../index';
 
 export class DollyCameraFactory implements FactoryObject3D {
   constructor(private container: Container) {}
