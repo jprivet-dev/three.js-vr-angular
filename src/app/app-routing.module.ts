@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'home',
     loadChildren: () =>
-      import('./modules/homepage/homepage.module').then((m) => m.HomepageModule),
+      import('./modules/home/home.module').then((m) => m.HomeModule),
   },
   {
     path: 'earth',
@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 ];
