@@ -27,7 +27,7 @@ export class EarthTextureLoader
 
   constructor(private material: MeshPhongMaterial) {
     super();
-    this.setPath('assets/textures/earth/');
+    this.setPath('assets/threejs/textures/space/earth/');
   }
 
   loadByDefinition(definition: Definition) {

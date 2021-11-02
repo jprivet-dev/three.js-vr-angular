@@ -19,7 +19,7 @@ export class JupiterTextureLoader
 
   constructor(private material: MeshPhongMaterial) {
     super();
-    this.setPath('assets/textures/planets/');
+    this.setPath('assets/threejs/textures/space/jupiter/');
   }
 
   loadByDefinition(definition: Definition) {

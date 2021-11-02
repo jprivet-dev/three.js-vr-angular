@@ -9,7 +9,7 @@ export class StarsTextureLoader extends CubeTextureLoader {
 
   constructor() {
     super();
-    this.setPath('assets/textures/skybox/');
+    this.setPath('assets/threejs/textures/space/stars/');
   }
 
   getTextureByDefinition(definition: Definition): CubeTexture {
@@ -17,7 +17,7 @@ export class StarsTextureLoader extends CubeTextureLoader {
 
     const filenameList = list.map((position) => {
       const dimension = this.dimensions[definition];
-      return `skybox_${position}_${dimension}.jpg`;
+      return `stars_${position}_${dimension}.jpg`;
     });
 
     return this.load(filenameList);

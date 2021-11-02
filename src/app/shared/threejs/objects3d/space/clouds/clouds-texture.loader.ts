@@ -19,7 +19,7 @@ export class CloudsTextureLoader
 
   constructor(private material: MeshPhongMaterial) {
     super();
-    this.setPath('assets/textures/clouds/');
+    this.setPath('assets/threejs/textures/space/clouds/');
   }
 
   loadByDefinition(definition: Definition): void {

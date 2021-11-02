@@ -24,7 +24,7 @@ export class SunLensflareTextureLoader extends TextureLoader {
 
   constructor() {
     super();
-    this.setPath('assets/textures/sun/');
+    this.setPath('assets/threejs/textures/space/sun/');
   }
 
   getTexture(
