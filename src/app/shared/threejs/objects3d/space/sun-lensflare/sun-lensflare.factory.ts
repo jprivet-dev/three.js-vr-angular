@@ -1,12 +1,10 @@
 import { Definition } from '@core/store/store.model';
 import { StoreService } from '@core/store/store.service';
-import { FactoryObject3D } from '@shared/models/factory.model';
-import { SunLensflareTexturesParams } from '../models/texture.model';
-import {
-  SunLensflare,
-  SunLensflareElement,
-  SunLensflareTextureLoader,
-} from '../threejs';
+import { FactoryObject3D } from '../../../../models/factory.model';
+import { SunLensflareTexturesParams } from '@modules/earth/models/texture.model';
+import { SunLensflare } from './sun-lensflare';
+import { SunLensflareElement } from './sun-lensflare-element';
+import { SunLensflareTextureLoader } from './sun-lensflare-texture.loader';
 
 export class SunLensflareFactory implements FactoryObject3D {
   private elements: SunLensflareTexturesParams[] = [

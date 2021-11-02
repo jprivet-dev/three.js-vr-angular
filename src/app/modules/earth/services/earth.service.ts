@@ -9,11 +9,12 @@ import {
   JupiterFactory,
   LoopManager,
   StarsFactory,
+  SunFactory,
+  SunLensflareFactory,
   VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
-import { SunFactory, SunLensflareFactory } from '../factories';
 
 @Injectable({
   providedIn: 'root',

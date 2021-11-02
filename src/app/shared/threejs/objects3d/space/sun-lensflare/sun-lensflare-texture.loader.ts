@@ -4,7 +4,7 @@ import { Texture } from 'three/src/textures/Texture';
 import {
   SunLensflareTexturesByDefinition,
   SunLensflareTexturesByDefinitionKeys,
-} from '../../models/texture.model';
+} from '@modules/earth/models/texture.model';
 
 export class SunLensflareTextureLoader extends TextureLoader {
   private textures: SunLensflareTexturesByDefinition = {

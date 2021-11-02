@@ -1,5 +1,5 @@
-import { FactoryObject3D } from '@shared/models/factory.model';
-import { Sun } from '../threejs';
+import { FactoryObject3D } from '../../../../models/factory.model';
+import { Sun } from './sun';
 
 export class SunFactory implements FactoryObject3D {
   create(): Sun {

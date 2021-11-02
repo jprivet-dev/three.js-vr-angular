@@ -3,7 +3,7 @@ import { Texture } from 'three/src/textures/Texture';
 import {
   SunLensflareTexturesByDefinitionKeys,
   SunLensflareTexturesParams,
-} from '../../models/texture.model';
+} from '@modules/earth/models/texture.model';
 
 export class SunLensflareElement extends LensflareElement {
   readonly type: SunLensflareTexturesByDefinitionKeys;
