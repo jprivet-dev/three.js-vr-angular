@@ -1,6 +1,7 @@
 import { Container } from '@shared/models/container.model';
+import { VRRenderer } from '@shared/threejs';
 import { WindowResize } from '../models/window-resize.model';
-import { DollyCamera, VRRenderer } from '../threejs';
+import { DollyCamera } from '../threejs';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];

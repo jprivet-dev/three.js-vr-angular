@@ -1,6 +1,6 @@
+import { VRRenderer } from '@shared/threejs';
 import { Clock } from 'three';
 import { Loop } from '../models/loop.model';
-import { VRRenderer } from '../threejs';
 
 export class AnimationLooperManager implements Loop {
   private clock = new Clock();

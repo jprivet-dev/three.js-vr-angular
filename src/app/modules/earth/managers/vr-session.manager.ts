@@ -1,5 +1,5 @@
+import { VRRenderer } from '@shared/threejs';
 import { VRSession } from '../models/vr-session.model';
-import { VRRenderer } from '../threejs';
 
 export class VRSessionManager implements VRSession {
   private list: VRSession[] = [];
