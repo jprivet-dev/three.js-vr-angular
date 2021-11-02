@@ -1,7 +1,6 @@
-import { Container } from '../../models/container.model';
 import { Object3D, PerspectiveCamera } from 'three';
-import { VRSession } from '@modules/earth/models/vr-session.model';
-import { WindowResize } from '@modules/earth/models/window-resize.model';
+import { Container } from '../../models/container.model';
+import { VRSession, WindowResize } from '../managers';
 import { DollyCameraParams } from './cameras.model';
 
 export class DollyCamera extends Object3D implements WindowResize, VRSession {

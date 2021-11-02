@@ -1,6 +1,5 @@
 import { Container } from '../../models/container.model';
-import { DollyCamera, VRRenderer } from '../index';
-import { WindowResize } from '@modules/earth/models/window-resize.model';
+import { DollyCamera, VRRenderer, WindowResize } from '../index';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];

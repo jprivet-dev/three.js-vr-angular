@@ -1,6 +1,6 @@
 import { DollyCamera, VRRenderer } from '../index';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Loop } from '@modules/earth/models/loop.model';
+import { Loop } from '../managers/loop.model';
 
 export class Controls extends OrbitControls implements Loop {
   constructor(private dolly: DollyCamera, private renderer: VRRenderer) {

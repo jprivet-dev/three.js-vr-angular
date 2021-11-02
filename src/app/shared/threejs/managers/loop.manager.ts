@@ -1,8 +1,8 @@
 import { VRRenderer } from '../index';
 import { Clock } from 'three';
-import { Loop } from '@modules/earth/models/loop.model';
+import { Loop } from './loop.model';
 
-export class AnimationLooperManager implements Loop {
+export class LoopManager implements Loop {
   private clock = new Clock();
   private list: Loop[] = [];
 

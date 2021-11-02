@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/models/container.model';
 import {
-  AnimationLooperManager,
+  LoopManager,
   Controls,
   VRSessionManager,
   WindowResizeManager,
@@ -40,14 +40,14 @@ export class EarthService {
     const renderer = new VRRendererFactory(container).create(space, dolly, {
       antialias,
     });
-    const looper = new AnimationLooperManager(renderer);
+    const loop = new LoopManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
     const session = new VRSessionManager(renderer);
     session.add(dolly);
 
     const controls = new Controls(dolly, renderer);
     controls.enableAutoRotate();
-    looper.add(controls);
+    loop.add(controls);
 
     const sun = new SunFactory().create();
     space.add(sun);
@@ -57,17 +57,17 @@ export class EarthService {
 
     const earth = new EarthFactory(this.store).create();
     space.add(earth);
-    looper.add(earth);
+    loop.add(earth);
 
     const clouds = new CloudsFactory(this.store).create();
     earth.add(clouds);
-    looper.add(clouds);
+    loop.add(clouds);
 
     const jupiter = new JupiterFactory(this.store).create();
     space.add(jupiter);
-    looper.add(jupiter);
+    loop.add(jupiter);
 
-    looper.start();
+    loop.start();
     resize.start();
     session.start();
   }
