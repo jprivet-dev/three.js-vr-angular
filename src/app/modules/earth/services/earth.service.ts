@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/models/container.model';
+import { Controls } from '@shared/threejs';
 import {
   CloudsFactory,
   DollyCameraFactory,
@@ -15,7 +16,6 @@ import {
   VRSessionManager,
   WindowResizeManager,
 } from '../managers';
-import { Controls } from '../threejs';
 
 @Injectable({
   providedIn: 'root',
