@@ -8,21 +8,19 @@ import {
   EarthFactory,
   JupiterFactory,
   LoopManager,
+  StarsFactory,
+  VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
-import {
-  SpaceFactory,
-  SunFactory,
-  SunLensflareFactory,
-  VRRendererFactory,
-} from '../factories';
+import { SunFactory, SunLensflareFactory } from '../factories';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EarthService {
-  constructor(private store: StoreService) {}
+  constructor(private store: StoreService) {
+  }
 
   buildScene(container: Container): void {
     this.store.antialias$.subscribe((antialias) => {
@@ -33,7 +31,7 @@ export class EarthService {
   private onAntialiasChange(container: Container, antialias: boolean) {
     container.empty();
 
-    const space = new SpaceFactory(this.store).create();
+    const space = new StarsFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create();
     space.add(dolly);
 
