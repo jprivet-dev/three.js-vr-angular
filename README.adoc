@@ -1,4 +1,4 @@
-= angular-threejs-earth
+= Angular & Three.js
 
 == Install three.js
 

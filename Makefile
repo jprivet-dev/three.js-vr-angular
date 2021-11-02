@@ -4,7 +4,7 @@ USER_ID = $(shell id -u)
 GROUP_ID = $(shell id -g)
 
 
-NG_DEPLOY_BASE_HREF = /angular-threejs-earth/
+NG_DEPLOY_BASE_HREF = /angular-threejs/
 
 ## PROJECT
 
