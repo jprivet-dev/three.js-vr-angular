@@ -4,8 +4,8 @@ import {
   CloudsFactory,
   Container,
   Controls,
-  DollyCameraFactory,
-  EarthFactory,
+  DollyCameraFactory, EarthFactory,
+  JupiterFactory,
   LoopManager,
   StarsFactory,
   SunFactory,
@@ -18,7 +18,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class EarthService {
+export class PlanetsService {
   constructor(private store: StoreService) {
   }
 
@@ -60,6 +60,10 @@ export class EarthService {
     const clouds = new CloudsFactory(this.store).create();
     earth.add(clouds);
     loop.add(clouds);
+
+    const jupiter = new JupiterFactory(this.store).create();
+    space.add(jupiter);
+    loop.add(jupiter);
 
     loop.start();
     resize.start();

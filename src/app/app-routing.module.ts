@@ -8,6 +8,11 @@ const routes: Routes = [
       import('./modules/earth/earth.module').then((m) => m.EarthModule),
   },
   {
+    path: 'planets',
+    loadChildren: () =>
+      import('./modules/planets/planets.module').then((m) => m.PlanetsModule),
+  },
+  {
     path: '**',
     redirectTo: 'earth',
     pathMatch: 'full',
