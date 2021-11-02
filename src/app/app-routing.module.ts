@@ -3,6 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: '',
+    loadChildren: () =>
+      import('./modules/homepage/homepage.module').then((m) => m.HomepageModule),
+  },
+  {
     path: 'earth',
     loadChildren: () =>
       import('./modules/earth/earth.module').then((m) => m.EarthModule),
@@ -14,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'earth',
+    redirectTo: '',
     pathMatch: 'full',
   },
 ];
