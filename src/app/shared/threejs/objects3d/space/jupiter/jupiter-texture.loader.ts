@@ -4,7 +4,7 @@ import {
   JupiterTexturesByDefinition,
   JupiterTexturesByDefinitionKeys,
   TextureByDefinition,
-} from '../../models/texture.model';
+} from '@modules/earth/models/texture.model';
 
 export class JupiterTextureLoader
   extends TextureLoader

@@ -1,7 +1,8 @@
 import { StoreService } from '@core/store/store.service';
-import { FactoryObject3D } from '@shared/models/factory.model';
+import { FactoryObject3D } from '../../../../models/factory.model';
 import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { Jupiter, JupiterTextureLoader } from '../threejs';
+import { Jupiter } from './jupiter';
+import { JupiterTextureLoader } from './jupiter-texture.loader';
 
 export class JupiterFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}

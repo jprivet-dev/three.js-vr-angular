@@ -6,12 +6,12 @@ import {
   Controls,
   DollyCameraFactory,
   EarthFactory,
+  JupiterFactory,
   LoopManager,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
 import {
-  JupiterFactory,
   SpaceFactory,
   SunFactory,
   SunLensflareFactory,
