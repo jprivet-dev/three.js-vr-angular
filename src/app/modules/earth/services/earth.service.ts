@@ -4,13 +4,13 @@ import { Container } from '@shared/models/container.model';
 import {
   CloudsFactory,
   Controls,
+  DollyCameraFactory,
   EarthFactory,
   LoopManager,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
 import {
-  DollyCameraFactory,
   JupiterFactory,
   SpaceFactory,
   SunFactory,
