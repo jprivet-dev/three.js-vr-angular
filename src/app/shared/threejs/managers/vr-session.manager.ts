@@ -1,5 +1,5 @@
-import { VRRenderer } from '@shared/threejs';
-import { VRSession } from '../models/vr-session.model';
+import { VRRenderer } from '../index';
+import { VRSession } from '@modules/earth/models/vr-session.model';
 
 export class VRSessionManager implements VRSession {
   private list: VRSession[] = [];

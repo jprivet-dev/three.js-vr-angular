@@ -1,9 +1,8 @@
 import { Container } from '@shared/models/container.model';
 import { FactoryVRRenderer } from '@shared/models/factory.model';
-import { VRRenderer } from '@shared/threejs';
+import { DollyCamera, VRRenderer } from '@shared/threejs';
 import { Scene } from 'three';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
-import { DollyCamera } from '../threejs';
 
 export class VRRendererFactory implements FactoryVRRenderer {
   constructor(private container: Container) {}

@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/models/container.model';
-import { Controls } from '@shared/threejs';
+import {
+  AnimationLooperManager,
+  Controls,
+  VRSessionManager,
+  WindowResizeManager,
+} from '@shared/threejs';
 import {
   CloudsFactory,
   DollyCameraFactory,
-  EarthFactory, JupiterFactory,
+  EarthFactory,
+  JupiterFactory,
   SpaceFactory,
   SunFactory,
   SunLensflareFactory,
   VRRendererFactory,
 } from '../factories';
-import {
-  AnimationLooperManager,
-  VRSessionManager,
-  WindowResizeManager,
-} from '../managers';
 
 @Injectable({
   providedIn: 'root',

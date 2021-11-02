@@ -1,6 +1,6 @@
-import { VRRenderer } from '@shared/threejs';
+import { VRRenderer } from '../index';
 import { Clock } from 'three';
-import { Loop } from '../models/loop.model';
+import { Loop } from '@modules/earth/models/loop.model';
 
 export class AnimationLooperManager implements Loop {
   private clock = new Clock();

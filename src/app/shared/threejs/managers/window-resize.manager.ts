@@ -1,7 +1,6 @@
-import { Container } from '@shared/models/container.model';
-import { VRRenderer } from '@shared/threejs';
-import { WindowResize } from '../models/window-resize.model';
-import { DollyCamera } from '../threejs';
+import { Container } from '../../models/container.model';
+import { DollyCamera, VRRenderer } from '../index';
+import { WindowResize } from '@modules/earth/models/window-resize.model';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];
