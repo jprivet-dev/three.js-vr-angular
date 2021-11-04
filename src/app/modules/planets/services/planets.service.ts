@@ -6,9 +6,11 @@ import {
   Container,
   Controls,
   DollyCameraFactory,
+  DollyCameraParams,
   EarthFactory,
   JupiterFactory,
-  LoopManager, MarsFactory,
+  LoopManager,
+  MarsFactory,
   StarsFactory,
   SunFactory,
   SunLensflareFactory,
@@ -21,8 +23,37 @@ import {
   providedIn: 'root',
 })
 export class PlanetsService {
-  constructor(private store: StoreService) {
-  }
+  private dollyCameraParams: DollyCameraParams = {
+    fov: 80,
+    near: 1,
+    far: 8000,
+    onVRSessionStartPosition: {
+      camera: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      dolly: {
+        x: 0,
+        y: 0,
+        z: -5,
+      },
+    },
+    onVRSessionEndPosition: {
+      camera: {
+        x: 0,
+        y: 0,
+        z: 10,
+      },
+      dolly: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+    },
+  };
+
+  constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
     this.store.antialias$.subscribe((antialias) => {
@@ -39,7 +70,9 @@ export class PlanetsService {
     };
 
     const space = new StarsFactory(this.store).create();
-    const dolly = new DollyCameraFactory(container).create();
+    const dolly = new DollyCameraFactory(container).create(
+      this.dollyCameraParams
+    );
     space.add(dolly);
 
     const renderer = new VRRendererFactory(container).create(space, dolly, {

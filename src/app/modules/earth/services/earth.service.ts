@@ -4,7 +4,7 @@ import {
   CloudsFactory,
   Container,
   Controls,
-  DollyCameraFactory,
+  DollyCameraFactory, DollyCameraParams,
   EarthFactory,
   LoopManager,
   StarsFactory,
@@ -19,6 +19,36 @@ import {
   providedIn: 'root',
 })
 export class EarthService {
+  private dollyCameraParams: DollyCameraParams = {
+    fov: 80,
+    near: 1,
+    far: 8000,
+    onVRSessionStartPosition: {
+      camera: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      dolly: {
+        x: -2.5,
+        y: 0,
+        z: 0,
+      },
+    },
+    onVRSessionEndPosition: {
+      camera: {
+        x: 0,
+        y: 0,
+        z: 5,
+      },
+      dolly: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+    },
+  };
+
   constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
@@ -31,7 +61,9 @@ export class EarthService {
     container.empty();
 
     const scene = new StarsFactory(this.store).create();
-    const dolly = new DollyCameraFactory(container).create();
+    const dolly = new DollyCameraFactory(container).create(
+      this.dollyCameraParams
+    );
     scene.add(dolly);
 
     const renderer = new VRRendererFactory(container).create(scene, dolly, {

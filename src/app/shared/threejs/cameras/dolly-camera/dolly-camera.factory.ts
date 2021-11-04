@@ -2,25 +2,16 @@ import {
   Container,
   DollyCamera,
   DollyCameraParams,
-  FactoryObject3D,
+  FactoryDollyCamera,
 } from '../../index';
 
-export class DollyCameraFactory implements FactoryObject3D {
+export class DollyCameraFactory implements FactoryDollyCamera {
   constructor(private container: Container) {}
 
-  create(): DollyCamera {
-    const params: DollyCameraParams = {
-      fov: 80,
+  create(params: DollyCameraParams): DollyCamera {
+    return new DollyCamera(this.container, {
+      ...params,
       aspect: this.container.ratio(),
-      near: 1,
-      far: 8000,
-      position: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-    };
-
-    return new DollyCamera(this.container, params);
+    });
   }
 }
