@@ -10,7 +10,9 @@ import {
   EarthFactory,
   JupiterFactory,
   LoopManager,
-  MarsFactory, SaturnFactory,
+  MarsFactory,
+  NeptuneFactory,
+  SaturnFactory,
   StarsFactory,
   SunFactory,
   SunLensflareFactory,
@@ -43,7 +45,7 @@ export class PlanetsService {
       camera: {
         x: 0,
         y: 0,
-        z: 10,
+        z: 20,
       },
       dolly: {
         x: 0,
@@ -66,8 +68,20 @@ export class PlanetsService {
 
     const planetPosition = {
       jupiter: RadiusRatioEarth.Earth + 0.5 + RadiusRatioEarth.Jupiter,
-      mars: -(RadiusRatioEarth.Earth + 1*RadiusRatioEarth.Mars + 1*0.5),
-      saturn: -(RadiusRatioEarth.Earth + 2*RadiusRatioEarth.Mars + RadiusRatioEarth.Saturn + 2*0.5),
+      mars: -(RadiusRatioEarth.Earth + 1 * RadiusRatioEarth.Mars + 1 * 0.5),
+      saturn: -(
+        RadiusRatioEarth.Earth +
+        2 * RadiusRatioEarth.Mars +
+        RadiusRatioEarth.Saturn +
+        2 * 0.5
+      ),
+      neptune: -(
+        RadiusRatioEarth.Earth +
+        2 * RadiusRatioEarth.Mars +
+        2 * RadiusRatioEarth.Saturn +
+        RadiusRatioEarth.Neptune +
+        3 * 0.5
+      ),
     };
 
     const space = new StarsFactory(this.store).create();
@@ -116,6 +130,11 @@ export class PlanetsService {
     saturn.position.set(planetPosition.saturn, 0, 0);
     space.add(saturn);
     loop.add(saturn);
+
+    const neptune = new NeptuneFactory(this.store).create();
+    neptune.position.set(planetPosition.neptune, 0, 0);
+    space.add(neptune);
+    loop.add(neptune);
 
     loop.start();
     resize.start();
