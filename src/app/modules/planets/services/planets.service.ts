@@ -10,7 +10,7 @@ import {
   EarthFactory,
   JupiterFactory,
   LoopManager,
-  MarsFactory,
+  MarsFactory, SaturnFactory,
   StarsFactory,
   SunFactory,
   SunLensflareFactory,
@@ -65,8 +65,9 @@ export class PlanetsService {
     container.empty();
 
     const planetPosition = {
-      mars: -(RadiusRatioEarth.Earth + 0.5 + RadiusRatioEarth.Mars),
       jupiter: RadiusRatioEarth.Earth + 0.5 + RadiusRatioEarth.Jupiter,
+      mars: -(RadiusRatioEarth.Earth + 1*RadiusRatioEarth.Mars + 1*0.5),
+      saturn: -(RadiusRatioEarth.Earth + 2*RadiusRatioEarth.Mars + RadiusRatioEarth.Saturn + 2*0.5),
     };
 
     const space = new StarsFactory(this.store).create();
@@ -110,6 +111,11 @@ export class PlanetsService {
     mars.position.set(planetPosition.mars, 0, 0);
     space.add(mars);
     loop.add(mars);
+
+    const saturn = new SaturnFactory(this.store).create();
+    saturn.position.set(planetPosition.saturn, 0, 0);
+    space.add(saturn);
+    loop.add(saturn);
 
     loop.start();
     resize.start();
