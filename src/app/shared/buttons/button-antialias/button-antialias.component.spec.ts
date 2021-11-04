@@ -8,9 +8,8 @@ describe('ButtonAntialiasComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ButtonAntialiasComponent ]
-    })
-    .compileComponents();
+      declarations: [ButtonAntialiasComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

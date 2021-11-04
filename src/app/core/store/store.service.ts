@@ -8,17 +8,16 @@ import { Definition } from './store.model';
 export class StoreService {
   private definition = new BehaviorSubject<Definition>('sd');
   public definition$ = this.definition.asObservable();
+  private antialias = new BehaviorSubject<boolean>(false);
+  public antialias$ = this.antialias.asObservable();
+
+  constructor() {}
 
   changeDefinition(definition: Definition) {
     this.definition.next(definition);
   }
 
-  private antialias = new BehaviorSubject<boolean>(false);
-  public antialias$ = this.antialias.asObservable();
-
   switchAntialias() {
     this.antialias.next(!this.antialias.getValue());
   }
-
-  constructor() {}
 }

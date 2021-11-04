@@ -1,10 +1,16 @@
-import { Mesh } from 'three';
+import { BufferGeometry } from 'three/src/core/BufferGeometry';
+import { Material } from 'three/src/materials/Material';
+import { AxialTilt } from '../../../../constants';
 import { Loop } from '../../../managers';
+import { Planet } from '../../../models';
 
-export class Earth extends Mesh implements Loop {
-  private rotationsYPerSecond = 0.01;
+export class Earth extends Planet implements Loop {
+  constructor(geometry: BufferGeometry, material: Material) {
+    super(geometry, material);
+    this.setAxialTilt(AxialTilt.Earth);
+  }
 
   loop(delta: number) {
-    this.rotation.y += delta * 2 * Math.PI * this.rotationsYPerSecond;
+    this.rotateOrbitalAxis(delta, 5);
   }
 }

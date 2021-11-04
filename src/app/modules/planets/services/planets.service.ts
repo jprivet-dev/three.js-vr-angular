@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
+import { RadiusRatioEarth } from '@shared/constants';
 import {
   CloudsFactory,
   Container,
   Controls,
-  DollyCameraFactory, EarthFactory,
+  DollyCameraFactory,
+  EarthFactory,
   JupiterFactory,
-  LoopManager,
+  LoopManager, MarsFactory,
   StarsFactory,
   SunFactory,
   SunLensflareFactory,
@@ -30,6 +32,11 @@ export class PlanetsService {
 
   private onAntialiasChange(container: Container, antialias: boolean) {
     container.empty();
+
+    const planetPosition = {
+      mars: -(RadiusRatioEarth.Earth + 0.5 + RadiusRatioEarth.Mars),
+      jupiter: RadiusRatioEarth.Earth + 0.5 + RadiusRatioEarth.Jupiter,
+    };
 
     const space = new StarsFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create();
@@ -62,8 +69,14 @@ export class PlanetsService {
     loop.add(clouds);
 
     const jupiter = new JupiterFactory(this.store).create();
+    jupiter.position.set(planetPosition.jupiter, 0, 0);
     space.add(jupiter);
     loop.add(jupiter);
+
+    const mars = new MarsFactory(this.store).create();
+    mars.position.set(planetPosition.mars, 0, 0);
+    space.add(mars);
+    loop.add(mars);
 
     loop.start();
     resize.start();

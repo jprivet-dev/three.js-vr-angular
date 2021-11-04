@@ -4,8 +4,7 @@ import { Stars } from './stars';
 import { StarsTextureLoader } from './stars-texture.loader';
 
 export class StarsFactory implements FactoryObject3D {
-  constructor(private store: StoreService) {
-  }
+  constructor(private store: StoreService) {}
 
   create(): Stars {
     const stars = new Stars();

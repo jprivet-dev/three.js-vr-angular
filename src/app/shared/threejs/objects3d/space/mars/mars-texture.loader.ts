@@ -2,24 +2,24 @@ import { Definition } from '@core/store/store.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
 import { TextureByDefinition } from '../../../models';
 import {
-  JupiterTexturesByDefinition,
-  JupiterTexturesByDefinitionKeys,
-} from './jupiter.model';
+  MarsTexturesByDefinition,
+  MarsTexturesByDefinitionKeys,
+} from './mars.model';
 
-export class JupiterTextureLoader
+export class MarsTextureLoader
   extends TextureLoader
   implements TextureByDefinition
 {
-  private textures: JupiterTexturesByDefinition = {
+  private textures: MarsTexturesByDefinition = {
     map: {
-      sd: 'jupiter_map_1024x512.jpg',
-      hd: 'jupiter_map_2048x1024.jpg',
+      sd: 'mars_map_1024x512.jpg',
+      hd: 'mars_map_2048x1024.jpg',
     },
   };
 
   constructor(private material: MeshPhongMaterial) {
     super();
-    this.setPath('assets/threejs/textures/space/jupiter/');
+    this.setPath('assets/threejs/textures/space/mars/');
   }
 
   loadByDefinition(definition: Definition) {
@@ -27,7 +27,7 @@ export class JupiterTextureLoader
   }
 
   private getFilename(
-    key: JupiterTexturesByDefinitionKeys,
+    key: MarsTexturesByDefinitionKeys,
     definition: Definition
   ): string {
     return this.textures[key][definition];

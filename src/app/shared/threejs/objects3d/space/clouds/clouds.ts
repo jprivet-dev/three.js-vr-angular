@@ -1,10 +1,8 @@
-import { Mesh } from 'three';
 import { Loop } from '../../../managers';
+import { Planet } from '../../../models';
 
-export class Clouds extends Mesh implements Loop {
-  private rotationsYPerSecond = -0.0015;
-
+export class Clouds extends Planet implements Loop {
   loop(delta: number) {
-    this.rotation.y += delta * 2 * Math.PI * this.rotationsYPerSecond;
+    this.rotateOrbitalAxis(delta, 4);
   }
 }

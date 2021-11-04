@@ -9,11 +9,9 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./button-antialias.component.scss'],
 })
 export class ButtonAntialiasComponent implements OnInit {
-  constructor(private store: StoreService) {
-  }
+  constructor(private store: StoreService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   active$(): Observable<boolean> {
     return this.store.antialias$.pipe(map((antialias) => antialias));

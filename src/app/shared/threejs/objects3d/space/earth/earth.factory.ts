@@ -1,6 +1,7 @@
 import { StoreService } from '@core/store/store.service';
-import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { FactoryObject3D } from '../../../models';
+import { MeshPhongMaterial } from 'three';
+import { RadiusRatioEarth } from '../../../../constants';
+import { FactoryObject3D, PlanetGeometry } from '../../../models';
 import { Earth } from './earth';
 import { EarthTextureLoader } from './earth-texture.loader';
 
@@ -8,7 +9,7 @@ export class EarthFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}
 
   create(): Earth {
-    const geometry = new SphereGeometry(1, 64, 32);
+    const geometry = new PlanetGeometry(RadiusRatioEarth.Earth);
     const material = new MeshPhongMaterial({
       wireframe: false,
       bumpScale: 0.01,

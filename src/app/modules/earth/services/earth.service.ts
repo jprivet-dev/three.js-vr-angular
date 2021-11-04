@@ -19,8 +19,7 @@ import {
   providedIn: 'root',
 })
 export class EarthService {
-  constructor(private store: StoreService) {
-  }
+  constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
     this.store.antialias$.subscribe((antialias) => {
@@ -31,11 +30,11 @@ export class EarthService {
   private onAntialiasChange(container: Container, antialias: boolean) {
     container.empty();
 
-    const space = new StarsFactory(this.store).create();
+    const scene = new StarsFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create();
-    space.add(dolly);
+    scene.add(dolly);
 
-    const renderer = new VRRendererFactory(container).create(space, dolly, {
+    const renderer = new VRRendererFactory(container).create(scene, dolly, {
       antialias,
     });
     const loop = new LoopManager(renderer);
@@ -48,13 +47,13 @@ export class EarthService {
     loop.add(controls);
 
     const sun = new SunFactory().create();
-    space.add(sun);
+    scene.add(sun);
 
     const lensflare = new SunLensflareFactory(this.store).create();
     sun.add(lensflare);
 
     const earth = new EarthFactory(this.store).create();
-    space.add(earth);
+    scene.add(earth);
     loop.add(earth);
 
     const clouds = new CloudsFactory(this.store).create();

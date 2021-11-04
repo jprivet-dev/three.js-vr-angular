@@ -2,26 +2,26 @@ import { StoreService } from '@core/store/store.service';
 import { MeshPhongMaterial } from 'three';
 import { RadiusRatioEarth } from '../../../../constants';
 import { FactoryObject3D, PlanetGeometry } from '../../../models';
-import { Jupiter } from './jupiter';
-import { JupiterTextureLoader } from './jupiter-texture.loader';
+import { Mars } from './mars';
+import { MarsTextureLoader } from './mars-texture.loader';
 
-export class JupiterFactory implements FactoryObject3D {
+export class MarsFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}
 
-  create(): Jupiter {
-    const geometry = new PlanetGeometry(RadiusRatioEarth.Jupiter);
+  create(): Mars {
+    const geometry = new PlanetGeometry(RadiusRatioEarth.Mars);
     const material = new MeshPhongMaterial({
       wireframe: false,
       specular: 0x2d4ea0,
       shininess: 6,
     });
 
-    const loader = new JupiterTextureLoader(material);
+    const loader = new MarsTextureLoader(material);
 
     this.store.definition$.subscribe((definition) => {
       loader.loadByDefinition(definition);
     });
 
-    return new Jupiter(geometry, material);
+    return new Mars(geometry, material);
   }
 }

@@ -1,6 +1,7 @@
 import { StoreService } from '@core/store/store.service';
-import { MeshPhongMaterial, SphereGeometry } from 'three';
-import { FactoryObject3D } from '../../../models';
+import { MeshPhongMaterial } from 'three';
+import { RadiusRatioEarth } from '../../../../constants';
+import { FactoryObject3D, PlanetGeometry } from '../../../models';
 import { Clouds } from './clouds';
 import { CloudsTextureLoader } from './clouds-texture.loader';
 
@@ -8,7 +9,7 @@ export class CloudsFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}
 
   create(): Clouds {
-    const geometry = new SphereGeometry(1.005, 64, 32);
+    const geometry = new PlanetGeometry(RadiusRatioEarth.Earth + 0.005);
     const material = new MeshPhongMaterial({
       wireframe: false,
       color: 0xffffff,

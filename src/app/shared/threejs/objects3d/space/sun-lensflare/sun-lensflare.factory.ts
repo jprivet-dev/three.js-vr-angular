@@ -76,9 +76,9 @@ export class SunLensflareFactory implements FactoryObject3D {
 
     // Refresh texture on definition changing
     this.store.definition$.subscribe((definition) => {
-      list.map(current => {
+      list.map((current) => {
         current.texture = loader.getTexture(current.type, definition);
-      })
+      });
     });
 
     return sunLensflare;
