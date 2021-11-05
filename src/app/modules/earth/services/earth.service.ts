@@ -84,13 +84,13 @@ export class EarthService {
     const lensflare = new SunLensflareFactory(this.store).create();
     sun.add(lensflare);
 
-    const earth = new EarthFactory(this.store).create();
-    scene.add(earth);
-    loop.add(earth);
-
-    const clouds = new CloudsFactory(this.store).create();
-    earth.add(clouds);
-    loop.add(clouds);
+    // const earth = new EarthFactory(this.store).create();
+    // scene.add(earth);
+    // loop.add(earth);
+    //
+    // const clouds = new CloudsFactory(this.store).create();
+    // earth.add(clouds);
+    // loop.add(clouds);
 
     loop.start();
     resize.start();

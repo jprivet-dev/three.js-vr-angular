@@ -116,25 +116,25 @@ export class PlanetsService {
     earth.add(clouds);
     loop.add(clouds);
 
-    const jupiter = new JupiterFactory(this.store).create();
-    jupiter.position.set(planetPosition.jupiter, 0, 0);
-    scene.add(jupiter);
-    loop.add(jupiter);
-
-    const mars = new MarsFactory(this.store).create();
-    mars.position.set(planetPosition.mars, 0, 0);
-    scene.add(mars);
-    loop.add(mars);
-
-    const saturn = new SaturnFactory(this.store).create();
-    saturn.position.set(planetPosition.saturn, 0, 0);
-    scene.add(saturn);
-    loop.add(saturn);
-
-    const neptune = new NeptuneFactory(this.store).create();
-    neptune.position.set(planetPosition.neptune, 0, 0);
-    scene.add(neptune);
-    loop.add(neptune);
+    // const jupiter = new JupiterFactory(this.store).create();
+    // jupiter.position.set(planetPosition.jupiter, 0, 0);
+    // scene.add(jupiter);
+    // loop.add(jupiter);
+    //
+    // const mars = new MarsFactory(this.store).create();
+    // mars.position.set(planetPosition.mars, 0, 0);
+    // scene.add(mars);
+    // loop.add(mars);
+    //
+    // const saturn = new SaturnFactory(this.store).create();
+    // saturn.position.set(planetPosition.saturn, 0, 0);
+    // scene.add(saturn);
+    // loop.add(saturn);
+    //
+    // const neptune = new NeptuneFactory(this.store).create();
+    // neptune.position.set(planetPosition.neptune, 0, 0);
+    // scene.add(neptune);
+    // loop.add(neptune);
 
     loop.start();
     resize.start();

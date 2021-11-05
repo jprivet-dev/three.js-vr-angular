@@ -12,11 +12,11 @@ export class SphericalCelestialObjectTextureLoader
 {
   constructor(
     private material: MeshPhongMaterial,
-    path: string,
+    texturesPath: string,
     private texturesByDefinition: SCOTexturesByDefinition
   ) {
     super();
-    this.setPath(path);
+    this.setPath(texturesPath);
   }
 
   loadByDefinition(definition: Definition) {
@@ -24,13 +24,13 @@ export class SphericalCelestialObjectTextureLoader
       'map',
       'bumpMap',
       'specularMap',
+      'alphaMap',
     ];
     keys.map((key) => {
-      const filename = this.getFilename('map', definition);
-      if (!filename) {
-        return;
+      const filename = this.getFilename(key, definition);
+      if (filename) {
+        this.material[key] = this.load(filename);
       }
-      this.material[key] = this.load(filename);
     });
   }
 

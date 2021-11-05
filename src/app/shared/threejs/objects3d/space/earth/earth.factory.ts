@@ -1,5 +1,5 @@
 import { StoreService } from '@core/store/store.service';
-import { AxialTilt } from '../../../../constants';
+import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
 import {
   SphericalCelestialObject,
   SphericalCelestialObjectBuilder,
@@ -10,8 +10,8 @@ export class EarthFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}
 
   create(): SphericalCelestialObject {
-    return new SphericalCelestialObjectBuilder(this.store, 'earth')
-      .setSize(1)
+    const object = new SphericalCelestialObjectBuilder(this.store, 'earth')
+      .setSize(RadiusRatioEarth.Earth)
       .setAxialTilt(AxialTilt.Earth)
       .setMaterialParameters({
         wireframe: false,
@@ -35,5 +35,11 @@ export class EarthFactory implements FactoryObject3D {
         },
       })
       .build();
+
+    object.setLoopCallback((delta) => {
+      object.rotateOrbitalAxis(delta, 5);
+    })
+
+    return object;
   }
 }
