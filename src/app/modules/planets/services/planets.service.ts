@@ -84,13 +84,13 @@ export class PlanetsService {
       ),
     };
 
-    const space = new StarsFactory(this.store).create();
+    const scene = new StarsFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create(
       this.dollyCameraParams
     );
-    space.add(dolly);
+    scene.add(dolly);
 
-    const renderer = new VRRendererFactory(container).create(space, dolly, {
+    const renderer = new VRRendererFactory(container).create(scene, dolly, {
       antialias,
     });
     const loop = new LoopManager(renderer);
@@ -103,13 +103,13 @@ export class PlanetsService {
     loop.add(controls);
 
     const sun = new SunFactory().create();
-    space.add(sun);
+    scene.add(sun);
 
     const lensflare = new SunLensflareFactory(this.store).create();
     sun.add(lensflare);
 
     const earth = new EarthFactory(this.store).create();
-    space.add(earth);
+    scene.add(earth);
     loop.add(earth);
 
     const clouds = new CloudsFactory(this.store).create();
@@ -118,22 +118,22 @@ export class PlanetsService {
 
     const jupiter = new JupiterFactory(this.store).create();
     jupiter.position.set(planetPosition.jupiter, 0, 0);
-    space.add(jupiter);
+    scene.add(jupiter);
     loop.add(jupiter);
 
     const mars = new MarsFactory(this.store).create();
     mars.position.set(planetPosition.mars, 0, 0);
-    space.add(mars);
+    scene.add(mars);
     loop.add(mars);
 
     const saturn = new SaturnFactory(this.store).create();
     saturn.position.set(planetPosition.saturn, 0, 0);
-    space.add(saturn);
+    scene.add(saturn);
     loop.add(saturn);
 
     const neptune = new NeptuneFactory(this.store).create();
     neptune.position.set(planetPosition.neptune, 0, 0);
-    space.add(neptune);
+    scene.add(neptune);
     loop.add(neptune);
 
     loop.start();
