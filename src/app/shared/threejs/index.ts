@@ -1,3 +1,4 @@
+export * from './builders';
 export * from './cameras';
 export * from './controls';
 export * from './managers';

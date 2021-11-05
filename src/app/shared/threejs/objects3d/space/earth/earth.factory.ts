@@ -1,28 +1,39 @@
 import { StoreService } from '@core/store/store.service';
-import { MeshPhongMaterial } from 'three';
-import { RadiusRatioEarth } from '../../../../constants';
-import { FactoryObject3D, PlanetGeometry } from '../../../models';
-import { Earth } from './earth';
-import { EarthTextureLoader } from './earth-texture.loader';
+import { AxialTilt } from '../../../../constants';
+import {
+  SphericalCelestialObject,
+  SphericalCelestialObjectBuilder,
+} from '../../../builders';
+import { FactoryObject3D } from '../../../models';
 
 export class EarthFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}
 
-  create(): Earth {
-    const geometry = new PlanetGeometry(RadiusRatioEarth.Earth);
-    const material = new MeshPhongMaterial({
-      wireframe: false,
-      bumpScale: 0.01,
-      specular: 0x2d4ea0,
-      shininess: 6,
-    });
-
-    const loader = new EarthTextureLoader(material);
-
-    this.store.definition$.subscribe((definition) => {
-      loader.loadByDefinition(definition);
-    });
-
-    return new Earth(geometry, material);
+  create(): SphericalCelestialObject {
+    return new SphericalCelestialObjectBuilder(this.store, 'earth')
+      .setSize(1)
+      .setAxialTilt(AxialTilt.Earth)
+      .setMaterialParameters({
+        wireframe: false,
+        bumpScale: 0.01,
+        specular: 0x2d4ea0,
+        shininess: 6,
+      })
+      .setTexturesPath('assets/threejs/textures/space/earth/')
+      .setTexturesByDefinition({
+        map: {
+          sd: 'earth_map_1024x512.jpg',
+          hd: 'earth_map_2048x1024.jpg',
+        },
+        bumpMap: {
+          sd: 'earth_bump_1024x512.jpg',
+          hd: 'earth_bump_2048x1024.jpg',
+        },
+        specularMap: {
+          sd: 'earth_specular_1024x512.jpg',
+          hd: 'earth_specular_2048x1024.jpg',
+        },
+      })
+      .build();
   }
 }
