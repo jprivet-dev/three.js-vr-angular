@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import {
-  CloudsFactory,
   Container,
   Controls,
-  DollyCameraFactory, DollyCameraParams,
-  EarthFactory,
+  DollyCameraFactory,
+  DollyCameraParams,
   LoopManager,
   StarsFactory,
   SunFactory,
-  SunLensflareFactory,
   VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
@@ -78,11 +76,8 @@ export class EarthService {
     controls.enableAutoRotate();
     // loop.add(controls);
 
-    const sun = new SunFactory().create();
+    const sun = new SunFactory(this.store).create();
     scene.add(sun);
-
-    const lensflare = new SunLensflareFactory(this.store).create();
-    sun.add(lensflare);
 
     // const earth = new EarthFactory(this.store).create();
     // scene.add(earth);

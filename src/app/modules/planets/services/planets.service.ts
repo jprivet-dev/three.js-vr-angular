@@ -2,21 +2,14 @@ import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { RadiusRatioEarth } from '@shared/constants';
 import {
-  CloudsFactory,
   Container,
-  Controls, ControlsFactory,
+  ControlsFactory,
   DollyCameraFactory,
   DollyCameraParams,
   EarthFactory,
-  JupiterFactory,
-  Loop,
   LoopManager,
-  MarsFactory,
-  NeptuneFactory,
-  SaturnFactory,
   StarsFactory,
   SunFactory,
-  SunLensflareFactory,
   VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
@@ -101,11 +94,8 @@ export class PlanetsService {
 
     const controls = new ControlsFactory(loop).create(dolly, renderer);
 
-    const sun = new SunFactory().create();
+    const sun = new SunFactory(this.store).create();
     scene.add(sun);
-
-    const lensflare = new SunLensflareFactory(this.store).create();
-    sun.add(lensflare);
 
     const earth = new EarthFactory(this.store, loop).create();
     scene.add(earth);

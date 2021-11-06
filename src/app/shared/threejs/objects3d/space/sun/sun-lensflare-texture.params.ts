@@ -1,4 +1,4 @@
-import { SunLensflareTexturesParams } from './sun-lensflare.model';
+import { SunLensflareTexturesParams } from './sun.model';
 
 export const sunLensflareTextureParams: SunLensflareTexturesParams[] = [
   {
