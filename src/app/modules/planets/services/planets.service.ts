@@ -8,6 +8,7 @@ import {
   DollyCameraParams,
   EarthFactory,
   LoopManager,
+  MarsFactory,
   StarsFactory,
   SunFactory,
   VRRendererFactory,
@@ -105,11 +106,10 @@ export class PlanetsService {
     jupiter.position.set(planetPosition.jupiter, 0, 0);
     scene.add(jupiter);
 
-    // const mars = new MarsFactory(this.store).create();
-    // mars.position.set(planetPosition.mars, 0, 0);
-    // scene.add(mars);
-    // loop.add(mars);
-    //
+    const mars = new MarsFactory(this.store, loop).create();
+    mars.position.set(planetPosition.mars, 0, 0);
+    scene.add(mars);
+
     // const saturn = new SaturnFactory(this.store).create();
     // saturn.position.set(planetPosition.saturn, 0, 0);
     // scene.add(saturn);
