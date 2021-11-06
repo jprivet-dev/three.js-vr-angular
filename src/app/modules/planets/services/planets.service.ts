@@ -8,8 +8,10 @@ import {
   DollyCameraParams,
   EarthFactory,
   LoopManager,
-  MarsFactory, NeptuneFactory,
+  MarsFactory,
+  NeptuneFactory,
   SaturnFactory,
+  SphericalCelestialObject,
   StarsFactory,
   SunFactory,
   VRRendererFactory,
@@ -22,6 +24,8 @@ import { JupiterFactory } from '@shared/threejs/objects3d/space/jupiter/jupiter.
   providedIn: 'root',
 })
 export class PlanetsService {
+  private position = 0;
+
   private dollyCameraParams: DollyCameraParams = {
     fov: 80,
     near: 1,
@@ -62,24 +66,7 @@ export class PlanetsService {
 
   private onAntialiasChange(container: Container, antialias: boolean) {
     container.empty();
-
-    const planetPosition = {
-      jupiter: RadiusRatioEarth.Earth + 0.5 + RadiusRatioEarth.Jupiter,
-      mars: -(RadiusRatioEarth.Earth + 1 * RadiusRatioEarth.Mars + 1 * 0.5),
-      saturn: -(
-        RadiusRatioEarth.Earth +
-        2 * RadiusRatioEarth.Mars +
-        RadiusRatioEarth.Saturn +
-        2 * 0.5
-      ),
-      neptune: -(
-        RadiusRatioEarth.Earth +
-        2 * RadiusRatioEarth.Mars +
-        2 * RadiusRatioEarth.Saturn +
-        RadiusRatioEarth.Neptune +
-        3 * 0.5
-      ),
-    };
+    const position = 0;
 
     const scene = new StarsFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create(
@@ -102,25 +89,46 @@ export class PlanetsService {
 
     const earth = new EarthFactory(this.store, loop).create();
     scene.add(earth);
+    this.nextPosition(earth, RadiusRatioEarth.Earth, 0);
 
     const jupiter = new JupiterFactory(this.store, loop).create();
-    jupiter.position.set(planetPosition.jupiter, 0, 0);
+    this.nextPosition(
+      jupiter,
+      RadiusRatioEarth.Jupiter,
+      RadiusRatioEarth.Earth
+    );
     scene.add(jupiter);
 
     const mars = new MarsFactory(this.store, loop).create();
-    mars.position.set(planetPosition.mars, 0, 0);
+    this.nextPosition(mars, RadiusRatioEarth.Mars, RadiusRatioEarth.Jupiter);
     scene.add(mars);
 
     const saturn = new SaturnFactory(this.store, loop).create();
-    saturn.position.set(planetPosition.saturn, 0, 0);
+    this.nextPosition(saturn, RadiusRatioEarth.Saturn, RadiusRatioEarth.Mars);
     scene.add(saturn);
 
     const neptune = new NeptuneFactory(this.store, loop).create();
-    neptune.position.set(planetPosition.neptune, 0, 0);
+    this.nextPosition(
+      neptune,
+      RadiusRatioEarth.Neptune,
+      RadiusRatioEarth.Saturn
+    );
     scene.add(neptune);
 
     loop.start();
     resize.start();
     session.start();
+  }
+
+  private nextPosition(
+    planet: SphericalCelestialObject,
+    currentPlanetRadius: number,
+    previousPlanetRadius: number
+  ): number {
+    this.position =
+      this.position + currentPlanetRadius + previousPlanetRadius + 0.5;
+    planet.position.set(0, 0, this.position);
+
+    return this.position;
   }
 }
