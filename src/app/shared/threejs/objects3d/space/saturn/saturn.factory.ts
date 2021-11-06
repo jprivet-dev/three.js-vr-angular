@@ -1,5 +1,7 @@
 import { StoreService } from '@core/store/store.service';
-import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
+import { DoubleSide, Mesh, MeshBasicMaterial, RingGeometry } from 'three';
+import { degToRad } from 'three/src/math/MathUtils';
+import { AxialTilt, RadiusRatioEarth, SaturnRingsRatioEarth } from '../../../../constants';
 import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
 import { LoopManager } from '../../../managers';
 import { FactoryObject3D } from '../../../models';
@@ -9,6 +11,8 @@ export class SaturnFactory implements FactoryObject3D {
 
   create(): SphericalCelestialObject {
     const saturn = this.createSaturn();
+    const rings = this.createRings();
+    saturn.add(rings);
 
     this.loop.add(saturn);
 
@@ -39,5 +43,23 @@ export class SaturnFactory implements FactoryObject3D {
     });
 
     return saturn;
+  }
+
+  private createRings(): Mesh {
+    const geometry = new RingGeometry(
+      SaturnRingsRatioEarth.innerRadius,
+      SaturnRingsRatioEarth.outerRadius,
+      32
+    );
+
+    const material = new MeshBasicMaterial({
+      color: 0xffff00,
+      side: DoubleSide,
+    });
+
+    const mesh = new Mesh(geometry, material);
+    mesh.rotateX(degToRad(90));
+
+    return mesh;
   }
 }
