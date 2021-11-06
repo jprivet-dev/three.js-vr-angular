@@ -4,7 +4,7 @@ import { AxialTilt } from '../../../../constants';
 import { Loop } from '../../../managers/loop.model';
 import { Planet } from '../../../models';
 
-export class Jupiter extends Planet implements Loop {
+export class Jupiter extends Planet {
   constructor(geometry: BufferGeometry, material: Material) {
     super(geometry, material);
     this.setAxialTilt(AxialTilt.Jupiter);

@@ -100,7 +100,7 @@ export class PlanetsService {
 
     const controls = new Controls(dolly, renderer);
     controls.enableAutoRotate();
-    loop.add(controls);
+    // loop.add(controls);
 
     const sun = new SunFactory().create();
     scene.add(sun);
@@ -111,10 +111,6 @@ export class PlanetsService {
     const earth = new EarthFactory(this.store).create();
     scene.add(earth);
     loop.add(earth);
-
-    const clouds = new CloudsFactory(this.store).create();
-    earth.add(clouds);
-    loop.add(clouds);
 
     // const jupiter = new JupiterFactory(this.store).create();
     // jupiter.position.set(planetPosition.jupiter, 0, 0);

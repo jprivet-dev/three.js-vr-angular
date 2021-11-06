@@ -1,11 +1,15 @@
 import { Definition } from '@core/store/store.model';
-import { Mesh, SphereGeometry } from 'three';
+import { SphereGeometry } from 'three';
 import { BufferGeometry } from 'three/src/core/BufferGeometry';
 import { Material } from 'three/src/materials/Material';
 import { degToRad } from 'three/src/math/MathUtils';
-import { Loop, LoopCallback } from '../../managers';
+import { Mesh } from '../../models';
 
-export type SCOTexturesByDefinitionKeys = 'map' | 'bumpMap' | 'specularMap' | 'alphaMap';
+export type SCOTexturesByDefinitionKeys =
+  | 'map'
+  | 'bumpMap'
+  | 'specularMap'
+  | 'alphaMap';
 
 export type SCOTexturesByDefinition = {
   [key in SCOTexturesByDefinitionKeys]?: {
@@ -13,9 +17,7 @@ export type SCOTexturesByDefinition = {
   };
 };
 
-export class SphericalCelestialObject extends Mesh implements AxialTilt, Loop {
-  private loopCallback!: LoopCallback;
-
+export class SphericalCelestialObject extends Mesh implements SCOAxialTilt {
   constructor(geometry: BufferGeometry, material: Material) {
     super(geometry, material);
   }
@@ -27,22 +29,15 @@ export class SphericalCelestialObject extends Mesh implements AxialTilt, Loop {
   rotateOrbitalAxis(seconds: number, degreesPerSecond: number): void {
     this.geometry.rotateY(degToRad(seconds * degreesPerSecond));
   }
-
-  setLoopCallback(callback: LoopCallback) {
-    this.loopCallback = callback;
-  }
-
-  loop(delta: number) {
-    this.loopCallback(delta);
-  }
 }
 
-export interface AxialTilt {
+export interface SCOAxialTilt {
   setAxialTilt(degrees: number): void;
+
   rotateOrbitalAxis(seconds: number, degreesPerSecond: number): void;
 }
 
-export class SphericalCelestialObjectGeometry extends SphereGeometry {
+export class SCOGeometry extends SphereGeometry {
   constructor(radius: number) {
     super(radius, 64, 32);
   }

@@ -22,8 +22,6 @@ export class VRRendererFactory implements FactoryVRRenderer {
     renderer.createVRButton();
     this.container.appendChild(renderer.domElement);
 
-    console.log('renderer', renderer);
-
     return renderer;
   }
 }

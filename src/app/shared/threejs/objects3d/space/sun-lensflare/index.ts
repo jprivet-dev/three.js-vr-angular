@@ -3,3 +3,4 @@ export * from './sun-lensflare.model';
 export * from './sun-lensflare';
 export * from './sun-lensflare-element';
 export * from './sun-lensflare-texture.loader';
+export * from './sun-lensflare-texture.params';

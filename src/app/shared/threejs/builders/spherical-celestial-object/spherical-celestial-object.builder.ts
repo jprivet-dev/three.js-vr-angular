@@ -5,10 +5,10 @@ import { SphericalCelestialObjectTextureLoader } from './spherical-celestial-obj
 import {
   SCOTexturesByDefinition,
   SphericalCelestialObject,
-  SphericalCelestialObjectGeometry,
+  SCOGeometry,
 } from './spherical-celestial-object.model';
 
-export class SphericalCelestialObjectBuilder {
+export class SCOBuilder {
   private size!: number;
   private axialTilt!: number;
   private materialParameters!: MeshPhongMaterialParameters;
@@ -43,7 +43,7 @@ export class SphericalCelestialObjectBuilder {
   }
 
   build(): SphericalCelestialObject {
-    const geometry = new SphericalCelestialObjectGeometry(this.size);
+    const geometry = new SCOGeometry(this.size);
     const material = new MeshPhongMaterial(this.materialParameters);
     const loader = new SphericalCelestialObjectTextureLoader(
       material,

@@ -76,7 +76,7 @@ export class EarthService {
 
     const controls = new Controls(dolly, renderer);
     controls.enableAutoRotate();
-    loop.add(controls);
+    // loop.add(controls);
 
     const sun = new SunFactory().create();
     scene.add(sun);

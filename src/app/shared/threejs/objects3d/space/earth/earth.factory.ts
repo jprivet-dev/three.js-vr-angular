@@ -2,7 +2,7 @@ import { StoreService } from '@core/store/store.service';
 import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
 import {
   SphericalCelestialObject,
-  SphericalCelestialObjectBuilder,
+  SCOBuilder,
 } from '../../../builders';
 import { FactoryObject3D } from '../../../models';
 
@@ -10,7 +10,15 @@ export class EarthFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}
 
   create(): SphericalCelestialObject {
-    const object = new SphericalCelestialObjectBuilder(this.store, 'earth')
+    const earth = this.createEarth();
+    const clouds = this.createClouds();
+    earth.add(clouds);
+
+    return earth;
+  }
+
+  private createEarth(): SphericalCelestialObject {
+    const earth = new SCOBuilder(this.store, 'earth')
       .setSize(RadiusRatioEarth.Earth)
       .setAxialTilt(AxialTilt.Earth)
       .setMaterialParameters({
@@ -36,10 +44,35 @@ export class EarthFactory implements FactoryObject3D {
       })
       .build();
 
-    object.setLoopCallback((delta) => {
-      object.rotateOrbitalAxis(delta, 5);
-    })
+    earth.setLoopCallback((delta) => {
+      earth.rotateOrbitalAxis(delta, 5);
+    });
 
-    return object;
+    return earth;
+  }
+
+  private createClouds(): SphericalCelestialObject {
+    const clouds = new SCOBuilder(this.store, 'clouds')
+      .setSize(RadiusRatioEarth.Earth + 0.005)
+      .setMaterialParameters({
+        wireframe: false,
+        color: 0xffffff,
+        opacity: 0.9,
+        transparent: true,
+      })
+      .setTexturesPath('assets/threejs/textures/space/clouds/')
+      .setTexturesByDefinition({
+        alphaMap: {
+          sd: 'clouds_1024x512.jpg',
+          hd: 'clouds_2048x1024.jpg',
+        },
+      })
+      .build();
+
+    clouds.setLoopCallback((delta) => {
+      clouds.rotateOrbitalAxis(delta, 4);
+    });
+
+    return clouds;
   }
 }

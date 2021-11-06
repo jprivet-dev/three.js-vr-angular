@@ -2,7 +2,7 @@ import { StoreService } from '@core/store/store.service';
 import { RadiusRatioEarth } from '../../../../constants';
 import {
   SphericalCelestialObject,
-  SphericalCelestialObjectBuilder,
+  SCOBuilder,
 } from '../../../builders';
 import { FactoryObject3D } from '../../../models';
 
@@ -10,7 +10,7 @@ export class CloudsFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}
 
   create(): SphericalCelestialObject {
-    const object = new SphericalCelestialObjectBuilder(this.store, 'clouds')
+    const object = new SCOBuilder(this.store, 'clouds')
       .setSize(RadiusRatioEarth.Earth + 0.005)
       .setMaterialParameters({
         wireframe: false,

@@ -1,15 +1,20 @@
 import { Clock } from 'three';
-import { VRRenderer } from '../index';
+import { Object3DWithLoop, VRRenderer } from '../index';
 import { Loop } from './loop.model';
 
-export class LoopManager implements Loop {
+export class LoopManager {
   private clock = new Clock();
   private list: Loop[] = [];
 
   constructor(private renderer: VRRenderer) {}
 
-  add(element: Loop): void {
-    this.list.push(element);
+  add(element: Object3DWithLoop): void {
+    if (element.hasLoopCallback()) {
+      this.list.push(element);
+      element.children.map(child => {
+        this.add(child as Object3DWithLoop);
+      })
+    }
   }
 
   remove(index: number): void {
@@ -21,7 +26,7 @@ export class LoopManager implements Loop {
   }
 
   loop(delta: number): void {
-    this.list.forEach((element) => element.loop(delta));
+    this.list.map((element) => element.loop(delta));
   }
 
   start(): void {
