@@ -7,26 +7,28 @@ import {
   DollyCameraFactory,
   DollyCameraParams,
   EarthFactory,
+  JupiterFactory,
   LoopManager,
   MarsFactory,
+  MercuryFactory,
   NeptuneFactory,
   SaturnFactory,
   SphericalCelestialObject,
   StarsFactory,
   SunFactory,
+  UranusFactory,
+  VenusFactory,
   VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
-import { JupiterFactory } from '@shared/threejs/objects3d/space/jupiter/jupiter.factory';
-import { MercuryFactory } from '@shared/threejs/objects3d/space/mercury';
-import { VenusFactory } from '@shared/threejs/objects3d/space/venus';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlanetsService {
-  private position = 0;
+  private positionStep = 1;
+  private position = -30;
 
   private dollyCameraParams: DollyCameraParams = {
     fov: 80,
@@ -58,7 +60,9 @@ export class PlanetsService {
     },
   };
 
-  constructor(private store: StoreService) {}
+  constructor(private store: StoreService) {
+    this.position;
+  }
 
   buildScene(container: Container): void {
     this.store.antialias$.subscribe((antialias) => {
@@ -117,11 +121,15 @@ export class PlanetsService {
     );
     scene.add(saturn);
 
+    const uranus = new UranusFactory(this.store, loop).create();
+    this.nextPosition(uranus, RadiusRatioEarth.Uranus, RadiusRatioEarth.Saturn);
+    scene.add(uranus);
+
     const neptune = new NeptuneFactory(this.store, loop).create();
     this.nextPosition(
       neptune,
       RadiusRatioEarth.Neptune,
-      RadiusRatioEarth.Saturn
+      RadiusRatioEarth.Uranus
     );
     scene.add(neptune);
 
@@ -136,7 +144,7 @@ export class PlanetsService {
     previousPlanetRadius: number
   ): number {
     this.position =
-      this.position + currentPlanetRadius + previousPlanetRadius + 0.5;
+      this.position + currentPlanetRadius + previousPlanetRadius + this.positionStep;
     planet.position.set(0, 0, this.position);
 
     return this.position;
