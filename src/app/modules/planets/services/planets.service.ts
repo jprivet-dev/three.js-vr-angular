@@ -14,6 +14,7 @@ import {
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
+import { JupiterFactory } from '@shared/threejs/objects3d/space/jupiter/jupiter.factory';
 
 @Injectable({
   providedIn: 'root',
@@ -100,11 +101,10 @@ export class PlanetsService {
     const earth = new EarthFactory(this.store, loop).create();
     scene.add(earth);
 
-    // const jupiter = new JupiterFactory(this.store).create();
-    // jupiter.position.set(planetPosition.jupiter, 0, 0);
-    // scene.add(jupiter);
-    // loop.add(jupiter);
-    //
+    const jupiter = new JupiterFactory(this.store, loop).create();
+    jupiter.position.set(planetPosition.jupiter, 0, 0);
+    scene.add(jupiter);
+
     // const mars = new MarsFactory(this.store).create();
     // mars.position.set(planetPosition.mars, 0, 0);
     // scene.add(mars);
