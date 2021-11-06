@@ -1,11 +1,15 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { DollyCamera, VRRenderer } from '../index';
-import { Loop } from '../managers/loop.model';
+import { DollyCamera, Loop, LoopCallback, VRRenderer } from '../index';
 
-export class Controls extends OrbitControls {
+export class Controls extends OrbitControls implements Loop {
+  protected loopCallback!: LoopCallback;
+
   constructor(private dolly: DollyCamera, private renderer: VRRenderer) {
     super(dolly.camera, renderer.domElement);
     this.autoRotateSpeed = 0.2;
+    this.setLoopCallback(() => {
+      this.update();
+    })
   }
 
   enableAutoRotate(): void {
@@ -16,7 +20,15 @@ export class Controls extends OrbitControls {
     this.autoRotate = false;
   }
 
-  loop(): void {
-    this.update();
+  setLoopCallback(callback: LoopCallback): void {
+    this.loopCallback = callback;
+  }
+
+  hasLoopCallback(): boolean {
+    return this.loopCallback !== undefined;
+  }
+
+  loop(delta: number): void {
+    this.loopCallback(delta);
   }
 }

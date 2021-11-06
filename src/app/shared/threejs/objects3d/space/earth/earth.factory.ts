@@ -1,18 +1,19 @@
 import { StoreService } from '@core/store/store.service';
 import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
-import {
-  SphericalCelestialObject,
-  SCOBuilder,
-} from '../../../builders';
+import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
+import { LoopManager } from '../../../managers';
 import { FactoryObject3D } from '../../../models';
 
 export class EarthFactory implements FactoryObject3D {
-  constructor(private store: StoreService) {}
+  constructor(private store: StoreService, private loop: LoopManager) {}
 
   create(): SphericalCelestialObject {
     const earth = this.createEarth();
     const clouds = this.createClouds();
     earth.add(clouds);
+
+    this.loop.add(earth);
+    this.loop.add(clouds);
 
     return earth;
   }

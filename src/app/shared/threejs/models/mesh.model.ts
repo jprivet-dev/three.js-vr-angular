@@ -1,7 +1,7 @@
-import * as THREE from 'three';
+import { Mesh as ThreeMesh } from 'three';
 import { Loop, LoopCallback } from '../managers';
 
-export class Mesh extends THREE.Mesh implements Loop {
+export class Mesh extends ThreeMesh implements Loop {
   protected loopCallback!: LoopCallback;
 
   setLoopCallback(callback: LoopCallback): void {

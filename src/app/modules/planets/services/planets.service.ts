@@ -8,7 +8,7 @@ import {
   DollyCameraFactory,
   DollyCameraParams,
   EarthFactory,
-  JupiterFactory,
+  JupiterFactory, Loop,
   LoopManager,
   MarsFactory,
   NeptuneFactory,
@@ -100,7 +100,7 @@ export class PlanetsService {
 
     const controls = new Controls(dolly, renderer);
     controls.enableAutoRotate();
-    // loop.add(controls);
+    loop.add(controls);
 
     const sun = new SunFactory().create();
     scene.add(sun);
@@ -108,9 +108,8 @@ export class PlanetsService {
     const lensflare = new SunLensflareFactory(this.store).create();
     sun.add(lensflare);
 
-    const earth = new EarthFactory(this.store).create();
+    const earth = new EarthFactory(this.store, loop).create();
     scene.add(earth);
-    loop.add(earth);
 
     // const jupiter = new JupiterFactory(this.store).create();
     // jupiter.position.set(planetPosition.jupiter, 0, 0);

@@ -1,5 +1,5 @@
 import { Clock } from 'three';
-import { Object3DWithLoop, VRRenderer } from '../index';
+import { VRRenderer } from '../index';
 import { Loop } from './loop.model';
 
 export class LoopManager {
@@ -8,12 +8,9 @@ export class LoopManager {
 
   constructor(private renderer: VRRenderer) {}
 
-  add(element: Object3DWithLoop): void {
+  add(element: Loop): void {
     if (element.hasLoopCallback()) {
       this.list.push(element);
-      element.children.map(child => {
-        this.add(child as Object3DWithLoop);
-      })
     }
   }
 
