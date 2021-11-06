@@ -4,11 +4,12 @@ import { RadiusRatioEarth } from '@shared/constants';
 import {
   CloudsFactory,
   Container,
-  Controls,
+  Controls, ControlsFactory,
   DollyCameraFactory,
   DollyCameraParams,
   EarthFactory,
-  JupiterFactory, Loop,
+  JupiterFactory,
+  Loop,
   LoopManager,
   MarsFactory,
   NeptuneFactory,
@@ -98,9 +99,7 @@ export class PlanetsService {
     const session = new VRSessionManager(renderer);
     session.add(dolly);
 
-    const controls = new Controls(dolly, renderer);
-    controls.enableAutoRotate();
-    loop.add(controls);
+    const controls = new ControlsFactory(loop).create(dolly, renderer);
 
     const sun = new SunFactory().create();
     scene.add(sun);

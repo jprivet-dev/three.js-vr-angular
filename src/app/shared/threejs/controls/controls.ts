@@ -7,9 +7,6 @@ export class Controls extends OrbitControls implements Loop {
   constructor(private dolly: DollyCamera, private renderer: VRRenderer) {
     super(dolly.camera, renderer.domElement);
     this.autoRotateSpeed = 0.2;
-    this.setLoopCallback(() => {
-      this.update();
-    })
   }
 
   enableAutoRotate(): void {
