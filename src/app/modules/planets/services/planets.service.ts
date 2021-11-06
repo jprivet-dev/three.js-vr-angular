@@ -20,6 +20,7 @@ import {
 } from '@shared/threejs';
 import { JupiterFactory } from '@shared/threejs/objects3d/space/jupiter/jupiter.factory';
 import { MercuryFactory } from '@shared/threejs/objects3d/space/mercury';
+import { VenusFactory } from '@shared/threejs/objects3d/space/venus';
 
 @Injectable({
   providedIn: 'root',
@@ -92,24 +93,28 @@ export class PlanetsService {
     this.nextPosition(mercury, RadiusRatioEarth.Mercury, 0);
     scene.add(mercury);
 
+    const venus = new VenusFactory(this.store, loop).create();
+    this.nextPosition(venus, RadiusRatioEarth.Venus, RadiusRatioEarth.Mercury);
+    scene.add(venus);
+
     const earth = new EarthFactory(this.store, loop).create();
     scene.add(earth);
-    this.nextPosition(earth, RadiusRatioEarth.Earth, RadiusRatioEarth.Mercury);
-
-    const jupiter = new JupiterFactory(this.store, loop).create();
-    this.nextPosition(
-      jupiter,
-      RadiusRatioEarth.Jupiter,
-      RadiusRatioEarth.Earth
-    );
-    scene.add(jupiter);
+    this.nextPosition(earth, RadiusRatioEarth.Earth, RadiusRatioEarth.Venus);
 
     const mars = new MarsFactory(this.store, loop).create();
-    this.nextPosition(mars, RadiusRatioEarth.Mars, RadiusRatioEarth.Jupiter);
+    this.nextPosition(mars, RadiusRatioEarth.Mars, RadiusRatioEarth.Earth);
     scene.add(mars);
 
+    const jupiter = new JupiterFactory(this.store, loop).create();
+    this.nextPosition(jupiter, RadiusRatioEarth.Jupiter, RadiusRatioEarth.Mars);
+    scene.add(jupiter);
+
     const saturn = new SaturnFactory(this.store, loop).create();
-    this.nextPosition(saturn, RadiusRatioEarth.Saturn, RadiusRatioEarth.Mars);
+    this.nextPosition(
+      saturn,
+      RadiusRatioEarth.Saturn,
+      RadiusRatioEarth.Jupiter
+    );
     scene.add(saturn);
 
     const neptune = new NeptuneFactory(this.store, loop).create();
