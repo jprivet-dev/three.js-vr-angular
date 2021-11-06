@@ -8,7 +8,8 @@ import {
   DollyCameraParams,
   EarthFactory,
   LoopManager,
-  MarsFactory, SaturnFactory,
+  MarsFactory, NeptuneFactory,
+  SaturnFactory,
   StarsFactory,
   SunFactory,
   VRRendererFactory,
@@ -114,10 +115,9 @@ export class PlanetsService {
     saturn.position.set(planetPosition.saturn, 0, 0);
     scene.add(saturn);
 
-    // const neptune = new NeptuneFactory(this.store).create();
-    // neptune.position.set(planetPosition.neptune, 0, 0);
-    // scene.add(neptune);
-    // loop.add(neptune);
+    const neptune = new NeptuneFactory(this.store, loop).create();
+    neptune.position.set(planetPosition.neptune, 0, 0);
+    scene.add(neptune);
 
     loop.start();
     resize.start();
