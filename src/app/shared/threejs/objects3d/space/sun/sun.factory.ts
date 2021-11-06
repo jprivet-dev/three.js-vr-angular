@@ -17,8 +17,9 @@ export class SunFactory implements FactoryObject3D {
 
   create(): Sun {
     const sun = this.createSun();
-    const sunLensflare = this.createSunLensflare();
+    sun.position.set(0, 0, 1000);
 
+    const sunLensflare = this.createSunLensflare();
     sun.add(sunLensflare);
 
     return sun;
@@ -26,8 +27,6 @@ export class SunFactory implements FactoryObject3D {
 
   private createSun(): Sun {
     const sun = new Sun(0xffffff, 1.3);
-    sun.position.set(-250, 0, -1000);
-
     return sun;
   }
 

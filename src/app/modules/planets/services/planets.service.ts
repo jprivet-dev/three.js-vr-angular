@@ -71,8 +71,8 @@ export class PlanetsService {
   }
 
   private onAntialiasChange(container: Container, antialias: boolean) {
+    const offset = 10;
     container.empty();
-    const position = 0;
 
     const scene = new StarsFactory(this.store).create();
     const dolly = new DollyCameraFactory(container).create(
@@ -94,43 +94,35 @@ export class PlanetsService {
     scene.add(sun);
 
     const mercury = new MercuryFactory(this.store, loop).create();
-    this.nextPosition(mercury, RadiusRatioEarth.Mercury, 0);
+    mercury.position.set(0, 0, offset)
     scene.add(mercury);
 
     const venus = new VenusFactory(this.store, loop).create();
-    this.nextPosition(venus, RadiusRatioEarth.Venus, RadiusRatioEarth.Mercury);
+    venus.position.set(0, 0, offset - 4)
     scene.add(venus);
 
     const earth = new EarthFactory(this.store, loop).create();
+    earth.position.set(0, 0, offset - 8)
     scene.add(earth);
-    this.nextPosition(earth, RadiusRatioEarth.Earth, RadiusRatioEarth.Venus);
 
     const mars = new MarsFactory(this.store, loop).create();
-    this.nextPosition(mars, RadiusRatioEarth.Mars, RadiusRatioEarth.Earth);
+    mars.position.set(0, 0, offset - 12)
     scene.add(mars);
 
     const jupiter = new JupiterFactory(this.store, loop).create();
-    this.nextPosition(jupiter, RadiusRatioEarth.Jupiter, RadiusRatioEarth.Mars);
+    jupiter.position.set(-17, 0, offset - 12)
     scene.add(jupiter);
 
     const saturn = new SaturnFactory(this.store, loop).create();
-    this.nextPosition(
-      saturn,
-      RadiusRatioEarth.Saturn,
-      RadiusRatioEarth.Jupiter
-    );
+    saturn.position.set(0, 0, offset - 30)
     scene.add(saturn);
 
     const uranus = new UranusFactory(this.store, loop).create();
-    this.nextPosition(uranus, RadiusRatioEarth.Uranus, RadiusRatioEarth.Saturn);
+    uranus.position.set(10, 0, offset - 16)
     scene.add(uranus);
 
     const neptune = new NeptuneFactory(this.store, loop).create();
-    this.nextPosition(
-      neptune,
-      RadiusRatioEarth.Neptune,
-      RadiusRatioEarth.Uranus
-    );
+    neptune.position.set(13, 0, offset - 5)
     scene.add(neptune);
 
     loop.start();
