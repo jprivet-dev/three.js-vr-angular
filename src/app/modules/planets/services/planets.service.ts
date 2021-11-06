@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
-import { RadiusRatioEarth } from '@shared/constants';
 import {
   Container,
   ControlsFactory,
@@ -13,7 +12,6 @@ import {
   MercuryFactory,
   NeptuneFactory,
   SaturnFactory,
-  SphericalCelestialObject,
   StarsFactory,
   SunFactory,
   UranusFactory,
@@ -27,13 +25,10 @@ import {
   providedIn: 'root',
 })
 export class PlanetsService {
-  private positionStep = 1;
-  private position = -30;
-
   private dollyCameraParams: DollyCameraParams = {
-    fov: 80,
+    fov: 30, // 80
     near: 1,
-    far: 8000,
+    far: 2000, // 8000
     onVRSessionStartPosition: {
       camera: {
         x: 0,
@@ -43,13 +38,13 @@ export class PlanetsService {
       dolly: {
         x: 0,
         y: 0,
-        z: -5,
+        z: -20,
       },
     },
     onVRSessionEndPosition: {
       camera: {
         x: 0,
-        y: 0,
+        y: 3,
         z: 20,
       },
       dolly: {
@@ -60,9 +55,7 @@ export class PlanetsService {
     },
   };
 
-  constructor(private store: StoreService) {
-    this.position;
-  }
+  constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
     this.store.antialias$.subscribe((antialias) => {
@@ -71,7 +64,7 @@ export class PlanetsService {
   }
 
   private onAntialiasChange(container: Container, antialias: boolean) {
-    const offset = 10;
+    const offset = 5;
     container.empty();
 
     const scene = new StarsFactory(this.store).create();
@@ -94,51 +87,39 @@ export class PlanetsService {
     scene.add(sun);
 
     const mercury = new MercuryFactory(this.store, loop).create();
-    mercury.position.set(0, 0, offset)
+    mercury.position.set(0, -3, offset);
     scene.add(mercury);
 
     const venus = new VenusFactory(this.store, loop).create();
-    venus.position.set(0, 0, offset - 4)
+    venus.position.set(0, -1.5, offset - 4);
     scene.add(venus);
 
     const earth = new EarthFactory(this.store, loop).create();
-    earth.position.set(0, 0, offset - 8)
+    earth.position.set(0, 0, offset - 8);
     scene.add(earth);
 
     const mars = new MarsFactory(this.store, loop).create();
-    mars.position.set(0, 0, offset - 12)
+    mars.position.set(0, 1.5, offset - 12);
     scene.add(mars);
 
     const jupiter = new JupiterFactory(this.store, loop).create();
-    jupiter.position.set(-17, 0, offset - 12)
+    jupiter.position.set(-15, 0, offset - 25);
     scene.add(jupiter);
 
     const saturn = new SaturnFactory(this.store, loop).create();
-    saturn.position.set(0, 0, offset - 30)
+    saturn.position.set(15, 0, offset - 25);
     scene.add(saturn);
 
     const uranus = new UranusFactory(this.store, loop).create();
-    uranus.position.set(10, 0, offset - 16)
+    uranus.position.set(-10, -4, offset - 3);
     scene.add(uranus);
 
     const neptune = new NeptuneFactory(this.store, loop).create();
-    neptune.position.set(13, 0, offset - 5)
+    neptune.position.set(10, -4, offset - 3);
     scene.add(neptune);
 
     loop.start();
     resize.start();
     session.start();
-  }
-
-  private nextPosition(
-    planet: SphericalCelestialObject,
-    currentPlanetRadius: number,
-    previousPlanetRadius: number
-  ): number {
-    this.position =
-      this.position + currentPlanetRadius + previousPlanetRadius + this.positionStep;
-    planet.position.set(0, 0, this.position);
-
-    return this.position;
   }
 }
