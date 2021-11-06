@@ -19,6 +19,7 @@ import {
   WindowResizeManager,
 } from '@shared/threejs';
 import { JupiterFactory } from '@shared/threejs/objects3d/space/jupiter/jupiter.factory';
+import { MercuryFactory } from '@shared/threejs/objects3d/space/mercury';
 
 @Injectable({
   providedIn: 'root',
@@ -87,9 +88,13 @@ export class PlanetsService {
     const sun = new SunFactory(this.store).create();
     scene.add(sun);
 
+    const mercury = new MercuryFactory(this.store, loop).create();
+    this.nextPosition(mercury, RadiusRatioEarth.Mercury, 0);
+    scene.add(mercury);
+
     const earth = new EarthFactory(this.store, loop).create();
     scene.add(earth);
-    this.nextPosition(earth, RadiusRatioEarth.Earth, 0);
+    this.nextPosition(earth, RadiusRatioEarth.Earth, RadiusRatioEarth.Mercury);
 
     const jupiter = new JupiterFactory(this.store, loop).create();
     this.nextPosition(
