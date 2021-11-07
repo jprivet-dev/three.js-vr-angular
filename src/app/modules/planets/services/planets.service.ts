@@ -10,6 +10,7 @@ import {
   LoopManager,
   MarsFactory,
   MercuryFactory,
+  MoonFactory,
   NeptuneFactory,
   SaturnFactory,
   StarsFactory,
@@ -20,7 +21,6 @@ import {
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
-import { MoonFactory } from '@shared/threejs/objects3d/space/moon';
 
 @Injectable({
   providedIn: 'root',

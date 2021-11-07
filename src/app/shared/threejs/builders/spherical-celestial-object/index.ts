@@ -1,3 +1,3 @@
 export * from './spherical-celestial-object.builder';
-export * from './spherical-celestial-object-texture.loader';
+export * from '../../loaders/phong-material-texture-by-definition.model';
 export * from './spherical-celestial-object.model';

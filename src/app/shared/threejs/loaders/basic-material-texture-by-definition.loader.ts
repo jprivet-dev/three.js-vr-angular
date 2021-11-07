@@ -1,28 +1,29 @@
 import { Definition } from '@core/store/store.model';
-import { MeshPhongMaterial, TextureLoader } from 'three';
-import { TextureByDefinition } from '../../models';
-import {
-  SCOTexturesByDefinition,
-  SCOTexturesByDefinitionKeys,
-} from './spherical-celestial-object.model';
+import { TextureLoader } from 'three';
+import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
+import { TextureByDefinition } from '../models';
 
-export class SphericalCelestialObjectTextureLoader
+import {
+  BasicMaterialTexturesByDefinition,
+  BasicMaterialTexturesByDefinitionKeys,
+} from './basic-material-texture-by-definition.model';
+
+export class BasicMaterialTextureByDefinitionLoader
   extends TextureLoader
   implements TextureByDefinition
 {
   constructor(
-    private material: MeshPhongMaterial,
+    private material: MeshBasicMaterial,
     texturesPath: string,
-    private texturesByDefinition: SCOTexturesByDefinition
+    private texturesByDefinition: BasicMaterialTexturesByDefinition
   ) {
     super();
     this.setPath(texturesPath);
   }
 
   loadByDefinition(definition: Definition) {
-    const keys: SCOTexturesByDefinitionKeys[] = [
+    const keys: BasicMaterialTexturesByDefinitionKeys[] = [
       'map',
-      'bumpMap',
       'specularMap',
       'alphaMap',
     ];
@@ -35,7 +36,7 @@ export class SphericalCelestialObjectTextureLoader
   }
 
   private getFilename(
-    key: SCOTexturesByDefinitionKeys,
+    key: BasicMaterialTexturesByDefinitionKeys,
     definition: Definition
   ): string | void {
     const texture = this.texturesByDefinition[key];

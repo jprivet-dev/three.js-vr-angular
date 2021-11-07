@@ -1,21 +1,8 @@
-import { Definition } from '@core/store/store.model';
 import { SphereGeometry } from 'three';
 import { BufferGeometry } from 'three/src/core/BufferGeometry';
 import { Material } from 'three/src/materials/Material';
 import { degToRad } from 'three/src/math/MathUtils';
 import { Mesh } from '../../models';
-
-export type SCOTexturesByDefinitionKeys =
-  | 'map'
-  | 'bumpMap'
-  | 'specularMap'
-  | 'alphaMap';
-
-export type SCOTexturesByDefinition = {
-  [key in SCOTexturesByDefinitionKeys]?: {
-    [key in Definition]: string;
-  };
-};
 
 export class SphericalCelestialObject extends Mesh implements SCOAxialTilt {
   constructor(geometry: BufferGeometry, material: Material) {

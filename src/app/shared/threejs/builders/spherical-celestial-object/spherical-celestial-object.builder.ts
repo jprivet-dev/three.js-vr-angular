@@ -1,11 +1,13 @@
 import { StoreService } from '@core/store/store.service';
 import { MeshPhongMaterial } from 'three';
 import { MeshPhongMaterialParameters } from 'three/src/materials/MeshPhongMaterial';
-import { SphericalCelestialObjectTextureLoader } from './spherical-celestial-object-texture.loader';
 import {
-  SCOTexturesByDefinition,
-  SphericalCelestialObject,
+  PhongMaterialTextureByDefinitionLoader,
+  PhongMaterialTextureByDefinition,
+} from '../../loaders';
+import {
   SCOGeometry,
+  SphericalCelestialObject,
 } from './spherical-celestial-object.model';
 
 export class SCOBuilder {
@@ -13,7 +15,7 @@ export class SCOBuilder {
   private axialTilt!: number;
   private materialParameters!: MeshPhongMaterialParameters;
   private texturesPath!: string;
-  private texturesByDefinition!: SCOTexturesByDefinition;
+  private texturesByDefinition!: PhongMaterialTextureByDefinition;
 
   constructor(private store: StoreService, private name: string) {}
 
@@ -37,7 +39,7 @@ export class SCOBuilder {
     return this;
   }
 
-  setTexturesByDefinition(textures: SCOTexturesByDefinition): this {
+  setTexturesByDefinition(textures: PhongMaterialTextureByDefinition): this {
     this.texturesByDefinition = textures;
     return this;
   }
@@ -45,7 +47,7 @@ export class SCOBuilder {
   build(): SphericalCelestialObject {
     const geometry = new SCOGeometry(this.size);
     const material = new MeshPhongMaterial(this.materialParameters);
-    const loader = new SphericalCelestialObjectTextureLoader(
+    const loader = new PhongMaterialTextureByDefinitionLoader(
       material,
       this.texturesPath,
       this.texturesByDefinition
