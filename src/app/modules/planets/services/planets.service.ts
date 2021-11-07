@@ -20,6 +20,7 @@ import {
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
+import { MoonFactory } from '@shared/threejs/objects3d/space/moon';
 
 @Injectable({
   providedIn: 'root',
@@ -97,6 +98,10 @@ export class PlanetsService {
     const earth = new EarthFactory(this.store, loop).create();
     earth.position.set(0, 0, offset - 8);
     scene.add(earth);
+
+    const moon = new MoonFactory(this.store, loop).create();
+    moon.position.set(2, 0, offset - 8);
+    scene.add(moon);
 
     const mars = new MarsFactory(this.store, loop).create();
     mars.position.set(0, 1.5, offset - 12);
