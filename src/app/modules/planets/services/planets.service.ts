@@ -103,19 +103,19 @@ export class PlanetsService {
     scene.add(mars);
 
     const jupiter = new JupiterFactory(this.store, loop).create();
-    jupiter.position.set(-15, 0, offset - 25);
+    jupiter.position.set(-15, 0, offset - 10);
     scene.add(jupiter);
 
     const saturn = new SaturnFactory(this.store, loop).create();
-    saturn.position.set(15, 0, offset - 25);
+    saturn.position.set(15, 0, offset - 10);
     scene.add(saturn);
 
     const uranus = new UranusFactory(this.store, loop).create();
-    uranus.position.set(-10, -4, offset - 3);
+    uranus.position.set(0, 5, offset - 20);
     scene.add(uranus);
 
     const neptune = new NeptuneFactory(this.store, loop).create();
-    neptune.position.set(10, -4, offset - 3);
+    neptune.position.set(-10, -5, offset + 10);
     scene.add(neptune);
 
     loop.start();

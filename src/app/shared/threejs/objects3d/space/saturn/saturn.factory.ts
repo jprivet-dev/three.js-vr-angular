@@ -1,7 +1,18 @@
 import { StoreService } from '@core/store/store.service';
-import { DoubleSide, Mesh, MeshBasicMaterial, RingGeometry } from 'three';
+import {
+  DoubleSide,
+  Mesh,
+  MeshBasicMaterial,
+  RingBufferGeometry,
+  TextureLoader,
+  Vector3,
+} from 'three';
 import { degToRad } from 'three/src/math/MathUtils';
-import { AxialTilt, RadiusRatioEarth, SaturnRingsRatioEarth } from '../../../../constants';
+import {
+  AxialTilt,
+  RadiusRatioEarth,
+  SaturnRingsRatioEarth,
+} from '../../../../constants';
 import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
 import { LoopManager } from '../../../managers';
 import { FactoryObject3D } from '../../../models';
@@ -46,15 +57,20 @@ export class SaturnFactory implements FactoryObject3D {
   }
 
   private createRings(): Mesh {
-    const geometry = new RingGeometry(
+    const texture = new TextureLoader()
+      .setPath('assets/threejs/textures/space/saturn/')
+      .load('saturn_rings_map_1024x1024.png');
+    const geometry = new RingBufferGeometry(
       SaturnRingsRatioEarth.innerRadius,
       SaturnRingsRatioEarth.outerRadius,
-      32
+      64
     );
 
     const material = new MeshBasicMaterial({
-      color: 0xffff00,
+      map: texture,
+      color: 0xffffff,
       side: DoubleSide,
+      transparent: true,
     });
 
     const mesh = new Mesh(geometry, material);
