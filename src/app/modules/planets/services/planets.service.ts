@@ -21,40 +21,13 @@ import {
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
+import { planetsDollyCameraParams } from './planets.params';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlanetsService {
-  private dollyCameraParams: DollyCameraParams = {
-    fov: 30, // 80
-    near: 1,
-    far: 2000, // 8000
-    onVRSessionStartPosition: {
-      camera: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      dolly: {
-        x: 0,
-        y: 0,
-        z: -20,
-      },
-    },
-    onVRSessionEndPosition: {
-      camera: {
-        x: 0,
-        y: 3,
-        z: 20,
-      },
-      dolly: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-    },
-  };
+  private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
 
   constructor(private store: StoreService) {}
 

@@ -2,50 +2,25 @@ import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import {
   Container,
-  Controls,
+  Controls, ControlsFactory,
   DollyCameraFactory,
   DollyCameraParams,
+  EarthFactory,
   LoopManager,
+  MoonFactory,
   StarsFactory,
   SunFactory,
   VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs';
+import { earthDollyCameraParams } from './earth.params';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EarthService {
-  private dollyCameraParams: DollyCameraParams = {
-    fov: 80,
-    near: 1,
-    far: 8000,
-    onVRSessionStartPosition: {
-      camera: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      dolly: {
-        x: -2.5,
-        y: 0,
-        z: 0,
-      },
-    },
-    onVRSessionEndPosition: {
-      camera: {
-        x: 0,
-        y: 0,
-        z: 5,
-      },
-      dolly: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-    },
-  };
+  private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
 
   constructor(private store: StoreService) {}
 
@@ -72,20 +47,17 @@ export class EarthService {
     const session = new VRSessionManager(renderer);
     session.add(dolly);
 
-    const controls = new Controls(dolly, renderer);
-    controls.enableAutoRotate();
-    // loop.add(controls);
+    const controls = new ControlsFactory(loop).create(dolly, renderer);
 
     const sun = new SunFactory(this.store).create();
     scene.add(sun);
 
-    // const earth = new EarthFactory(this.store).create();
-    // scene.add(earth);
-    // loop.add(earth);
-    //
-    // const clouds = new CloudsFactory(this.store).create();
-    // earth.add(clouds);
-    // loop.add(clouds);
+    const earth = new EarthFactory(this.store, loop).create();
+    scene.add(earth);
+
+    const moon = new MoonFactory(this.store, loop).create();
+    moon.position.set(2, 0, 0);
+    scene.add(moon);
 
     loop.start();
     resize.start();
