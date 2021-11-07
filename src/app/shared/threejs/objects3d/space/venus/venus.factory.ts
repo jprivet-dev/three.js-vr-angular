@@ -21,9 +21,7 @@ export class VenusFactory implements FactoryObject3D {
       .setAxialTilt(AxialTilt.Venus)
       .setMaterialParameters({
         wireframe: false,
-        bumpScale: 0.01,
-        specular: 0x2d4ea0,
-        shininess: 6,
+        shininess: 0,
       })
       .setTexturesPath('assets/threejs/textures/space/venus/')
       .setTexturesByDefinition({
