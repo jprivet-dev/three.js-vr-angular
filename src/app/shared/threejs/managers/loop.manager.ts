@@ -6,12 +6,11 @@ export class LoopManager {
   private clock = new Clock();
   private list: Loop[] = [];
 
-  constructor(private renderer: VRRenderer) {}
+  constructor(private renderer: VRRenderer) {
+  }
 
   add(element: Loop): void {
-    if (element.hasLoopCallback()) {
-      this.list.push(element);
-    }
+    this.list.push(element);
   }
 
   remove(index: number): void {

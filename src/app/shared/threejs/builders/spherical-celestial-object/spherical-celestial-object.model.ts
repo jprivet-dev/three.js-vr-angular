@@ -2,9 +2,9 @@ import { SphereGeometry } from 'three';
 import { BufferGeometry } from 'three/src/core/BufferGeometry';
 import { Material } from 'three/src/materials/Material';
 import { degToRad } from 'three/src/math/MathUtils';
-import { Mesh } from '../../models';
+import { MeshWithCallback } from '../../models';
 
-export class SphericalCelestialObject extends Mesh implements SCOAxialTilt {
+export class SphericalCelestialObject extends MeshWithCallback implements SCOAxialTilt {
   constructor(geometry: BufferGeometry, material: Material) {
     super(geometry, material);
   }

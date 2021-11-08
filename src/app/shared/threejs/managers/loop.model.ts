@@ -1,9 +1,9 @@
 export type LoopCallback = (delta: number) => void;
 
-export interface Loop {
+export interface LoopWithCallback extends Loop {
   setLoopCallback(callback: LoopCallback): void;
+}
 
-  hasLoopCallback(): boolean;
-
+export interface Loop {
   loop(delta: number): void;
 }

@@ -10,11 +10,6 @@ export class ControlsFactory implements FactoryControls {
   create(dolly: DollyCamera, renderer: VRRenderer): Controls {
     const controls = new Controls(dolly, renderer);
     controls.enableAutoRotate();
-
-    controls.setLoopCallback(() => {
-      controls.update();
-    })
-
     this.loop.add(controls);
 
     return controls;
