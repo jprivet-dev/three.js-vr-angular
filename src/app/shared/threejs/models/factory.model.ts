@@ -1,6 +1,7 @@
 import { Object3D, Scene } from 'three';
 import { DollyCamera, DollyCameraParams } from '../cameras';
 import { Controls } from '../controls';
+import { VRControls } from '../controls/vr-controls';
 import { VRRenderer } from '../renderers';
 
 export interface FactoryObject3D {
@@ -9,6 +10,10 @@ export interface FactoryObject3D {
 
 export interface FactoryControls {
   create(dolly: DollyCamera, renderer: VRRenderer): Controls;
+}
+
+export interface FactoryVRControls {
+  create(dolly: DollyCamera, renderer: VRRenderer, scene: Scene): VRControls;
 }
 
 export interface FactoryDollyCamera {

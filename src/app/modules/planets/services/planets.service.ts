@@ -16,7 +16,7 @@ import {
   StarsFactory,
   SunFactory,
   UranusFactory,
-  VenusFactory,
+  VenusFactory, VRControlsFactory,
   VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
@@ -56,6 +56,7 @@ export class PlanetsService {
     session.add(dolly);
 
     const controls = new ControlsFactory(loop).create(dolly, renderer);
+    const vrControls = new VRControlsFactory(loop).create(dolly, renderer, scene);
 
     const sun = new SunFactory(this.store).create();
     scene.add(sun);
