@@ -52,11 +52,11 @@ export class PlanetsService {
     });
     const loop = new LoopManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
-    const session = new VRSessionManager(renderer);
+    const session = new VRSessionManager(this.store, renderer);
     session.add(dolly);
 
     const controls = new ControlsFactory(loop).create(dolly, renderer);
-    const vrControls = new VRControlsFactory(loop).create(dolly, renderer, scene);
+    const vrControls = new VRControlsFactory(this.store, loop).create(dolly, renderer, scene);
 
     const sun = new SunFactory(this.store).create();
     scene.add(sun);

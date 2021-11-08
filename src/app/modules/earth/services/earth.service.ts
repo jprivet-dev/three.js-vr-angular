@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import {
   Container,
-  Controls, ControlsFactory,
+  ControlsFactory,
   DollyCameraFactory,
   DollyCameraParams,
   EarthFactory,
@@ -44,7 +44,7 @@ export class EarthService {
     });
     const loop = new LoopManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
-    const session = new VRSessionManager(renderer);
+    const session = new VRSessionManager(this.store, renderer);
     session.add(dolly);
 
     const controls = new ControlsFactory(loop).create(dolly, renderer);

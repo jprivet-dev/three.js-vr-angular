@@ -1,3 +1,4 @@
+import { StoreService } from '@core/store/store.service';
 import {
   AdditiveBlending,
   Float32BufferAttribute,
@@ -16,13 +17,10 @@ import { VRRenderer } from '../renderers';
 import { VRControllerIndex } from './controls.model';
 
 export class VRControls {
-  private gazeAllReadyExists: boolean = false;
-  private selecting: boolean = false;
   private controllerModelFactory: XRControllerModelFactory;
-  readonly INDEX_0: VRControllerIndex = 0;
-  readonly INDEX_1: VRControllerIndex = 1;
 
   constructor(
+    private store: StoreService,
     private dolly: DollyCamera,
     private renderer: VRRenderer,
     private scene: Scene
@@ -31,47 +29,61 @@ export class VRControls {
   }
 
   createAllControllers() {
-    this.createController(this.INDEX_0);
-    this.createControllerGrip(this.INDEX_0);
-
-    if (!this.gazeAllReadyExists) {
-      this.createController(this.INDEX_1);
-      this.createControllerGrip(this.INDEX_1);
-    }
+    this.createControllerByIndex(VRControllerIndex.Right);
+    this.createControllerByIndex(VRControllerIndex.Left);
   }
 
-  onSelectStart() {
-    this.selecting = true;
+  private createControllerByIndex(index: VRControllerIndex): void {
+    this.createController(index);
+    this.createControllerGrip(index);
   }
 
-  onSelectEnd() {
-    this.selecting = false;
-  }
-
-  private createController(index: VRControllerIndex): any {
+  private createController(index: VRControllerIndex): void {
     const controller = this.renderer.xr.getController(index);
 
-    controller.addEventListener('selectstart', this.onSelectStart);
-    controller.addEventListener('selectend', this.onSelectEnd);
+    controller.addEventListener('selectstart', () => {
+      if (index === VRControllerIndex.Right) {
+        this.store.vrControllerRightSelectStart();
+      } else {
+        this.store.vrControllerLeftSelectStart();
+      }
+    });
+
+    controller.addEventListener('selectend', () => {
+      if (index === VRControllerIndex.Right) {
+        this.store.vrControllerRightSelectEnd();
+      } else {
+        this.store.vrControllerLeftSelectEnd();
+      }
+    });
 
     controller.addEventListener('connected', (event) => {
       controller.add(this.buildController(event));
+      if (index === VRControllerIndex.Right) {
+        this.store.vrControllerRightConnected();
+      } else {
+        this.store.vrControllerLeftConnected();
+      }
     });
 
     controller.addEventListener('disconnected', () => {
       controller.remove(controller.children[0]);
+      if (index === VRControllerIndex.Right) {
+        this.store.vrControllerRightDisconnected();
+      } else {
+        this.store.vrControllerLeftDisconnected();
+      }
     });
 
     this.scene.add(controller);
   }
 
   private buildController(event: any): Object3D {
-    const xrInputSource = event.data;
+    const targetRayMode = event.data && event.data.targetRayMode;
 
     let geometry, material;
 
-    if (xrInputSource.targetRayMode === 'tracked-pointer') {
-      console.log('build tracked-pointer');
+    if (targetRayMode === 'tracked-pointer') {
       geometry = new BufferGeometry();
 
       geometry.setAttribute(
@@ -93,9 +105,7 @@ export class VRControls {
     }
 
     // gaze
-    console.log('build gaze');
-    this.gazeAllReadyExists = true;
-    geometry = new RingGeometry(0.2, 10, 32).translate(0, 0, -10);
+    geometry = new RingGeometry(0.2, 0.5, 32).translate(0, 0, -1);
     material = new MeshBasicMaterial({ opacity: 0.5, transparent: true });
     return new Mesh(geometry, material);
   }

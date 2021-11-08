@@ -1,1 +1,4 @@
-export type VRControllerIndex = 0 | 1;
+export enum VRControllerIndex {
+  Right = 0,
+  Left = 1,
+}
