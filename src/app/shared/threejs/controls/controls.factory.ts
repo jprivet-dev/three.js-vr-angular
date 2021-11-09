@@ -2,7 +2,7 @@ import { DollyCamera } from '../cameras';
 import { LoopManager } from '../managers';
 import { FactoryControls } from '../models';
 import { VRRenderer } from '../renderers';
-import { Controls } from './controls';
+import { Controls } from './controls.model';
 
 export class ControlsFactory implements FactoryControls {
   constructor(private loop: LoopManager) {}

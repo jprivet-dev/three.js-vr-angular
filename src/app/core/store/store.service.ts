@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { VRControllerType } from '@shared/threejs';
 import { BehaviorSubject } from 'rxjs';
 import { Definition } from './store.model';
 
@@ -28,8 +29,8 @@ export class StoreService {
   public vrControllerLeftIsSelecting$ =
     this._vrControllerLeftIsSelecting.asObservable();
 
-  private _vrControllerSession = new BehaviorSubject<boolean>(false);
-  public vrControllerSession$ = this._vrControllerSession.asObservable();
+  private _vrSession = new BehaviorSubject<boolean>(false);
+  public vrSession$ = this._vrSession.asObservable();
 
   constructor() {}
 
@@ -86,12 +87,56 @@ export class StoreService {
 
   vrSessionStart() {
     this.log('vrSessionStart');
-    this._vrControllerSession.next(true);
+    this._vrSession.next(true);
   }
 
   vrSessionEnd() {
     this.log('vrSessionEnd');
-    this._vrControllerSession.next(false);
+    this._vrSession.next(false);
+  }
+
+  vrControllerConnectedByType(type: VRControllerType) {
+    switch (type) {
+      case VRControllerType.Right:
+        this.vrControllerRightConnected();
+        break
+      case VRControllerType.Left:
+        this.vrControllerLeftConnected();
+        break
+    }
+  }
+
+  vrControllerDisconnectedByType(type: VRControllerType) {
+    switch (type) {
+      case VRControllerType.Right:
+        this.vrControllerRightDisconnected();
+        break
+      case VRControllerType.Left:
+        this.vrControllerLeftDisconnected();
+        break
+    }
+  }
+
+  vrControllerSelectStartByType(type: VRControllerType) {
+    switch (type) {
+      case VRControllerType.Right:
+        this.vrControllerRightSelectStart();
+        break
+      case VRControllerType.Left:
+        this.vrControllerLeftSelectStart();
+        break
+    }
+  }
+
+  vrControllerSelectEndByType(type: VRControllerType) {
+    switch (type) {
+      case VRControllerType.Right:
+        this.vrControllerRightSelectEnd();
+        break
+      case VRControllerType.Left:
+        this.vrControllerLeftSelectEnd();
+        break
+    }
   }
 
   private log(label: string, value: any = null): void {

@@ -16,7 +16,7 @@ import {
   StarsFactory,
   SunFactory,
   UranusFactory,
-  VenusFactory, VRControlsFactory,
+  VenusFactory, VRControllerFactory,
   VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
@@ -56,45 +56,47 @@ export class PlanetsService {
     session.add(dolly);
 
     const controls = new ControlsFactory(loop).create(dolly, renderer);
-    const vrControls = new VRControlsFactory(this.store, loop).create(dolly, renderer, scene);
+    const vrControllerFactory = new VRControllerFactory(this.store, scene, renderer);
+    const controllerRight = vrControllerFactory.createRight();
+    const controllerLeft = vrControllerFactory.createLeft();
 
     const sun = new SunFactory(this.store).create();
     scene.add(sun);
 
     const mercury = new MercuryFactory(this.store, loop).create();
-    mercury.position.set(0, -3, offset);
+    mercury.position.set(1.5, -2, offset - 1);
     scene.add(mercury);
 
     const venus = new VenusFactory(this.store, loop).create();
-    venus.position.set(0, -1.5, offset - 4);
+    venus.position.set(-1.5, -2, offset - 1);
     scene.add(venus);
 
     const earth = new EarthFactory(this.store, loop).create();
-    earth.position.set(0, 0, offset - 8);
+    earth.position.set(1.5, 0, offset - 5);
     scene.add(earth);
 
     const moon = new MoonFactory(this.store, loop).create();
-    moon.position.set(2, 0, offset - 8);
+    moon.position.set(earth.position.x + 2, 0, earth.position.z);
     scene.add(moon);
 
     const mars = new MarsFactory(this.store, loop).create();
-    mars.position.set(0, 1.5, offset - 12);
+    mars.position.set(-1.5, 0, offset - 5);
     scene.add(mars);
 
     const jupiter = new JupiterFactory(this.store, loop).create();
-    jupiter.position.set(-15, 0, offset - 10);
+    jupiter.position.set(-17, 0, offset - 5);
     scene.add(jupiter);
 
     const saturn = new SaturnFactory(this.store, loop).create();
-    saturn.position.set(15, 0, offset - 10);
+    saturn.position.set(17, 0, offset - 5);
     scene.add(saturn);
 
     const uranus = new UranusFactory(this.store, loop).create();
-    uranus.position.set(0, 5, offset - 20);
+    uranus.position.set(-5, 3, offset - 18);
     scene.add(uranus);
 
     const neptune = new NeptuneFactory(this.store, loop).create();
-    neptune.position.set(-10, -5, offset + 10);
+    neptune.position.set(5, 5, offset - 18);
     scene.add(neptune);
 
     loop.start();
