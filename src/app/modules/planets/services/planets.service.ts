@@ -14,11 +14,10 @@ import {
 import { Container } from '@shared/threejs/models';
 import {
   Earth,
-  JupiterFactory,
+  Jupiter,
   Mars,
   Mercury,
   Moon,
-  NeptuneFactory,
   Saturn,
   StarsFactory,
   SunFactory,
@@ -111,10 +110,10 @@ export class PlanetsService {
     scene.add(mars.mesh);
     animation.add(mars);
 
-    // const jupiter = new JupiterFactory(this.store).create();
-    // jupiter.position.set(-17, 0, offset - 5);
-    // scene.add(jupiter);
-    // animation.add(jupiter.getAnimation());
+    const jupiter = new Jupiter(this.store);
+    jupiter.mesh.position.set(-17, 0, offset - 5);
+    scene.add(jupiter.mesh);
+    animation.add(jupiter);
 
     const saturn = new Saturn(this.store);
     saturn.mesh.position.set(17, 0, offset - 5);
