@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import {
-  AnimationManager,
-  Container,
-  ControlsFactory,
   DollyCameraAnimation,
   DollyCameraFactory,
   DollyCameraParams,
+} from '@shared/threejs/cameras';
+import { ControlsFactory, VRControllerFactory } from '@shared/threejs/controls';
+import {
+  AnimationManager,
+  VRSessionManager,
+  WindowResizeManager,
+} from '@shared/threejs/managers';
+import { Container } from '@shared/threejs/models';
+import {
   Earth,
   JupiterFactory,
-  MarsFactory,
+  Mars,
   Mercury,
   Moon,
   NeptuneFactory,
@@ -18,11 +24,8 @@ import {
   SunFactory,
   UranusFactory,
   Venus,
-  VRControllerFactory,
-  VRRendererFactory,
-  VRSessionManager,
-  WindowResizeManager,
-} from '@shared/threejs';
+} from '@shared/threejs/objects3d';
+import { VRRendererFactory } from '@shared/threejs/renderers';
 import { planetsDollyCameraParams } from './planets.params';
 
 @Injectable({
@@ -103,10 +106,10 @@ export class PlanetsService {
     scene.add(moon.mesh);
     animation.add(moon);
 
-    const mars = new MarsFactory(this.store).create();
-    mars.position.set(-1.5, 0, offset - 5);
-    scene.add(mars);
-    animation.add(mars.getAnimation());
+    const mars = new Mars(this.store);
+    mars.mesh.position.set(-1.5, 0, offset - 5);
+    scene.add(mars.mesh);
+    animation.add(mars);
 
     const jupiter = new JupiterFactory(this.store).create();
     jupiter.position.set(-17, 0, offset - 5);

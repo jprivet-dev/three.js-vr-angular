@@ -1,13 +1,21 @@
 import { StoreService } from '@core/store/store.service';
-import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
-import { FactoryObject3D } from '../../../models';
+import { AxialTilt, RadiusRatioEarth } from '../../../constants';
+import { SCOBuilder, SphericalCelestialObject } from '../../builders';
+import { ComplexObject3D } from '../../models/complex-object-3d.model';
 
-export class MarsFactory implements FactoryObject3D {
-  constructor(private store: StoreService) {}
+export class Mars implements ComplexObject3D {
+  mesh: SphericalCelestialObject;
 
-  create(): SphericalCelestialObject {
-    return this.createMars();
+  constructor(private store: StoreService) {
+    this.mesh = this.createMars();
+  }
+
+  start() {}
+
+  stop() {}
+
+  animate(delta: number) {
+    this.mesh.rotateOrbitalAxis(delta, 5);
   }
 
   private createMars(): SphericalCelestialObject {
