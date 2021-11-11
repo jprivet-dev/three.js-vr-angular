@@ -4,10 +4,13 @@ export interface HasAnimation {
   getAnimation(): Animation;
 }
 
-export interface Animation {
+export interface AnimationControls extends Animation {
   start(): void;
 
   stop(): void;
+}
 
+
+export interface Animation {
   animate(delta: number): void;
 }

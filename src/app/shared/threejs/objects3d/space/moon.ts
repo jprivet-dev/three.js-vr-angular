@@ -10,10 +10,6 @@ export class Moon implements ComplexObject3D {
     this.mesh = this.createMoon();
   }
 
-  start() {}
-
-  stop() {}
-
   animate(delta: number) {
     this.mesh.rotateOrbitalAxis(delta, 5);
   }

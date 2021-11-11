@@ -10,10 +10,6 @@ export class Venus implements ComplexObject3D {
     this.mesh = this.createVenus();
   }
 
-  start() {}
-
-  stop() {}
-
   animate(delta: number) {
     this.mesh.rotateOrbitalAxis(delta, 5);
   }

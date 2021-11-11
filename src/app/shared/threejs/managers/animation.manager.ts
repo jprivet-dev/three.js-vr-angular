@@ -1,8 +1,8 @@
 import { Clock } from 'three';
 import { VRRenderer } from '../renderers';
-import { Animation } from './animation.model';
+import { Animation, AnimationControls } from './animation.model';
 
-export class AnimationManager implements Animation {
+export class AnimationManager implements AnimationControls {
   private clock = new Clock();
   private list: Animation[] = [];
 

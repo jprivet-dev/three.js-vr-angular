@@ -1,8 +1,8 @@
 import { Vector3 } from 'three';
-import { Animation } from '../../managers';
+import { AnimationControls } from '../../managers';
 import { DollyCamera } from './dolly-camera';
 
-export class DollyCameraAnimationOLD implements Animation {
+export class DollyCameraAnimationOLD implements AnimationControls {
   private distanteBySecond: number = 0.1;
   private move: boolean = false;
   private direction: number = 0;

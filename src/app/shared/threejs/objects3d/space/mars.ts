@@ -10,10 +10,6 @@ export class Mars implements ComplexObject3D {
     this.mesh = this.createMars();
   }
 
-  start() {}
-
-  stop() {}
-
   animate(delta: number) {
     this.mesh.rotateOrbitalAxis(delta, 5);
   }

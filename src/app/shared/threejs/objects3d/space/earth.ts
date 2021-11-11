@@ -13,10 +13,6 @@ export class Earth implements ComplexObject3D {
     this.mesh.add(this.clouds);
   }
 
-  start() {}
-
-  stop() {}
-
   animate(delta: number) {
     this.mesh.rotateOrbitalAxis(delta, 5);
     this.clouds.rotateOrbitalAxis(delta, 4);
@@ -26,7 +22,6 @@ export class Earth implements ComplexObject3D {
     return new SCOBuilder(this.store, 'earth')
       .setSize(RadiusRatioEarth.Earth)
       .setAxialTilt(AxialTilt.Earth)
-      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         bumpScale: 0.01,
@@ -60,7 +55,6 @@ export class Earth implements ComplexObject3D {
         opacity: 0.9,
         transparent: true,
       })
-      .setAxialTiltDegreesAnimation(4)
       .setTexturesPath('assets/threejs/textures/space/clouds/')
       .setTexturesByDefinition({
         alphaMap: {

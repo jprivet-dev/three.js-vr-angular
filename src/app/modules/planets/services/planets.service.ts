@@ -19,7 +19,7 @@ import {
   Mercury,
   Moon,
   NeptuneFactory,
-  SaturnFactory,
+  Saturn,
   StarsFactory,
   SunFactory,
   UranusFactory,
@@ -116,10 +116,10 @@ export class PlanetsService {
     scene.add(jupiter);
     animation.add(jupiter.getAnimation());
 
-    const saturn = new SaturnFactory(this.store).create();
-    saturn.position.set(17, 0, offset - 5);
-    scene.add(saturn);
-    animation.add(saturn.getAnimation());
+    const saturn = new Saturn(this.store);
+    saturn.mesh.position.set(17, 0, offset - 5);
+    scene.add(saturn.mesh);
+    animation.add(saturn);
 
     const uranus = new UranusFactory(this.store).create();
     uranus.position.set(-5, 3, offset - 18);

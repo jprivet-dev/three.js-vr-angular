@@ -11,10 +11,6 @@ export class Mercury implements ComplexObject3D {
     this.mesh = this.createMercury();
   }
 
-  start() {}
-
-  stop() {}
-
   animate(delta: number) {
     this.mesh.rotateOrbitalAxis(delta, 5);
   }

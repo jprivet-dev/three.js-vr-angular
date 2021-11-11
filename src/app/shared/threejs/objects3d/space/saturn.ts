@@ -2,24 +2,22 @@ import { StoreService } from '@core/store/store.service';
 import { DoubleSide, Mesh, RingBufferGeometry } from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { degToRad } from 'three/src/math/MathUtils';
-import {
-  AxialTilt,
-  RadiusRatioEarth,
-  SaturnRingsRatioEarth,
-} from '../../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
-import { BasicMaterialTextureByDefinitionLoader } from '../../../loaders';
-import { FactoryObject3D } from '../../../models';
+import { AxialTilt, RadiusRatioEarth, SaturnRingsRatioEarth } from '../../../constants';
+import { SCOBuilder, SphericalCelestialObject } from '../../builders';
+import { BasicMaterialTextureByDefinitionLoader } from '../../loaders';
+import { ComplexObject3D } from '../../models/complex-object-3d.model';
 
-export class SaturnFactory implements FactoryObject3D {
-  constructor(private store: StoreService) {}
+export class Saturn implements ComplexObject3D {
+  mesh: SphericalCelestialObject;
 
-  create(): SphericalCelestialObject {
-    const saturn = this.createSaturn();
+  constructor(private store: StoreService) {
+    this.mesh = this.createSaturn();
     const rings = this.createRings();
-    saturn.add(rings);
+    this.mesh.add(rings);
+  }
 
-    return saturn;
+  animate(delta: number) {
+    this.mesh.rotateOrbitalAxis(delta, 5);
   }
 
   private createSaturn(): SphericalCelestialObject {
@@ -75,7 +73,7 @@ export class SaturnFactory implements FactoryObject3D {
     });
 
     const mesh = new Mesh(geometry, material);
-    mesh.rotateX(degToRad(90));
+    mesh.rotateX(degToRad(90)); // TODO: Maths.PI
 
     return mesh;
   }
