@@ -5,7 +5,6 @@ import {
   PhongMaterialTextureByDefinition,
   PhongMaterialTextureByDefinitionLoader,
 } from '../../loaders';
-import { SCOAnimation } from './spherical-celestial-object-animation';
 import {
   SCOGeometry,
   SphericalCelestialObject,
@@ -14,7 +13,6 @@ import {
 export class SCOBuilder {
   private size!: number;
   private axialTilt!: number;
-  private axialTiltDegreesAnimation!: number;
   private materialParameters!: MeshPhongMaterialParameters;
   private texturesPath!: string;
   private texturesByDefinition!: PhongMaterialTextureByDefinition;
@@ -28,11 +26,6 @@ export class SCOBuilder {
 
   setAxialTilt(degrees: number): this {
     this.axialTilt = degrees;
-    return this;
-  }
-
-  setAxialTiltDegreesAnimation(degrees: number): this {
-    this.axialTiltDegreesAnimation = degrees;
     return this;
   }
 
@@ -69,14 +62,6 @@ export class SCOBuilder {
 
     if (this.axialTilt) {
       object.setAxialTilt(this.axialTilt);
-    }
-
-    if (this.axialTiltDegreesAnimation) {
-      const animation = new SCOAnimation(
-        object,
-        this.axialTiltDegreesAnimation
-      );
-      object.setAnimation(animation);
     }
 
     return object;

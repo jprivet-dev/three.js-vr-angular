@@ -24,7 +24,6 @@ export class Saturn implements ComplexObject3D {
     const saturn = new SCOBuilder(this.store, 'saturn')
       .setSize(RadiusRatioEarth.Saturn)
       .setAxialTilt(AxialTilt.Saturn)
-      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         shininess: 0,

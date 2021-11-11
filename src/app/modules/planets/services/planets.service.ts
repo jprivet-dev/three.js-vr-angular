@@ -22,7 +22,7 @@ import {
   Saturn,
   StarsFactory,
   SunFactory,
-  UranusFactory,
+  Uranus,
   Venus,
 } from '@shared/threejs/objects3d';
 import { VRRendererFactory } from '@shared/threejs/renderers';
@@ -111,25 +111,25 @@ export class PlanetsService {
     scene.add(mars.mesh);
     animation.add(mars);
 
-    const jupiter = new JupiterFactory(this.store).create();
-    jupiter.position.set(-17, 0, offset - 5);
-    scene.add(jupiter);
-    animation.add(jupiter.getAnimation());
+    // const jupiter = new JupiterFactory(this.store).create();
+    // jupiter.position.set(-17, 0, offset - 5);
+    // scene.add(jupiter);
+    // animation.add(jupiter.getAnimation());
 
     const saturn = new Saturn(this.store);
     saturn.mesh.position.set(17, 0, offset - 5);
     scene.add(saturn.mesh);
     animation.add(saturn);
 
-    const uranus = new UranusFactory(this.store).create();
-    uranus.position.set(-5, 3, offset - 18);
-    scene.add(uranus);
-    animation.add(uranus.getAnimation());
+    const uranus = new Uranus(this.store);
+    uranus.mesh.position.set(-5, 3, offset - 18);
+    scene.add(uranus.mesh);
+    animation.add(uranus);
 
-    const neptune = new NeptuneFactory(this.store).create();
-    neptune.position.set(5, 5, offset - 18);
-    scene.add(neptune);
-    animation.add(neptune.getAnimation());
+    // const neptune = new NeptuneFactory(this.store).create();
+    // neptune.position.set(5, 5, offset - 18);
+    // scene.add(neptune);
+    // animation.add(neptune.getAnimation());
 
     animation.start();
     resize.start();

@@ -14,7 +14,6 @@ export class JupiterFactory implements FactoryObject3D {
     return new SCOBuilder(this.store, 'jupiter')
       .setSize(RadiusRatioEarth.Jupiter)
       .setAxialTilt(AxialTilt.Jupiter)
-      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         shininess: 0,

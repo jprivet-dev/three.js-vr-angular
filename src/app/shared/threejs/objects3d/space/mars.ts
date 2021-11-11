@@ -18,7 +18,6 @@ export class Mars implements ComplexObject3D {
     return new SCOBuilder(this.store, 'mars')
       .setSize(RadiusRatioEarth.Mars)
       .setAxialTilt(AxialTilt.Mars)
-      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         shininess: 0,

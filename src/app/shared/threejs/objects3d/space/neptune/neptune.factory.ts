@@ -14,7 +14,6 @@ export class NeptuneFactory implements FactoryObject3D {
     return new SCOBuilder(this.store, 'neptune')
       .setSize(RadiusRatioEarth.Neptune)
       .setAxialTilt(AxialTilt.Neptune)
-      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         shininess: 0,

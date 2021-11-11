@@ -1,20 +1,23 @@
 import { StoreService } from '@core/store/store.service';
-import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
-import { FactoryObject3D } from '../../../models';
+import { AxialTilt, RadiusRatioEarth } from '../../../constants';
+import { SCOBuilder, SphericalCelestialObject } from '../../builders';
+import { ComplexObject3D } from '../../models/complex-object-3d.model';
 
-export class UranusFactory implements FactoryObject3D {
-  constructor(private store: StoreService) {}
+export class Uranus implements ComplexObject3D {
+  mesh: SphericalCelestialObject;
 
-  create(): SphericalCelestialObject {
-    return this.createUranus();
+  constructor(private store: StoreService) {
+    this.mesh = this.createUranus();
+  }
+
+  animate(delta: number) {
+    this.mesh.rotateOrbitalAxis(delta, 5);
   }
 
   private createUranus(): SphericalCelestialObject {
     return new SCOBuilder(this.store, 'uranus')
       .setSize(RadiusRatioEarth.Uranus)
       .setAxialTilt(AxialTilt.Uranus)
-      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         shininess: 0,
