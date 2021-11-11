@@ -11,7 +11,7 @@ import {
   JupiterFactory,
   MarsFactory,
   Mercury,
-  MoonFactory,
+  Moon,
   NeptuneFactory,
   SaturnFactory,
   StarsFactory,
@@ -98,10 +98,10 @@ export class PlanetsService {
     scene.add(earth.mesh);
     animation.add(earth);
 
-    const moon = new MoonFactory(this.store).create();
-    moon.position.set(earth.mesh.position.x + 2, 0, earth.mesh.position.z);
-    scene.add(moon);
-    animation.add(moon.getAnimation());
+    const moon = new Moon(this.store);
+    moon.mesh.position.set(earth.mesh.position.x + 2, 0, earth.mesh.position.z);
+    scene.add(moon.mesh);
+    animation.add(moon);
 
     const mars = new MarsFactory(this.store).create();
     mars.position.set(-1.5, 0, offset - 5);

@@ -1,20 +1,27 @@
 import { StoreService } from '@core/store/store.service';
-import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
-import { FactoryObject3D } from '../../../models';
+import { AxialTilt, RadiusRatioEarth } from '../../../constants';
+import { SCOBuilder, SphericalCelestialObject } from '../../builders';
+import { ComplexObject3D } from '../../models/complex-object-3d.model';
 
-export class MoonFactory implements FactoryObject3D {
-  constructor(private store: StoreService) {}
+export class Moon implements ComplexObject3D {
+  mesh: SphericalCelestialObject;
 
-  create(): SphericalCelestialObject {
-    return this.createMoon();
+  constructor(private store: StoreService) {
+    this.mesh = this.createMoon();
+  }
+
+  start() {}
+
+  stop() {}
+
+  animate(delta: number) {
+    this.mesh.rotateOrbitalAxis(delta, 5);
   }
 
   private createMoon(): SphericalCelestialObject {
     return new SCOBuilder(this.store, 'moon')
       .setSize(RadiusRatioEarth.Moon)
       .setAxialTilt(AxialTilt.Moon)
-      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         bumpScale: 0.005,
