@@ -2,9 +2,10 @@ import { StoreService } from '@core/store/store.service';
 import { Scene } from 'three';
 import { FactoryVRController } from '../../models';
 import { VRRenderer } from '../../renderers';
-import { VRController, VRControllerType } from './vr-controller.model';
+import { VRController } from './vr-controller';
+import { VRControllerType } from './vr-controller.model';
 
-export class VRControllerFactory implements FactoryVRController{
+export class VRControllerFactory implements FactoryVRController {
   constructor(
     private store: StoreService,
     private scene: Scene,

@@ -1,27 +1,32 @@
 import { StoreService } from '@core/store/store.service';
-import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
-import { LoopManager } from '../../../managers';
-import { FactoryObject3D } from '../../../models';
+import { AxialTilt, RadiusRatioEarth } from '../../../constants';
+import { SCOBuilder, SphericalCelestialObject } from '../../builders';
+import { ComplexObject3D } from '../../models/complex-object-3d.model';
 
-export class EarthFactory implements FactoryObject3D {
-  constructor(private store: StoreService, private loop: LoopManager) {}
+export class Earth implements ComplexObject3D {
+  mesh: SphericalCelestialObject;
+  clouds: SphericalCelestialObject;
 
-  create(): SphericalCelestialObject {
-    const earth = this.createEarth();
-    const clouds = this.createClouds();
-    earth.add(clouds);
+  constructor(private store: StoreService) {
+    this.mesh = this.createEarth();
+    this.clouds = this.createClouds();
+    this.mesh.add(this.clouds);
+  }
 
-    this.loop.add(earth);
-    this.loop.add(clouds);
+  start() {}
 
-    return earth;
+  stop() {}
+
+  animate(delta: number) {
+    this.mesh.rotateOrbitalAxis(delta, 5);
+    this.clouds.rotateOrbitalAxis(delta, 4);
   }
 
   private createEarth(): SphericalCelestialObject {
-    const earth = new SCOBuilder(this.store, 'earth')
+    return new SCOBuilder(this.store, 'earth')
       .setSize(RadiusRatioEarth.Earth)
       .setAxialTilt(AxialTilt.Earth)
+      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         bumpScale: 0.01,
@@ -44,16 +49,10 @@ export class EarthFactory implements FactoryObject3D {
         },
       })
       .build();
-
-    earth.setLoopCallback((delta) => {
-      earth.rotateOrbitalAxis(delta, 5);
-    });
-
-    return earth;
   }
 
   private createClouds(): SphericalCelestialObject {
-    const clouds = new SCOBuilder(this.store, 'clouds')
+    return new SCOBuilder(this.store, 'clouds')
       .setSize(RadiusRatioEarth.Earth + 0.005)
       .setMaterialParameters({
         wireframe: false,
@@ -61,6 +60,7 @@ export class EarthFactory implements FactoryObject3D {
         opacity: 0.9,
         transparent: true,
       })
+      .setAxialTiltDegreesAnimation(4)
       .setTexturesPath('assets/threejs/textures/space/clouds/')
       .setTexturesByDefinition({
         alphaMap: {
@@ -69,11 +69,5 @@ export class EarthFactory implements FactoryObject3D {
         },
       })
       .build();
-
-    clouds.setLoopCallback((delta) => {
-      clouds.rotateOrbitalAxis(delta, 4);
-    });
-
-    return clouds;
   }
 }

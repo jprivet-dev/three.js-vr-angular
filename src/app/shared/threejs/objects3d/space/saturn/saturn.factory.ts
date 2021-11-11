@@ -9,18 +9,15 @@ import {
 } from '../../../../constants';
 import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
 import { BasicMaterialTextureByDefinitionLoader } from '../../../loaders';
-import { LoopManager } from '../../../managers';
 import { FactoryObject3D } from '../../../models';
 
 export class SaturnFactory implements FactoryObject3D {
-  constructor(private store: StoreService, private loop: LoopManager) {}
+  constructor(private store: StoreService) {}
 
   create(): SphericalCelestialObject {
     const saturn = this.createSaturn();
     const rings = this.createRings();
     saturn.add(rings);
-
-    this.loop.add(saturn);
 
     return saturn;
   }
@@ -29,6 +26,7 @@ export class SaturnFactory implements FactoryObject3D {
     const saturn = new SCOBuilder(this.store, 'saturn')
       .setSize(RadiusRatioEarth.Saturn)
       .setAxialTilt(AxialTilt.Saturn)
+      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         shininess: 0,
@@ -41,10 +39,6 @@ export class SaturnFactory implements FactoryObject3D {
         },
       })
       .build();
-
-    saturn.setLoopCallback((delta) => {
-      saturn.rotateOrbitalAxis(delta, 5);
-    });
 
     saturn.rotateX(degToRad(20));
 

@@ -1,4 +1,4 @@
-import { Mesh, MeshPhongMaterial, SphereGeometry } from 'three';
+import { Mesh, SphereGeometry } from 'three';
 import { degToRad } from 'three/src/math/MathUtils';
 
 export class Planet extends Mesh {
@@ -6,8 +6,8 @@ export class Planet extends Mesh {
     this.rotation.set(0, 0, degToRad(degrees));
   }
 
-  protected rotateOrbitalAxis(seconds: number, degreesPerSecond: number): void {
-    this.geometry.rotateY(degToRad(seconds * degreesPerSecond));
+  protected rotateOrbitalAxis(seconds: number, degrees: number): void {
+    this.geometry.rotateY(degToRad(seconds * degrees));
   }
 }
 

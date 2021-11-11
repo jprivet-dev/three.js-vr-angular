@@ -28,4 +28,4 @@ export const earthDollyCameraParams: DollyCameraParams = {
       z: 0,
     },
   },
-}
+};

@@ -1,7 +1,7 @@
 import { StoreService } from '@core/store/store.service';
 import { FactoryObject3D } from '../../../models';
-import { Stars } from './stars.model';
 import { StarsTextureLoader } from './stars-texture.loader';
+import { Stars } from './stars.model';
 
 export class StarsFactory implements FactoryObject3D {
   constructor(private store: StoreService) {}

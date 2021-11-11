@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import {
+  AnimationManager,
   Container,
   ControlsFactory,
   DollyCameraFactory,
   DollyCameraParams,
-  EarthFactory,
-  LoopManager,
   MoonFactory,
   StarsFactory,
   SunFactory,
@@ -42,24 +41,27 @@ export class EarthService {
     const renderer = new VRRendererFactory(container).create(scene, dolly, {
       antialias,
     });
-    const loop = new LoopManager(renderer);
+
+    const animation = new AnimationManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
     const session = new VRSessionManager(this.store, renderer);
     session.add(dolly);
 
-    const controls = new ControlsFactory(loop).create(dolly, renderer);
+    const controls = new ControlsFactory().create(dolly, renderer);
+    animation.add(controls);
 
     const sun = new SunFactory(this.store).create();
     scene.add(sun);
 
-    const earth = new EarthFactory(this.store, loop).create();
-    scene.add(earth);
+    // const earth = new EarthFactory(this.store, animation).create();
+    // scene.add(earth);
 
-    const moon = new MoonFactory(this.store, loop).create();
+    const moon = new MoonFactory(this.store).create();
     moon.position.set(2, 0, 0);
     scene.add(moon);
+    animation.add(moon.getAnimation());
 
-    loop.start();
+    animation.start();
     resize.start();
     session.start();
   }

@@ -1,24 +1,20 @@
 import { StoreService } from '@core/store/store.service';
 import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
 import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
-import { LoopManager } from '../../../managers';
 import { FactoryObject3D } from '../../../models';
 
 export class NeptuneFactory implements FactoryObject3D {
-  constructor(private store: StoreService, private loop: LoopManager) {}
+  constructor(private store: StoreService) {}
 
   create(): SphericalCelestialObject {
-    const neptune = this.createNeptune();
-
-    this.loop.add(neptune);
-
-    return neptune;
+    return this.createNeptune();
   }
 
   private createNeptune(): SphericalCelestialObject {
-    const neptune = new SCOBuilder(this.store, 'neptune')
+    return new SCOBuilder(this.store, 'neptune')
       .setSize(RadiusRatioEarth.Neptune)
       .setAxialTilt(AxialTilt.Neptune)
+      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         shininess: 0,
@@ -31,11 +27,5 @@ export class NeptuneFactory implements FactoryObject3D {
         },
       })
       .build();
-
-    neptune.setLoopCallback((delta) => {
-      neptune.rotateOrbitalAxis(delta, 5);
-    });
-
-    return neptune;
   }
 }

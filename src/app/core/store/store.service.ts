@@ -99,10 +99,10 @@ export class StoreService {
     switch (type) {
       case VRControllerType.Right:
         this.vrControllerRightConnected();
-        break
+        break;
       case VRControllerType.Left:
         this.vrControllerLeftConnected();
-        break
+        break;
     }
   }
 
@@ -110,10 +110,10 @@ export class StoreService {
     switch (type) {
       case VRControllerType.Right:
         this.vrControllerRightDisconnected();
-        break
+        break;
       case VRControllerType.Left:
         this.vrControllerLeftDisconnected();
-        break
+        break;
     }
   }
 
@@ -121,10 +121,10 @@ export class StoreService {
     switch (type) {
       case VRControllerType.Right:
         this.vrControllerRightSelectStart();
-        break
+        break;
       case VRControllerType.Left:
         this.vrControllerLeftSelectStart();
-        break
+        break;
     }
   }
 
@@ -132,10 +132,10 @@ export class StoreService {
     switch (type) {
       case VRControllerType.Right:
         this.vrControllerRightSelectEnd();
-        break
+        break;
       case VRControllerType.Left:
         this.vrControllerLeftSelectEnd();
-        break
+        break;
     }
   }
 

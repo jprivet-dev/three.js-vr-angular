@@ -28,4 +28,4 @@ export const planetsDollyCameraParams: DollyCameraParams = {
       z: 0,
     },
   },
-}
+};

@@ -1,6 +1,6 @@
 const ratio = (value: number): number => {
   return value / Radius.Earth;
-}
+};
 
 export enum AxialTilt { // degrees
   Sun = 7.25,

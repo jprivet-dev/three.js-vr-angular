@@ -2,7 +2,8 @@ import { Definition } from '@core/store/store.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
 import { TextureByDefinition } from '../models';
 import {
-  PhongMaterialTextureByDefinition, PhongMaterialTexturesByDefinitionKeys
+  PhongMaterialTextureByDefinition,
+  PhongMaterialTexturesByDefinitionKeys,
 } from './phong-material-texture-by-definition.model';
 
 export class PhongMaterialTextureByDefinitionLoader

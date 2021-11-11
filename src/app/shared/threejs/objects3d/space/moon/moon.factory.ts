@@ -1,24 +1,20 @@
 import { StoreService } from '@core/store/store.service';
 import { AxialTilt, RadiusRatioEarth } from '../../../../constants';
 import { SCOBuilder, SphericalCelestialObject } from '../../../builders';
-import { LoopManager } from '../../../managers';
 import { FactoryObject3D } from '../../../models';
 
 export class MoonFactory implements FactoryObject3D {
-  constructor(private store: StoreService, private loop: LoopManager) {}
+  constructor(private store: StoreService) {}
 
   create(): SphericalCelestialObject {
-    const moon = this.createMoon();
-
-    this.loop.add(moon);
-
-    return moon;
+    return this.createMoon();
   }
 
   private createMoon(): SphericalCelestialObject {
-    const moon = new SCOBuilder(this.store, 'moon')
+    return new SCOBuilder(this.store, 'moon')
       .setSize(RadiusRatioEarth.Moon)
       .setAxialTilt(AxialTilt.Moon)
+      .setAxialTiltDegreesAnimation(5)
       .setMaterialParameters({
         wireframe: false,
         bumpScale: 0.005,
@@ -36,11 +32,5 @@ export class MoonFactory implements FactoryObject3D {
         },
       })
       .build();
-
-    moon.setLoopCallback((delta) => {
-      moon.rotateOrbitalAxis(delta, 5);
-    });
-
-    return moon;
   }
 }

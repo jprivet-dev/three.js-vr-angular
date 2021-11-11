@@ -1,10 +1,15 @@
-import { SphereGeometry } from 'three';
+import { Mesh, SphereGeometry } from 'three';
 import { BufferGeometry } from 'three/src/core/BufferGeometry';
 import { Material } from 'three/src/materials/Material';
 import { degToRad } from 'three/src/math/MathUtils';
-import { MeshWithCallback } from '../../models';
+import { Animation, HasAnimation } from '../../managers';
 
-export class SphericalCelestialObject extends MeshWithCallback implements SCOAxialTilt {
+export class SphericalCelestialObject
+  extends Mesh
+  implements SCOAxialTilt, HasAnimation
+{
+  private animation!: Animation;
+
   constructor(geometry: BufferGeometry, material: Material) {
     super(geometry, material);
   }
@@ -13,15 +18,23 @@ export class SphericalCelestialObject extends MeshWithCallback implements SCOAxi
     this.rotation.set(0, 0, degToRad(degrees));
   }
 
-  rotateOrbitalAxis(seconds: number, degreesPerSecond: number): void {
-    this.geometry.rotateY(degToRad(seconds * degreesPerSecond));
+  rotateOrbitalAxis(delta: number, degrees: number): void {
+    this.geometry.rotateY(degToRad(delta * degrees));
+  }
+
+  setAnimation(animation: Animation): void {
+    this.animation = animation;
+  }
+
+  getAnimation(): Animation {
+    return this.animation;
   }
 }
 
 export interface SCOAxialTilt {
   setAxialTilt(degrees: number): void;
 
-  rotateOrbitalAxis(seconds: number, degreesPerSecond: number): void;
+  rotateOrbitalAxis(delta: number, degrees: number): void;
 }
 
 export class SCOGeometry extends SphereGeometry {

@@ -13,6 +13,7 @@ export interface FactoryControls {
 
 export interface FactoryVRController {
   createRight(): VRController;
+
   createLeft(): VRController;
 }
 
