@@ -18,6 +18,7 @@ import {
   Mars,
   Mercury,
   Moon,
+  Neptune,
   Saturn,
   StarsFactory,
   SunFactory,
@@ -125,10 +126,10 @@ export class PlanetsService {
     scene.add(uranus.mesh);
     animation.add(uranus);
 
-    // const neptune = new NeptuneFactory(this.store).create();
-    // neptune.position.set(5, 5, offset - 18);
-    // scene.add(neptune);
-    // animation.add(neptune.getAnimation());
+    const neptune = new Neptune(this.store);
+    neptune.mesh.position.set(5, 5, offset - 18);
+    scene.add(neptune.mesh);
+    animation.add(neptune);
 
     animation.start();
     resize.start();
