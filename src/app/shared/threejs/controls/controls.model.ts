@@ -1,5 +1,7 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Animation, DollyCamera, VRRenderer } from '../index';
+import { DollyCamera } from '../cameras';
+import { Animation } from '../managers';
+import { VRRenderer } from '../renderers';
 
 export class Controls extends OrbitControls implements Animation {
   constructor(private dolly: DollyCamera, private renderer: VRRenderer) {

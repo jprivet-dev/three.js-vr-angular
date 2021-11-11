@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
+import { DollyCameraFactory, DollyCameraParams } from '@shared/threejs/cameras';
+import { ControlsFactory } from '@shared/threejs/controls';
 import {
   AnimationManager,
-  Container,
-  ControlsFactory,
-  DollyCameraFactory,
-  DollyCameraParams,
-  MoonFactory,
-  StarsFactory,
-  SunFactory,
-  VRRendererFactory,
   VRSessionManager,
   WindowResizeManager,
-} from '@shared/threejs';
+} from '@shared/threejs/managers';
+import { Container } from '@shared/threejs/models';
+import {
+  Earth,
+  Moon,
+  StarsFactory,
+  SunFactory,
+} from '@shared/threejs/objects3d';
+import { VRRendererFactory } from '@shared/threejs/renderers';
 import { earthDollyCameraParams } from './earth.params';
 
 @Injectable({
@@ -53,13 +55,14 @@ export class EarthService {
     const sun = new SunFactory(this.store).create();
     scene.add(sun);
 
-    // const earth = new EarthFactory(this.store, animation).create();
-    // scene.add(earth);
+    const earth = new Earth(this.store);
+    scene.add(earth.mesh);
+    animation.add(earth);
 
-    const moon = new MoonFactory(this.store).create();
-    moon.position.set(2, 0, 0);
-    scene.add(moon);
-    animation.add(moon.getAnimation());
+    const moon = new Moon(this.store);
+    moon.mesh.position.set(2, 0, 0);
+    scene.add(moon.mesh);
+    animation.add(moon);
 
     animation.start();
     resize.start();

@@ -1,4 +1,7 @@
-import { Container, DollyCamera, VRRenderer, WindowResize } from '../index';
+import { DollyCamera } from '../cameras';
+import { Container } from '../models';
+import { VRRenderer } from '../renderers';
+import { WindowResize } from './window-resize.model';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];

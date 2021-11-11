@@ -1,5 +1,6 @@
 import { Clock } from 'three';
-import { Animation, VRRenderer } from '../index';
+import { VRRenderer } from '../renderers';
+import { Animation } from './animation.model';
 
 export class AnimationManager implements Animation {
   private clock = new Clock();

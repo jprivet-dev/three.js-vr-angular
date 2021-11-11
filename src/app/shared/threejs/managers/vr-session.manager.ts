@@ -1,5 +1,5 @@
 import { StoreService } from '@core/store/store.service';
-import { VRRenderer } from '../index';
+import { VRRenderer } from '../renderers';
 import { VRSession } from './vr-session.model';
 
 export class VRSessionManager implements VRSession {

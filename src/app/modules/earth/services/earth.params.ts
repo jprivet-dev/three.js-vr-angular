@@ -1,4 +1,4 @@
-import { DollyCameraParams } from '@shared/threejs';
+import { DollyCameraParams } from '@shared/threejs/cameras';
 
 export const earthDollyCameraParams: DollyCameraParams = {
   fov: 80,
