@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import {
+  DollyCamera,
   DollyCameraAnimation,
-  DollyCameraFactory,
   DollyCameraParams,
 } from '@shared/threejs/cameras';
-import { ControlsFactory, VRControllerFactory } from '@shared/threejs/controls';
+import { Container } from '@shared/threejs/containers';
+import { VRControllerFactory } from '@shared/threejs/controls';
+import { SunLight } from '@shared/threejs/lights';
 import {
-  AnimationManager,
+  LoopManager,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs/managers';
-import { Container } from '@shared/threejs/models';
 import {
   Earth,
   Jupiter,
@@ -20,12 +21,12 @@ import {
   Moon,
   Neptune,
   Saturn,
-  StarsFactory,
-  SunFactory,
   Uranus,
   Venus,
 } from '@shared/threejs/objects3d';
-import { VRRendererFactory } from '@shared/threejs/renderers';
+import { VRRenderer } from '@shared/threejs/renderers';
+import { StarsScene } from '@shared/threejs/scenes';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { planetsDollyCameraParams } from './planets.params';
 
 @Injectable({
@@ -46,23 +47,23 @@ export class PlanetsService {
     const offset = 5;
     container.empty();
 
-    const scene = new StarsFactory(this.store).create();
-    const dolly = new DollyCameraFactory(container).create(
-      this.dollyCameraParams
-    );
+    const scene = new StarsScene(this.store).scene;
+    const dolly = new DollyCamera(container, this.dollyCameraParams);
     scene.add(dolly);
 
-    const renderer = new VRRendererFactory(container).create(scene, dolly, {
+    const renderer = new VRRenderer(container, scene, dolly.camera, {
       antialias,
     });
 
-    const animation = new AnimationManager(renderer);
+    const loop = new LoopManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
-    const session = new VRSessionManager(this.store, renderer);
-    session.add(dolly);
+    const vr = new VRSessionManager(this.store, renderer);
+    vr.add(dolly);
 
-    const controls = new ControlsFactory().create(dolly, renderer);
-    animation.add(controls);
+    const controls = new OrbitControls(dolly.camera, renderer.domElement);
+    controls.autoRotateSpeed = 0.2;
+    controls.autoRotate = true;
+    loop.add(controls);
 
     const vrControllerFactory = new VRControllerFactory(
       this.store,
@@ -73,7 +74,7 @@ export class PlanetsService {
     // const controllerLeft = vrControllerFactory.createLeft();
 
     const dollyAnimation = new DollyCameraAnimation(dolly, renderer);
-    animation.add(dollyAnimation);
+    loop.add(dollyAnimation);
 
     this.store.vrControllerRightIsSelecting$.subscribe((isSelecting) => {
       isSelecting ? dollyAnimation.moveSwitch() : dollyAnimation.stop();
@@ -83,56 +84,55 @@ export class PlanetsService {
     //   isSelecting ? dollyAnimation.moveBackward() :  dollyAnimation.stop();
     // });
 
-    const sun = new SunFactory(this.store).create();
-    scene.add(sun);
+    const sun = new SunLight(this.store);
+    scene.add(sun.light);
 
     const mercury = new Mercury(this.store);
     mercury.mesh.position.set(1.5, -2, offset - 1);
     scene.add(mercury.mesh);
-    animation.add(mercury);
+    loop.add(mercury);
 
     const venus = new Venus(this.store);
     venus.mesh.position.set(-1.5, -2, offset - 1);
     scene.add(venus.mesh);
-    animation.add(venus);
+    loop.add(venus);
 
     const earth = new Earth(this.store);
     earth.mesh.position.set(1.5, 0, offset - 5);
     scene.add(earth.mesh);
-    animation.add(earth);
+    loop.add(earth);
 
     const moon = new Moon(this.store);
     moon.mesh.position.set(earth.mesh.position.x + 2, 0, earth.mesh.position.z);
     scene.add(moon.mesh);
-    animation.add(moon);
+    loop.add(moon);
 
     const mars = new Mars(this.store);
     mars.mesh.position.set(-1.5, 0, offset - 5);
     scene.add(mars.mesh);
-    animation.add(mars);
+    loop.add(mars);
 
     const jupiter = new Jupiter(this.store);
     jupiter.mesh.position.set(-17, 0, offset - 5);
     scene.add(jupiter.mesh);
-    animation.add(jupiter);
+    loop.add(jupiter);
 
     const saturn = new Saturn(this.store);
     saturn.mesh.position.set(17, 0, offset - 5);
     scene.add(saturn.mesh);
-    animation.add(saturn);
+    loop.add(saturn);
 
     const uranus = new Uranus(this.store);
     uranus.mesh.position.set(-5, 3, offset - 18);
     scene.add(uranus.mesh);
-    animation.add(uranus);
+    loop.add(uranus);
 
     const neptune = new Neptune(this.store);
     neptune.mesh.position.set(5, 5, offset - 18);
     scene.add(neptune.mesh);
-    animation.add(neptune);
+    loop.add(neptune);
 
-    animation.start();
+    loop.start();
     resize.start();
-    session.start();
   }
 }

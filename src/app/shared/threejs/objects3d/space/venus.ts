@@ -1,20 +1,22 @@
 import { StoreService } from '@core/store/store.service';
+import { Mesh } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../builders';
-import { ComplexObject3D } from '../../models/complex-object-3d.model';
+import { rotateOrbitalAxis } from '../../../utils';
+import { SCOBuilder } from '../../builders';
+import { HasMesh } from '../../models';
 
-export class Venus implements ComplexObject3D {
-  mesh: SphericalCelestialObject;
+export class Venus implements HasMesh {
+  mesh: Mesh;
 
   constructor(private store: StoreService) {
     this.mesh = this.createVenus();
   }
 
-  animate(delta: number) {
-    this.mesh.rotateOrbitalAxis(delta, 5);
+  update(delta: number) {
+    rotateOrbitalAxis(this.mesh, delta, 5);
   }
 
-  private createVenus(): SphericalCelestialObject {
+  private createVenus(): Mesh {
     const venus = new SCOBuilder(this.store, 'venus')
       .setSize(RadiusRatioEarth.Venus)
       .setAxialTilt(AxialTilt.Venus)

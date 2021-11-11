@@ -1,15 +1,15 @@
 import { StoreService } from '@core/store/store.service';
-import { MeshPhongMaterial } from 'three';
+import { Mesh, MeshPhongMaterial, SphereGeometry } from 'three';
 import { MeshPhongMaterialParameters } from 'three/src/materials/MeshPhongMaterial';
+import { setAxialTilt } from '../../utils';
 import {
   PhongMaterialTextureByDefinition,
   PhongMaterialTextureByDefinitionLoader,
-} from '../../loaders';
-import {
-  SCOGeometry,
-  SphericalCelestialObject,
-} from './spherical-celestial-object.model';
+} from '../loaders';
 
+/**
+ * Spherical Celestial Object Builder
+ */
 export class SCOBuilder {
   private size!: number;
   private axialTilt!: number;
@@ -44,8 +44,8 @@ export class SCOBuilder {
     return this;
   }
 
-  build(): SphericalCelestialObject {
-    const geometry = new SCOGeometry(this.size);
+  build(): Mesh {
+    const geometry = new SphereGeometry(this.size, 64, 32);
     const material = new MeshPhongMaterial(this.materialParameters);
     const loader = new PhongMaterialTextureByDefinitionLoader(
       material,
@@ -57,13 +57,13 @@ export class SCOBuilder {
       loader.loadByDefinition(definition);
     });
 
-    const object = new SphericalCelestialObject(geometry, material);
-    object.name = this.name;
+    const mesh = new Mesh(geometry, material);
+    mesh.name = this.name;
 
     if (this.axialTilt) {
-      object.setAxialTilt(this.axialTilt);
+      setAxialTilt(mesh, this.axialTilt);
     }
 
-    return object;
+    return mesh;
   }
 }

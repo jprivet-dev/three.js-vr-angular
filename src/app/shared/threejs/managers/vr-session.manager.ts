@@ -1,31 +1,34 @@
 import { StoreService } from '@core/store/store.service';
 import { VRRenderer } from '../renderers';
-import { VRSession } from './vr-session.model';
+import { VRSession } from '../models';
 
 export class VRSessionManager implements VRSession {
   private list: VRSession[] = [];
 
-  constructor(private store: StoreService, private renderer: VRRenderer) {}
+  constructor(private store: StoreService, private renderer: VRRenderer) {
+    this.initListeners();
+  }
 
   add(element: VRSession): void {
     this.list.push(element);
   }
 
-  onVRSessionStart(): void {
-    this.list.forEach((element) => element.onVRSessionStart());
+  onSessionStart(): void {
+    this.list.forEach((element) => element.onSessionStart());
   }
 
-  onVRSessionEnd(): void {
-    this.list.forEach((element) => element.onVRSessionEnd());
+  onSessionEnd(): void {
+    this.list.forEach((element) => element.onSessionEnd());
   }
 
-  start(): void {
+  private initListeners(): void {
     this.renderer.xr.addEventListener('sessionstart', () => {
-      this.onVRSessionStart();
+      this.onSessionStart();
       this.store.vrSessionStart();
     });
+
     this.renderer.xr.addEventListener('sessionend', () => {
-      this.onVRSessionEnd();
+      this.onSessionEnd();
       this.store.vrSessionEnd();
     });
   }

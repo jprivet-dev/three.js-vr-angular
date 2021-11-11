@@ -1,13 +1,9 @@
 import { Definition } from '@core/store/store.model';
-import { DirectionalLight } from 'three';
-import { Lensflare, LensflareElement, } from 'three/examples/jsm/objects/Lensflare';
+import {
+  Lensflare,
+  LensflareElement,
+} from 'three/examples/jsm/objects/Lensflare';
 import { Texture } from 'three/src/textures/Texture';
-
-/**
- * Sun
- */
-
-export class Sun extends DirectionalLight {}
 
 /**
  * Sun Lensflare

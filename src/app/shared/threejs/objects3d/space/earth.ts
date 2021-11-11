@@ -1,11 +1,13 @@
 import { StoreService } from '@core/store/store.service';
+import { Mesh } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../builders';
-import { ComplexObject3D } from '../../models/complex-object-3d.model';
+import { rotateOrbitalAxis } from '../../../utils';
+import { SCOBuilder } from '../../builders';
+import { HasMesh } from '../../models';
 
-export class Earth implements ComplexObject3D {
-  mesh: SphericalCelestialObject;
-  clouds: SphericalCelestialObject;
+export class Earth implements HasMesh {
+  mesh: Mesh;
+  clouds: Mesh;
 
   constructor(private store: StoreService) {
     this.mesh = this.createEarth();
@@ -13,12 +15,12 @@ export class Earth implements ComplexObject3D {
     this.mesh.add(this.clouds);
   }
 
-  animate(delta: number) {
-    this.mesh.rotateOrbitalAxis(delta, 5);
-    this.clouds.rotateOrbitalAxis(delta, 4);
+  update(delta: number) {
+    rotateOrbitalAxis(this.mesh, delta, 5);
+    rotateOrbitalAxis(this.clouds, delta, 4);
   }
 
-  private createEarth(): SphericalCelestialObject {
+  private createEarth(): Mesh {
     return new SCOBuilder(this.store, 'earth')
       .setSize(RadiusRatioEarth.Earth)
       .setAxialTilt(AxialTilt.Earth)
@@ -46,7 +48,7 @@ export class Earth implements ComplexObject3D {
       .build();
   }
 
-  private createClouds(): SphericalCelestialObject {
+  private createClouds(): Mesh {
     return new SCOBuilder(this.store, 'clouds')
       .setSize(RadiusRatioEarth.Earth + 0.005)
       .setMaterialParameters({

@@ -1,33 +1,25 @@
 import { Definition } from '@core/store/store.model';
 import { StoreService } from '@core/store/store.service';
-import { FactoryObject3D } from '../../../models';
+import { DirectionalLight } from 'three';
+import { HasLight } from '../../../models';
 import { SunLensflareTextureLoader } from './sun-lensflare-texture.loader';
 import { sunLensflareTextureParams } from './sun-lensflare-texture.params';
 import {
-  Sun,
   SunLensflare,
   SunLensflareElement,
   SunLensflareTexturesParams,
 } from './sun.model';
 
-export class SunFactory implements FactoryObject3D {
+export class SunLight implements HasLight {
   private elements: SunLensflareTexturesParams[] = sunLensflareTextureParams;
+  light: DirectionalLight;
 
-  constructor(private store: StoreService) {}
-
-  create(): Sun {
-    const sun = this.createSun();
-    sun.position.set(0, 0, 1000);
+  constructor(private store: StoreService) {
+    this.light = new DirectionalLight(0xffffff, 1.3);
+    this.light.position.set(0, 0, 1000);
 
     const sunLensflare = this.createSunLensflare();
-    sun.add(sunLensflare);
-
-    return sun;
-  }
-
-  private createSun(): Sun {
-    const sun = new Sun(0xffffff, 1.3);
-    return sun;
+    this.light.add(sunLensflare);
   }
 
   private createSunLensflare(): SunLensflare {

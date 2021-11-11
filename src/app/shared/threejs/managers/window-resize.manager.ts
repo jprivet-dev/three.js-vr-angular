@@ -1,7 +1,7 @@
 import { DollyCamera } from '../cameras';
-import { Container } from '../models';
+import { Container } from '../containers';
 import { VRRenderer } from '../renderers';
-import { WindowResize } from './window-resize.model';
+import { WindowResize } from '../models';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];
@@ -20,14 +20,12 @@ export class WindowResizeManager implements WindowResize {
   }
 
   resize(): void {
-    this.list.forEach((element) => element.resize());
+    this.list.map((element) => element.resize());
   }
 
   start(): void {
-    const onWindowResize = () => {
+    this.container.window.addEventListener('resize', () => {
       this.resize();
-    };
-
-    this.container.window.addEventListener('resize', onWindowResize);
+    });
   }
 }

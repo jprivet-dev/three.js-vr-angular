@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
-import { Container } from '@shared/threejs/models';
+import { Container } from '@shared/threejs/containers';
 import { PlanetsService } from '../../services/planets.service';
 
 @Component({

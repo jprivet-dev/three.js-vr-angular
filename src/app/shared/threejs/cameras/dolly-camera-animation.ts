@@ -1,9 +1,9 @@
 import { Camera, Vector3 } from 'three';
-import { AnimationControls } from '../../managers';
-import { VRRenderer } from '../../renderers';
+import { LoopControls } from '../models';
+import { VRRenderer } from '../renderers';
 import { DollyCamera } from './dolly-camera';
 
-export class DollyCameraAnimation implements AnimationControls {
+export class DollyCameraAnimation implements LoopControls {
   private distanteBySecond: number = 0.1;
   private move: boolean = false;
   private direction: number = 0;
@@ -40,7 +40,7 @@ export class DollyCameraAnimation implements AnimationControls {
     this.direction = 1;
   }
 
-  animate(delta: number) {
+  update(delta: number) {
     if (this.direction !== 0) {
       // const speedDelta = delta * 1 * this.direction;
       // this.dolly.camera.getWorldDirection(this.worldDirection);
@@ -55,10 +55,10 @@ export class DollyCameraAnimation implements AnimationControls {
 
       // https://stackoverflow.com/questions/58213242/efficient-way-to-translate-a-camera-dolly
       const speedDelta = delta * 1 * this.direction;
-      this.dolly.dummyCam.position.set(0, 0, 0);
-      this.dolly.dummyCam.quaternion.copy(this.xrCamera.quaternion);
-      this.dolly.dummyCam.translateZ(speedDelta);
-      this.dolly.position.add(this.dolly.dummyCam.position);
+      this.dolly.dummy.position.set(0, 0, 0);
+      this.dolly.dummy.quaternion.copy(this.xrCamera.quaternion);
+      this.dolly.dummy.translateZ(speedDelta);
+      this.dolly.position.add(this.dolly.dummy.position);
     }
   }
 }

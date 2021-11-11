@@ -1,14 +1,17 @@
 import { Object3D, PerspectiveCamera } from 'three';
-import { VRSession, WindowResize } from '../../managers';
-import { Container } from '../../models';
+import { Container } from '../containers';
+import { VRSession, WindowResize } from '../models';
 import { cameraPosition, DollyCameraParams } from './dolly-camera.model';
 
 export class DollyCamera extends Object3D implements WindowResize, VRSession {
   public camera: PerspectiveCamera;
-  public dummyCam: Object3D;
+  public dummy: Object3D;
 
   constructor(private container: Container, private params: DollyCameraParams) {
     super();
+
+    this.params.aspect = this.container.ratio();
+
     this.camera = new PerspectiveCamera(
       params.fov,
       params.aspect,
@@ -16,10 +19,10 @@ export class DollyCamera extends Object3D implements WindowResize, VRSession {
       params.far
     );
 
-    this.dummyCam = new Object3D();
-    this.camera.add(this.dummyCam);
+    this.dummy = new Object3D();
+    this.camera.add(this.dummy);
 
-    this.onVRSessionEnd();
+    this.onSessionEnd();
     this.add(this.camera);
   }
 
@@ -28,14 +31,14 @@ export class DollyCamera extends Object3D implements WindowResize, VRSession {
     this.camera.updateProjectionMatrix();
   }
 
-  onVRSessionStart() {
+  onSessionStart() {
     this.setPosition(
       this.params.onVRSessionStartPosition.camera,
       this.params.onVRSessionStartPosition.dolly
     );
   }
 
-  onVRSessionEnd() {
+  onSessionEnd() {
     this.setPosition(
       this.params.onVRSessionEndPosition.camera,
       this.params.onVRSessionEndPosition.dolly

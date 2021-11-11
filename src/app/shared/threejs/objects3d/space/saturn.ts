@@ -2,13 +2,18 @@ import { StoreService } from '@core/store/store.service';
 import { DoubleSide, Mesh, RingBufferGeometry } from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { degToRad } from 'three/src/math/MathUtils';
-import { AxialTilt, RadiusRatioEarth, SaturnRingsRatioEarth } from '../../../constants';
-import { SCOBuilder, SphericalCelestialObject } from '../../builders';
+import {
+  AxialTilt,
+  RadiusRatioEarth,
+  SaturnRingsRatioEarth,
+} from '../../../constants';
+import { rotateOrbitalAxis } from '../../../utils';
+import { SCOBuilder } from '../../builders';
 import { BasicMaterialTextureByDefinitionLoader } from '../../loaders';
-import { ComplexObject3D } from '../../models/complex-object-3d.model';
+import { HasMesh } from '../../models';
 
-export class Saturn implements ComplexObject3D {
-  mesh: SphericalCelestialObject;
+export class Saturn implements HasMesh {
+  mesh: Mesh;
 
   constructor(private store: StoreService) {
     this.mesh = this.createSaturn();
@@ -16,11 +21,11 @@ export class Saturn implements ComplexObject3D {
     this.mesh.add(rings);
   }
 
-  animate(delta: number) {
-    this.mesh.rotateOrbitalAxis(delta, 5);
+  update(delta: number) {
+    rotateOrbitalAxis(this.mesh, delta, 5);
   }
 
-  private createSaturn(): SphericalCelestialObject {
+  private createSaturn(): Mesh {
     const saturn = new SCOBuilder(this.store, 'saturn')
       .setSize(RadiusRatioEarth.Saturn)
       .setAxialTilt(AxialTilt.Saturn)

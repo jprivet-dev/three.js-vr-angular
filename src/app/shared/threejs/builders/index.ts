@@ -1,1 +1,1 @@
-export * from './spherical-celestial-object';
+export * from './sco.builder';

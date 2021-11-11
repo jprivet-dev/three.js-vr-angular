@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
-import { DollyCameraFactory, DollyCameraParams } from '@shared/threejs/cameras';
-import { ControlsFactory } from '@shared/threejs/controls';
+import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
+import { Container } from '@shared/threejs/containers';
+import { SunLight } from '@shared/threejs/lights';
 import {
-  AnimationManager,
+  LoopManager,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs/managers';
-import { Container } from '@shared/threejs/models';
-import {
-  Earth,
-  Moon,
-  StarsFactory,
-  SunFactory,
-} from '@shared/threejs/objects3d';
-import { VRRendererFactory } from '@shared/threejs/renderers';
+import { Earth, Moon } from '@shared/threejs/objects3d';
+import { VRRenderer } from '@shared/threejs/renderers';
+import { StarsScene } from '@shared/threejs/scenes';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { earthDollyCameraParams } from './earth.params';
 
 @Injectable({
@@ -34,38 +31,37 @@ export class EarthService {
   private onAntialiasChange(container: Container, antialias: boolean) {
     container.empty();
 
-    const scene = new StarsFactory(this.store).create();
-    const dolly = new DollyCameraFactory(container).create(
-      this.dollyCameraParams
-    );
+    const scene = new StarsScene(this.store).scene;
+    const dolly = new DollyCamera(container, this.dollyCameraParams);
     scene.add(dolly);
 
-    const renderer = new VRRendererFactory(container).create(scene, dolly, {
+    const renderer = new VRRenderer(container, scene, dolly.camera, {
       antialias,
     });
 
-    const animation = new AnimationManager(renderer);
+    const loop = new LoopManager(renderer);
     const resize = new WindowResizeManager(container, dolly, renderer);
-    const session = new VRSessionManager(this.store, renderer);
-    session.add(dolly);
+    const vr = new VRSessionManager(this.store, renderer);
+    vr.add(dolly);
 
-    const controls = new ControlsFactory().create(dolly, renderer);
-    animation.add(controls);
+    const controls = new OrbitControls(dolly.camera, renderer.domElement);
+    controls.autoRotateSpeed = 0.2;
+    controls.autoRotate = true;
+    loop.add(controls);
 
-    const sun = new SunFactory(this.store).create();
-    scene.add(sun);
+    const sun = new SunLight(this.store);
+    scene.add(sun.light);
 
     const earth = new Earth(this.store);
     scene.add(earth.mesh);
-    animation.add(earth);
+    loop.add(earth);
 
     const moon = new Moon(this.store);
     moon.mesh.position.set(2, 0, 0);
     scene.add(moon.mesh);
-    animation.add(moon);
+    loop.add(moon);
 
-    animation.start();
+    loop.start();
     resize.start();
-    session.start();
   }
 }
