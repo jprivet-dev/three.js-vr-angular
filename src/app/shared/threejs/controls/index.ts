@@ -1,3 +1,3 @@
 export * from './vr-controllers';
 export * from './switch-controls';
-export * from './fly-first-person-controls';
+export * from './fly-pointer-lock-controls';

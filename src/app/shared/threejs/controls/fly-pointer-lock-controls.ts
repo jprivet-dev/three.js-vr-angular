@@ -1,6 +1,11 @@
-import { Camera, EventDispatcher, Quaternion, Vector3 } from 'three';
+import { Camera, Euler, EventDispatcher, Quaternion, Vector3 } from 'three';
 
-export class FlyFirstPersonControls extends EventDispatcher {
+export class FlyPointerLockControls extends EventDispatcher {
+  changeEvent = { type: 'change' };
+  lockEvent = { type: 'lock' };
+  unlockEvent = { type: 'unlock' };
+  isLocked: boolean = false;
+
   movementSpeed: number;
   rollSpeed: number;
   dragToLook: boolean;
@@ -9,6 +14,7 @@ export class FlyFirstPersonControls extends EventDispatcher {
   EPS = 0.000001;
   lastQuaternion = new Quaternion();
   lastPosition = new Vector3();
+  euler = new Euler(0, 0, 0, 'YXZ');
 
   tmpQuaternion: Quaternion;
   mouseStatus: number;
@@ -17,12 +23,12 @@ export class FlyFirstPersonControls extends EventDispatcher {
   rotationVector: Vector3;
   movementSpeedMultiplier!: number;
 
-  constructor(private object: Camera, readonly domElement: HTMLElement) {
+  constructor(private camera: Camera, readonly domElement: HTMLElement) {
     super();
 
     // API
 
-    this.movementSpeed = 1.0;
+    this.movementSpeed = 0.5;
     this.rollSpeed = 0.005;
 
     this.dragToLook = false;
@@ -48,21 +54,7 @@ export class FlyFirstPersonControls extends EventDispatcher {
     this.moveVector = new Vector3(0, 0, 0);
     this.rotationVector = new Vector3(0, 0, 0);
 
-    this.domElement.addEventListener('contextmenu', (event) =>
-      event.preventDefault()
-    );
-
-    this.domElement.addEventListener('mousemove', (event) =>
-      this.mousemove(event)
-    );
-    this.domElement.addEventListener('mousedown', (event) =>
-      this.mousedown(event)
-    );
-    this.domElement.addEventListener('mouseup', (event) => this.mouseup(event));
-
-    window.addEventListener('keydown', (event) => this.keydown(event));
-    window.addEventListener('keyup', (event) => this.keyup(event));
-
+    this.connect();
     this.updateMovementVector();
     this.updateRotationVector();
   }
@@ -197,18 +189,24 @@ export class FlyFirstPersonControls extends EventDispatcher {
   }
 
   mousemove(event: any) {
-    if (!this.dragToLook || this.mouseStatus > 0) {
-      const container = this.getContainerDimensions();
-      const halfWidth = container.size[0] / 2;
-      const halfHeight = container.size[1] / 2;
+    if (this.isLocked === false) return;
 
-      this.moveState.yawLeft =
-        -(event.pageX - container.offset[0] - halfWidth) / halfWidth;
-      this.moveState.pitchDown =
-        (event.pageY - container.offset[1] - halfHeight) / halfHeight;
+    const movementX =
+      event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+    const movementY =
+      event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
-      this.updateRotationVector();
-    }
+    this.euler.setFromQuaternion(this.camera.quaternion);
+
+    this.euler.y -= movementX * 0.0002;
+    this.euler.x -= movementY * 0.0002;
+
+    this.camera.quaternion.setFromEuler(this.euler);
+
+    // this.moveState.yawLeft += movementX * 0.01;
+    // this.moveState.pitchDown += movementY * 0.01;
+
+    this.updateRotationVector();
   }
 
   mouseup(event: any) {
@@ -236,9 +234,9 @@ export class FlyFirstPersonControls extends EventDispatcher {
     const moveMult = delta * this.movementSpeed;
     const rotMult = delta * this.rollSpeed;
 
-    this.object.translateX(this.moveVector.x * moveMult);
-    this.object.translateY(this.moveVector.y * moveMult);
-    this.object.translateZ(this.moveVector.z * moveMult);
+    this.camera.translateX(this.moveVector.x * moveMult);
+    this.camera.translateY(this.moveVector.y * moveMult);
+    this.camera.translateZ(this.moveVector.z * moveMult);
 
     this.tmpQuaternion
       .set(
@@ -248,15 +246,15 @@ export class FlyFirstPersonControls extends EventDispatcher {
         1
       )
       .normalize();
-    this.object.quaternion.multiply(this.tmpQuaternion);
+    this.camera.quaternion.multiply(this.tmpQuaternion);
 
     if (
-      this.lastPosition.distanceToSquared(this.object.position) > this.EPS ||
-      8 * (1 - this.lastQuaternion.dot(this.object.quaternion)) > this.EPS
+      this.lastPosition.distanceToSquared(this.camera.position) > this.EPS ||
+      8 * (1 - this.lastQuaternion.dot(this.camera.quaternion)) > this.EPS
     ) {
-      this.dispatchEvent({ type: 'change' });
-      this.lastQuaternion.copy(this.object.quaternion);
-      this.lastPosition.copy(this.object.position);
+      this.dispatchEvent(this.changeEvent);
+      this.lastQuaternion.copy(this.camera.quaternion);
+      this.lastPosition.copy(this.camera.position);
     }
   }
 
@@ -289,14 +287,82 @@ export class FlyFirstPersonControls extends EventDispatcher {
   }
 
   dispose() {
+    this.disconnect();
+  }
+
+  connect() {
+    this.domElement.addEventListener('contextmenu', (event) =>
+      event.preventDefault()
+    );
+
+    this.domElement.addEventListener('mousemove', (event) =>
+      this.mousemove(event)
+    );
+    this.domElement.addEventListener('mousedown', (event) =>
+      this.mousedown(event)
+    );
+    this.domElement.addEventListener('mouseup', (event) => this.mouseup(event));
+
+    this.domElement.ownerDocument.addEventListener(
+      'pointerlockchange',
+      (event) => this.onPointerlockChange()
+    );
+    this.domElement.ownerDocument.addEventListener(
+      'pointerlockerror',
+      (event) => this.onPointerlockError()
+    );
+
+    window.addEventListener('keydown', (event) => this.keydown(event));
+    window.addEventListener('keyup', (event) => this.keyup(event));
+  }
+
+  disconnect() {
     this.domElement.removeEventListener('contextmenu', (event) =>
       event.preventDefault()
     );
-    this.domElement.removeEventListener('mousedown', this.mousedown);
-    this.domElement.removeEventListener('mousemove', this.mousemove);
-    this.domElement.removeEventListener('mouseup', this.mouseup);
 
-    window.removeEventListener('keydown', this.keydown);
-    window.removeEventListener('keyup', this.keyup);
+    this.domElement.removeEventListener('mousemove', (event) =>
+      this.mousedown(event)
+    );
+    this.domElement.removeEventListener('mousedown', (event) =>
+      this.mousedown(event)
+    );
+    this.domElement.removeEventListener('mouseup', (event) =>
+      this.mouseup(event)
+    );
+
+    this.domElement.ownerDocument.removeEventListener(
+      'pointerlockchange',
+      (event) => this.onPointerlockChange()
+    );
+    this.domElement.ownerDocument.removeEventListener(
+      'pointerlockerror',
+      (event) => this.onPointerlockError()
+    );
+
+    window.removeEventListener('keydown', (event) => this.keydown(event));
+    window.removeEventListener('keyup', (event) => this.keyup(event));
+  }
+
+  onPointerlockChange() {
+    if (this.domElement.ownerDocument.pointerLockElement === this.domElement) {
+      this.dispatchEvent(this.lockEvent);
+      this.isLocked = true;
+    } else {
+      this.dispatchEvent(this.unlockEvent);
+      this.isLocked = false;
+    }
+  }
+
+  onPointerlockError() {
+    console.error('FlyFirstPersonControls: Unable to use Pointer Lock API');
+  }
+
+  lock() {
+    this.domElement.requestPointerLock();
+  }
+
+  unlock() {
+    this.domElement.ownerDocument.exitPointerLock();
   }
 }

@@ -6,7 +6,10 @@ import {
   DollyCameraParams,
 } from '@shared/threejs/cameras';
 import { Container } from '@shared/threejs/containers';
-import { FlyFirstPersonControls, SwitchControls, VRControllerFactory } from '@shared/threejs/controls';
+import {
+  FlyPointerLockControls,
+  VRControllerFactory,
+} from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
@@ -26,9 +29,6 @@ import {
 } from '@shared/threejs/objects3d';
 import { VRRenderer } from '@shared/threejs/renderers';
 import { StarsScene } from '@shared/threejs/scenes';
-import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { planetsDollyCameraParams } from './planets.params';
 
 @Injectable({
@@ -129,11 +129,19 @@ export class PlanetsService {
     loop.add(neptune);
 
     // const controls = new FlyControls( dolly.camera, renderer.domElement );
-    const controls = new FlyFirstPersonControls( dolly.camera, renderer.domElement );
+    const controls = new FlyPointerLockControls(
+      dolly.camera,
+      renderer.domElement
+    );
     controls.movementSpeed = 10;
     controls.rollSpeed = Math.PI / 6;
     controls.autoForward = false;
-    controls.dragToLook = true;
+    controls.dragToLook = false;
+
+    renderer.domElement.addEventListener('click', function () {
+      controls.lock();
+    });
+
     loop.add(controls);
 
     // const controls = new SwitchControls(dolly.camera, renderer.domElement);
