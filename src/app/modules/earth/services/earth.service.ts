@@ -44,11 +44,6 @@ export class EarthService {
     const vr = new VRSessionManager(this.store, renderer);
     vr.add(dolly);
 
-    const controls = new OrbitControls(dolly.camera, renderer.domElement);
-    controls.autoRotateSpeed = 0.2;
-    controls.autoRotate = true;
-    loop.add(controls);
-
     const sun = new SunLight(this.store);
     scene.add(sun.light);
 
@@ -60,6 +55,12 @@ export class EarthService {
     moon.mesh.position.set(2, 0, 0);
     scene.add(moon.mesh);
     loop.add(moon);
+
+    const controls = new OrbitControls(dolly.camera, renderer.domElement);
+    controls.autoRotateSpeed = 0.2;
+    controls.autoRotate = true;
+    controls.target = earth.mesh.position;
+    loop.add(controls);
 
     loop.start();
     resize.start();

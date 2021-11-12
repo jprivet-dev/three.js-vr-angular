@@ -4,13 +4,8 @@ import { VRRenderer } from '../renderers';
 import { DollyCamera } from './dolly-camera';
 
 export class DollyCameraAnimation implements LoopControls {
-  private distanteBySecond: number = 0.1;
-  private move: boolean = false;
   private direction: number = 0;
   private lastDirection: number = 0;
-  private worldDirection = new Vector3();
-  private displacement = new Vector3();
-  private target = new Vector3();
   private xrCamera: Camera;
 
   constructor(private dolly: DollyCamera, private renderer: VRRenderer) {

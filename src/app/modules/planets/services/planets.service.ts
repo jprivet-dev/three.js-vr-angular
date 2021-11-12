@@ -44,7 +44,6 @@ export class PlanetsService {
   }
 
   private onAntialiasChange(container: Container, antialias: boolean) {
-    const offset = 5;
     container.empty();
 
     const scene = new StarsScene(this.store).scene;
@@ -59,11 +58,6 @@ export class PlanetsService {
     const resize = new WindowResizeManager(container, dolly, renderer);
     const vr = new VRSessionManager(this.store, renderer);
     vr.add(dolly);
-
-    const controls = new OrbitControls(dolly.camera, renderer.domElement);
-    controls.autoRotateSpeed = 0.2;
-    controls.autoRotate = true;
-    loop.add(controls);
 
     const vrControllerFactory = new VRControllerFactory(
       this.store,
@@ -88,17 +82,17 @@ export class PlanetsService {
     scene.add(sun.light);
 
     const mercury = new Mercury(this.store);
-    mercury.mesh.position.set(1.5, -2, offset - 1);
+    mercury.mesh.position.set(1.5, -2, 4);
     scene.add(mercury.mesh);
     loop.add(mercury);
 
     const venus = new Venus(this.store);
-    venus.mesh.position.set(-1.5, -2, offset - 1);
+    venus.mesh.position.set(-1.5, -2, 4);
     scene.add(venus.mesh);
     loop.add(venus);
 
     const earth = new Earth(this.store);
-    earth.mesh.position.set(1.5, 0, offset - 5);
+    earth.mesh.position.set(1.5, 0, 0);
     scene.add(earth.mesh);
     loop.add(earth);
 
@@ -108,29 +102,35 @@ export class PlanetsService {
     loop.add(moon);
 
     const mars = new Mars(this.store);
-    mars.mesh.position.set(-1.5, 0, offset - 5);
+    mars.mesh.position.set(-1.5, 0, 0);
     scene.add(mars.mesh);
     loop.add(mars);
 
     const jupiter = new Jupiter(this.store);
-    jupiter.mesh.position.set(-17, 0, offset - 5);
+    jupiter.mesh.position.set(-17, 0, 0);
     scene.add(jupiter.mesh);
     loop.add(jupiter);
 
     const saturn = new Saturn(this.store);
-    saturn.mesh.position.set(17, 0, offset - 5);
+    saturn.mesh.position.set(17, 0, 0);
     scene.add(saturn.mesh);
     loop.add(saturn);
 
     const uranus = new Uranus(this.store);
-    uranus.mesh.position.set(-5, 3, offset - 18);
+    uranus.mesh.position.set(-5, 3, -13);
     scene.add(uranus.mesh);
     loop.add(uranus);
 
     const neptune = new Neptune(this.store);
-    neptune.mesh.position.set(5, 5, offset - 18);
+    neptune.mesh.position.set(5, 5, -13);
     scene.add(neptune.mesh);
     loop.add(neptune);
+
+    const controls = new OrbitControls(dolly.camera, renderer.domElement);
+    controls.autoRotateSpeed = 0.2;
+    controls.autoRotate = true;
+    controls.target = earth.mesh.position;
+    loop.add(controls);
 
     loop.start();
     resize.start();

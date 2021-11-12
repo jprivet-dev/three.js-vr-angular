@@ -1,3 +1,5 @@
+import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
+import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export interface HasLoop {
@@ -17,4 +19,4 @@ export interface Loop {
   update(delta: number): void;
 }
 
-export type LoopWithUpdate = Loop | OrbitControls;
+export type LoopWithUpdate = Loop | OrbitControls | FlyControls | FirstPersonControls;
