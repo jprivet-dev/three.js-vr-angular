@@ -6,10 +6,7 @@ import {
   DollyCameraParams,
 } from '@shared/threejs/cameras';
 import { Container } from '@shared/threejs/containers';
-import {
-  FlyPointerLockControls,
-  VRControllerFactory,
-} from '@shared/threejs/controls';
+import { SwitchControls, VRControllerFactory } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
@@ -36,6 +33,7 @@ import { planetsDollyCameraParams } from './planets.params';
 })
 export class PlanetsService {
   private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
+  private controls!: SwitchControls;
 
   constructor(private store: StoreService) {}
 
@@ -43,6 +41,10 @@ export class PlanetsService {
     this.store.antialias$.subscribe((antialias) => {
       this.onAntialiasChange(container, antialias);
     });
+  }
+
+  switchControl(event: any) {
+    this.controls.pointer.lock();
   }
 
   private onAntialiasChange(container: Container, antialias: boolean) {
@@ -128,30 +130,8 @@ export class PlanetsService {
     scene.add(neptune.mesh);
     loop.add(neptune);
 
-    // const controls = new FlyControls( dolly.camera, renderer.domElement );
-    const controls = new FlyPointerLockControls(
-      dolly.camera,
-      renderer.domElement
-    );
-    controls.movementSpeed = 10;
-    controls.rollSpeed = Math.PI / 6;
-    controls.autoForward = false;
-    controls.dragToLook = false;
-
-    renderer.domElement.addEventListener('click', function () {
-      controls.lock();
-    });
-
-    loop.add(controls);
-
-    // const controls = new SwitchControls(dolly.camera, renderer.domElement);
-    // loop.add(controls);
-    //
-    // renderer.domElement.addEventListener( 'click', () => {
-    //   controls.pointer.lock();
-    // }, false);
-    //
-    // scene.add(controls.pointer.getObject());
+    this.controls = new SwitchControls(dolly.camera, renderer.domElement);
+    loop.add(this.controls);
 
     loop.start();
     resize.start();

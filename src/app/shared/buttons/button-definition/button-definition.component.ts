@@ -20,7 +20,7 @@ export class ButtonDefinitionComponent implements OnInit {
     );
   }
 
-  onChangeDefinition(definition: Definition): void {
-    this.store.changeDefinition(definition);
+  onSwitchDefinition(): void {
+    this.store.switchDefinition();
   }
 }

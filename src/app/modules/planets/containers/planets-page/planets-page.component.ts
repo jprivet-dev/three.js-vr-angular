@@ -23,4 +23,8 @@ export class PlanetsPageComponent implements OnInit {
     const container = new Container(this.window, this.containerRef);
     this.service.buildScene(container);
   }
+
+  onSwithControls(event: any): void {
+    this.service.switchControl(event);
+  }
 }

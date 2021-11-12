@@ -1,5 +1,12 @@
 <div #container id="container"></div>
-<app-button-home></app-button-home>
-<app-button-antialias></app-button-antialias>
-<app-button-definition></app-button-definition>
+<div class="buttons buttons-top-right">
+  <button (click)="onSwithControls($event)">
+    Fly
+  </button>
+  <app-button-antialias></app-button-antialias>
+  <app-button-definition></app-button-definition>
+</div>
+<div class="buttons buttons-top-left">
+  <app-button-home></app-button-home>
+</div>
 

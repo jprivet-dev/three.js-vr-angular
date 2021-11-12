@@ -39,6 +39,13 @@ export class StoreService {
     this.definition.next(definition);
   }
 
+  switchDefinition() {
+    const current = this.definition.getValue();
+    const definition = current === 'hd' ? 'sd' : 'hd';
+    this.log('switchDefinition', definition);
+    this.definition.next(definition);
+  }
+
   switchAntialias() {
     const value = !this.antialias.getValue();
     this.log('switchAntialias', value);
