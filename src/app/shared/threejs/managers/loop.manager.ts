@@ -12,16 +12,16 @@ export class LoopManager implements LoopControls {
     this.list.push(loop);
   }
 
-  remove(index: number): void {
-    if (this.list.length <= index) {
-      throw new Error('index out of bound!');
-    }
-
-    this.list.splice(index, 1);
+  remove(element: LoopWithUpdate): void {
+    this.list.forEach((current, index) => {
+      if(current === element) {
+        this.list.splice(index, 1);
+      }
+    })
   }
 
   update(delta: number): void {
-    this.list.map((element) => element.update(delta));
+    this.list.map((current) => current.update(delta));
   }
 
   start(): void {
