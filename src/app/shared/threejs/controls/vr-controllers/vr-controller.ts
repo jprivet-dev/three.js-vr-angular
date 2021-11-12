@@ -77,7 +77,7 @@ export class VRController {
       case 'tracked-pointer':
         return this.createTrackedPointer();
       case 'gaze':
-        return this.createGaze();
+        //return this.createGaze(); // TODO: do not work very well
     }
 
     return;

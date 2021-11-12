@@ -75,7 +75,9 @@ export class PlanetsService {
     loop.add(dollyAnimation);
 
     this.store.vrControllerRightIsSelecting$.subscribe((isSelecting) => {
-      isSelecting ? dollyAnimation.moveSwitch() : dollyAnimation.stop();
+      if(isSelecting) {
+        dollyAnimation.moveSwitch();
+      }
     });
 
     // this.store.vrControllerLeftIsSelecting$.subscribe((isSelecting) => {
