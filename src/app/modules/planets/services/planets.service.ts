@@ -7,6 +7,7 @@ import {
 } from '@shared/threejs/cameras';
 import { Container } from '@shared/threejs/containers';
 import { SwitchControls, VRControllerFactory } from '@shared/threejs/controls';
+import { FlyControlsManager } from '@shared/threejs/controls/fly';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
@@ -132,8 +133,15 @@ export class PlanetsService {
     scene.add(neptune.mesh);
     loop.add(neptune);
 
-    this.controls = new SwitchControls(dolly.camera, renderer.domElement);
-    loop.add(this.controls);
+    // this.controls = new SwitchControls(dolly.camera, renderer.domElement);
+    // loop.add(this.controls);
+
+    const controls = new FlyControlsManager(dolly, renderer);
+    controls.orbit.autoRotateSpeed = 0.2;
+    controls.orbit.autoRotate = true;
+    controls.orbit.target = earth.mesh.position;
+
+    loop.add(controls);
 
     loop.start();
     resize.start();

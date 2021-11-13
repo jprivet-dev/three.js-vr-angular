@@ -1,4 +1,3 @@
-import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Camera } from 'three/src/Three';
 import { Loop } from '../models';
