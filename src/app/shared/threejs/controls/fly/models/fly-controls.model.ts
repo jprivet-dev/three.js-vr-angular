@@ -1,4 +1,4 @@
-export interface FlyCommands {
+export interface FlyControls {
   enabled: boolean;
   connect(): void;
   disconnect(): void;

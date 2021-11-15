@@ -8,14 +8,14 @@ import { FlyPointerLockControls } from '../pointer-lock';
 import { FlyVRControls } from '../vr';
 
 export class FlyControlsManager implements Loop {
-  orbit: OrbitControls;
+  // orbit: OrbitControls;
   // pointer: FlyPointerLockControls;
   dashboard: FlyDashboardControls;
   // mobile: FlyMobileControls;
   // vr: FlyVRControls;
 
   constructor(private dolly: DollyCamera, private renderer: Renderer) {
-    this.orbit = this.createOrbitControls();
+    // this.orbit = this.createOrbitControls();
     // this.pointer = this.createFlyMousePointerLockControls();
     this.dashboard = this.createFlyDashboardControls();
     // this.mobile = this.createFlyMobileControls();
@@ -23,7 +23,8 @@ export class FlyControlsManager implements Loop {
   }
 
   update(delta: number) {
-    this.orbit.update();
+    // this.orbit.update();
+    this.dashboard.movements.update(delta);
   }
 
   private createOrbitControls(): OrbitControls {

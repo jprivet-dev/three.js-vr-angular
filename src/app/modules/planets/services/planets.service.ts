@@ -137,7 +137,7 @@ export class PlanetsService {
     // loop.add(this.controls);
 
     const controls = new FlyControlsManager(dolly, renderer);
-    controls.orbit.target = earth.mesh.position;
+    // controls.orbit.target = earth.mesh.position;
 
     loop.add(controls);
 
