@@ -137,8 +137,6 @@ export class PlanetsService {
     // loop.add(this.controls);
 
     const controls = new FlyControlsManager(dolly, renderer);
-    controls.orbit.autoRotateSpeed = 0.2;
-    controls.orbit.autoRotate = true;
     controls.orbit.target = earth.mesh.position;
 
     loop.add(controls);
