@@ -1,12 +1,12 @@
 <div #container id="container"></div>
-<div class="buttons buttons-top-right">
-  <button (click)="onSwithControls($event)">
-    Fly
-  </button>
-  <app-button-antialias></app-button-antialias>
-  <app-button-definition></app-button-definition>
-</div>
-<div class="buttons buttons-top-left">
-  <app-button-home></app-button-home>
-</div>
+<app-menu
+  [isflyMode]="isFlyMode$ | async"
+  (switchFlyMode)="onSwitchFlyMode()"
+
+  [isAntialias]="isAntialias$ | async"
+  (switchAntialias)="onSwitchAntialias()"
+
+  [isHDDefinition]="isHDDefinition$ | async"
+  (switchDefinition)="onSwitchDefinition()"
+></app-menu>
 

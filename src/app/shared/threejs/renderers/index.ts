@@ -1,1 +1,1 @@
-export * from './vr-renderer';
+export * from './renderer';

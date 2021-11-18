@@ -3,9 +3,9 @@ import { Mesh } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
 import { rotateOrbitalAxis } from '../../../utils';
 import { SCOBuilder } from '../../builders';
-import { HasMesh } from '../../models';
+import { HasMesh, Loop } from '../../models';
 
-export class Uranus implements HasMesh {
+export class Uranus implements HasMesh, Loop {
   mesh: Mesh;
 
   constructor(private store: StoreService) {

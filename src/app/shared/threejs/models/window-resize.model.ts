@@ -1,3 +1,5 @@
+import { Container } from '../containers';
+
 export interface WindowResize {
-  resize(): void;
+  resize(container: Container): void;
 }

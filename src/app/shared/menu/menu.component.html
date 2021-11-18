@@ -1,0 +1,18 @@
+<div class="left">
+  <a [routerLink]="['/', 'home']" class="button">Home</a>
+</div>
+
+<div class="right">
+  <button (click)="onSwitchFlyMode()" [class.active]="isflyMode">
+    FLY
+  </button>
+
+  <button (click)="onSwitchAntialias()" [class.active]="isAntialias">
+    ANTIALIAS
+  </button>
+
+  <button (click)="onSwitchDefinition()" [class.active]="isHDDefinition">
+    HD
+  </button>
+</div>
+

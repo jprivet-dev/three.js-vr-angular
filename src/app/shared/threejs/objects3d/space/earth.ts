@@ -3,9 +3,9 @@ import { Mesh } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
 import { rotateOrbitalAxis } from '../../../utils';
 import { SCOBuilder } from '../../builders';
-import { HasMesh } from '../../models';
+import { HasMesh, Loop } from '../../models';
 
-export class Earth implements HasMesh {
+export class Earth implements HasMesh, Loop {
   mesh: Mesh;
   clouds: Mesh;
 

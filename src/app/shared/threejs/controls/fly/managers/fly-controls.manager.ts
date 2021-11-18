@@ -1,36 +1,33 @@
-import { Renderer } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DollyCamera } from '../../../cameras';
+import { Container } from '../../../containers';
 import { Loop } from '../../../models';
-import { FlyDashboardControls } from '../dashboard';
+import { FlyDashboardPointerLockControls } from '../controls';
 import { FlyMobileControls } from '../mobile';
-import { FlyPointerLockControls } from '../pointer-lock';
 import { FlyVRControls } from '../vr';
 
 export class FlyControlsManager implements Loop {
   // orbit: OrbitControls;
-  // pointer: FlyPointerLockControls;
-  dashboard: FlyDashboardControls;
+  pointer: FlyDashboardPointerLockControls;
   // mobile: FlyMobileControls;
   // vr: FlyVRControls;
 
-  constructor(private dolly: DollyCamera, private renderer: Renderer) {
+  constructor(private container: Container, private dolly: DollyCamera) {
     // this.orbit = this.createOrbitControls();
-    // this.pointer = this.createFlyMousePointerLockControls();
-    this.dashboard = this.createFlyDashboardControls();
+    this.pointer = this.createFlyPointerLockControls();
     // this.mobile = this.createFlyMobileControls();
     // this.vr = this.createFlyVRControls();
   }
 
   update(delta: number) {
     // this.orbit.update();
-    this.dashboard.movements.update(delta);
+    this.pointer.update(delta);
   }
 
   private createOrbitControls(): OrbitControls {
     const controls = new OrbitControls(
       this.dolly.camera,
-      this.renderer.domElement
+      this.container.domElement
     );
     controls.autoRotateSpeed = 0.2;
     controls.autoRotate = true;
@@ -38,12 +35,8 @@ export class FlyControlsManager implements Loop {
     return controls;
   }
 
-  private createFlyMousePointerLockControls(): FlyPointerLockControls {
-    return new FlyPointerLockControls(this.dolly.camera);
-  }
-
-  private createFlyDashboardControls(): FlyDashboardControls {
-    return new FlyDashboardControls(this.dolly.camera);
+  private createFlyPointerLockControls(): FlyDashboardPointerLockControls {
+    return new FlyDashboardPointerLockControls(this.container, this.dolly.camera);
   }
 
   private createFlyMobileControls(): FlyMobileControls {

@@ -11,6 +11,7 @@ import { FlyControlsManager } from '@shared/threejs/controls/fly';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
+  VRRendererBuilder,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs/managers';
@@ -25,8 +26,8 @@ import {
   Uranus,
   Venus,
 } from '@shared/threejs/objects3d';
-import { VRRenderer } from '@shared/threejs/renderers';
 import { StarsScene } from '@shared/threejs/scenes';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { planetsDollyCameraParams } from './planets.params';
 
 @Injectable({
@@ -39,28 +40,26 @@ export class PlanetsService {
   constructor(private store: StoreService) {}
 
   buildScene(container: Container): void {
-    this.store.antialias$.subscribe((antialias) => {
-      this.onAntialiasChange(container, antialias);
-    });
-  }
-
-  switchControl(event: any) {
-    this.controls.pointer.lock();
-  }
-
-  private onAntialiasChange(container: Container, antialias: boolean) {
-    container.empty();
-
+    const resize = new WindowResizeManager(container);
+    const rendererBuilder = new VRRendererBuilder(container);
+    const loop = new LoopManager();
     const scene = new StarsScene(this.store).scene;
+
     const dolly = new DollyCamera(container, this.dollyCameraParams);
     scene.add(dolly);
+    resize.add(dolly);
 
-    const renderer = new VRRenderer(container, scene, dolly.camera, {
-      antialias,
+    let lastAntialias = false;
+    let renderer = rendererBuilder.build({ antialias: lastAntialias });
+    resize.add(renderer);
+
+    this.store.isAntialias$.subscribe((antialias) => {
+      if (lastAntialias === antialias) return;
+      renderer = rendererBuilder.build({ antialias });
+      resize.add(renderer);
+      lastAntialias = antialias;
     });
 
-    const loop = new LoopManager(renderer);
-    const resize = new WindowResizeManager(container, dolly, renderer);
     const vr = new VRSessionManager(this.store, renderer);
     vr.add(dolly);
 
@@ -76,7 +75,7 @@ export class PlanetsService {
     loop.add(dollyAnimation);
 
     this.store.vrControllerRightIsSelecting$.subscribe((isSelecting) => {
-      if(isSelecting) {
+      if (isSelecting) {
         dollyAnimation.moveSwitch();
       }
     });
@@ -136,12 +135,30 @@ export class PlanetsService {
     // this.controls = new SwitchControls(dolly.camera, renderer.domElement);
     // loop.add(this.controls);
 
-    const controls = new FlyControlsManager(dolly, renderer);
+    // const controls = new FlyControlsManager(container, dolly);
+    //
+    // this.store.isFlyMode$.subscribe((state) => {
+    //   state ? controls.pointer.enable() : controls.pointer.disable();
+    // });
+    //
+    // controls.pointer.isLocked$.subscribe((isLocked) => {
+    //   if (!isLocked) {
+    //     this.store.flyModeOff();
+    //   }
+    // });
     // controls.orbit.target = earth.mesh.position;
+    //loop.add(controls);
 
+    const controls = new OrbitControls(dolly.camera, renderer.domElement);
+    controls.autoRotateSpeed = 0.2;
+    controls.autoRotate = true;
+    controls.enableDamping = true;
+    controls.target = earth.mesh.position;
     loop.add(controls);
 
-    loop.start();
-    resize.start();
+    renderer.setAnimationLoop(() => {
+      loop.update();
+      renderer.render(scene, dolly.camera);
+    });
   }
 }

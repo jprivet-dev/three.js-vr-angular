@@ -2,14 +2,14 @@ import { ElementRef } from '@angular/core';
 
 export class Container {
   readonly window: Window;
-  private container!: Element;
+  readonly domElement!: HTMLElement;
 
   constructor(window: Window, containerRef: ElementRef) {
     this.window = window;
-    const containerNativeElement: HTMLDivElement = containerRef?.nativeElement;
+    const nativeElement: HTMLDivElement = containerRef?.nativeElement;
 
-    if (containerNativeElement) {
-      this.container = containerNativeElement;
+    if (nativeElement) {
+      this.domElement = nativeElement;
       return;
     }
 
@@ -17,11 +17,11 @@ export class Container {
   }
 
   width(): number {
-    return this.container.clientWidth;
+    return this.domElement.clientWidth;
   }
 
   height(): number {
-    return this.container.clientHeight;
+    return this.domElement.clientHeight;
   }
 
   ratio(): number {
@@ -29,10 +29,26 @@ export class Container {
   }
 
   appendChild(child: HTMLElement) {
-    this.container.appendChild(child);
+    this.domElement.appendChild(child);
+  }
+
+  removeChild(child: HTMLElement) {
+    this.domElement.removeChild(child);
   }
 
   empty() {
-    this.container.innerHTML = '';
+    this.domElement.innerHTML = '';
+  }
+
+  isPointerLockElement(): boolean {
+    return this.domElement.ownerDocument.pointerLockElement === this.domElement
+  }
+
+  lock() {
+    this.domElement.requestPointerLock();
+  }
+
+  unlock() {
+    this.domElement.ownerDocument.exitPointerLock();
   }
 }

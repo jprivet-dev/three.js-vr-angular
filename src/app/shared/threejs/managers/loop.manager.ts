@@ -1,12 +1,9 @@
 import { Clock } from 'three';
-import { LoopControls, LoopWithUpdate } from '../models';
-import { VRRenderer } from '../renderers';
+import { Loop, LoopWithUpdate } from '../models';
 
-export class LoopManager implements LoopControls {
+export class LoopManager implements Loop {
   private clock = new Clock();
   private list: LoopWithUpdate[] = [];
-
-  constructor(private renderer: VRRenderer) {}
 
   add(loop: LoopWithUpdate): void {
     this.list.push(loop);
@@ -14,24 +11,14 @@ export class LoopManager implements LoopControls {
 
   remove(element: LoopWithUpdate): void {
     this.list.forEach((current, index) => {
-      if(current === element) {
+      if (current === element) {
         this.list.splice(index, 1);
       }
-    })
-  }
-
-  update(delta: number): void {
-    this.list.map((current) => current.update(delta));
-  }
-
-  start(): void {
-    this.renderer.setAnimationLoop(() => {
-      this.update(this.clock.getDelta());
-      this.renderer.render(this.renderer.getScene(), this.renderer.getCamera());
     });
   }
 
-  stop(): void {
-    this.renderer.setAnimationLoop(() => {});
+  update(): void {
+    const delta = this.clock.getDelta();
+    this.list.map((element) => element.update(delta));
   }
 }

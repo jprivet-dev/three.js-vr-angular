@@ -14,7 +14,7 @@ export class ButtonAntialiasComponent implements OnInit {
   ngOnInit(): void {}
 
   active$(): Observable<boolean> {
-    return this.store.antialias$.pipe(map((antialias) => antialias));
+    return this.store.isAntialias$.pipe(map((antialias) => antialias));
   }
 
   switchAntialias(): void {

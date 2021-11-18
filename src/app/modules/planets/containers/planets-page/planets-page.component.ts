@@ -1,6 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Definition } from '@core/store/store.model';
 import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/threejs/containers';
+import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
 
 @Component({
@@ -8,8 +10,12 @@ import { PlanetsService } from '../../services/planets.service';
   templateUrl: './planets-page.component.html',
   styleUrls: ['./planets-page.component.scss'],
 })
-export class PlanetsPageComponent implements OnInit {
+export class PlanetsPageComponent implements AfterViewInit {
   @ViewChild('container') private containerRef!: ElementRef;
+
+  isFlyMode$: Observable<boolean> = this.store.isFlyMode$;
+  isAntialias$: Observable<boolean> = this.store.isAntialias$;
+  isHDDefinition$: Observable<boolean> = this.store.isHDDefinition$;
 
   constructor(
     private window: Window,
@@ -17,14 +23,20 @@ export class PlanetsPageComponent implements OnInit {
     private service: PlanetsService
   ) {}
 
-  ngOnInit(): void {}
-
   ngAfterViewInit(): void {
     const container = new Container(this.window, this.containerRef);
     this.service.buildScene(container);
   }
 
-  onSwithControls(event: any): void {
-    this.service.switchControl(event);
+  onSwitchFlyMode(): void {
+    this.store.switchFlyMode();
+  }
+
+  onSwitchAntialias(): void {
+    this.store.switchAntialias();
+  }
+
+  onSwitchDefinition(): void {
+    this.store.switchDefinition();
   }
 }

@@ -8,11 +8,11 @@ import {
   Object3D,
   RingGeometry,
   Scene,
+  WebGLRenderer,
 } from 'three';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory';
 import { BufferGeometry } from 'three/src/core/BufferGeometry';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
-import { VRRenderer } from '../../renderers';
 import { VRControllerIndex, VRControllerType } from './vr-controller.model';
 
 export class VRController {
@@ -21,7 +21,7 @@ export class VRController {
   constructor(
     private store: StoreService,
     private scene: Scene,
-    private renderer: VRRenderer,
+    private renderer: WebGLRenderer,
     private type: VRControllerType,
     private index: VRControllerIndex
   ) {
@@ -77,7 +77,7 @@ export class VRController {
       case 'tracked-pointer':
         return this.createTrackedPointer();
       case 'gaze':
-        //return this.createGaze(); // TODO: do not work very well
+      //return this.createGaze(); // TODO: do not work very well
     }
 
     return;

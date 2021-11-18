@@ -10,8 +10,14 @@ export class StoreService {
   private definition = new BehaviorSubject<Definition>('sd');
   public definition$ = this.definition.asObservable();
 
-  private antialias = new BehaviorSubject<boolean>(false);
-  public antialias$ = this.antialias.asObservable();
+  private isHDDefinition = new BehaviorSubject<boolean>(false);
+  public isHDDefinition$ = this.isHDDefinition.asObservable();
+
+  private isAntialias = new BehaviorSubject<boolean>(false);
+  public isAntialias$ = this.isAntialias.asObservable();
+
+  private isFlyMode = new BehaviorSubject<boolean>(false);
+  public isFlyMode$ = this.isFlyMode.asObservable();
 
   private _vrControllerRightConnected = new BehaviorSubject<boolean>(false);
   public vrControllerRightConnected$ =
@@ -32,7 +38,14 @@ export class StoreService {
   private _vrSession = new BehaviorSubject<boolean>(false);
   public vrSession$ = this._vrSession.asObservable();
 
-  constructor() {}
+  switchFlyMode() {
+    const state = this.isFlyMode.getValue();
+    this.isFlyMode.next(!state);
+  }
+
+  flyModeOff() {
+    this.isFlyMode.next(false);
+  }
 
   changeDefinition(definition: Definition) {
     this.log('changeDefinition', definition);
@@ -40,16 +53,17 @@ export class StoreService {
   }
 
   switchDefinition() {
-    const current = this.definition.getValue();
-    const definition = current === 'hd' ? 'sd' : 'hd';
-    this.log('switchDefinition', definition);
+    const isHDDefinition = !this.isHDDefinition.getValue();
+    const definition = isHDDefinition ? 'hd' : 'sd';
     this.definition.next(definition);
+    this.isHDDefinition.next(isHDDefinition);
+    this.log('switchDefinition', definition);
   }
 
   switchAntialias() {
-    const value = !this.antialias.getValue();
+    const value = !this.isAntialias.getValue();
+    this.isAntialias.next(value);
     this.log('switchAntialias', value);
-    this.antialias.next(value);
   }
 
   vrControllerRightConnected() {

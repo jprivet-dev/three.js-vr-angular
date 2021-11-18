@@ -10,9 +10,9 @@ import {
 import { rotateOrbitalAxis } from '../../../utils';
 import { SCOBuilder } from '../../builders';
 import { BasicMaterialTextureByDefinitionLoader } from '../../loaders';
-import { HasMesh } from '../../models';
+import { HasMesh, Loop } from '../../models';
 
-export class Saturn implements HasMesh {
+export class Saturn implements HasMesh, Loop {
   mesh: Mesh;
 
   constructor(private store: StoreService) {

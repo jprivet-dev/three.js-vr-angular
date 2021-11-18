@@ -1,12 +1,12 @@
 import { StoreService } from '@core/store/store.service';
-import { VRRenderer } from '../renderers';
 import { VRSession } from '../models';
+import { Renderer } from '../renderers';
 
 export class VRSessionManager implements VRSession {
   private list: VRSession[] = [];
 
-  constructor(private store: StoreService, private renderer: VRRenderer) {
-    this.initListeners();
+  constructor(private store: StoreService, private renderer: Renderer) {
+    this.connect();
   }
 
   add(element: VRSession): void {
@@ -21,7 +21,7 @@ export class VRSessionManager implements VRSession {
     this.list.forEach((element) => element.onSessionEnd());
   }
 
-  private initListeners(): void {
+  private connect(): void {
     this.renderer.xr.addEventListener('sessionstart', () => {
       this.onSessionStart();
       this.store.vrSessionStart();

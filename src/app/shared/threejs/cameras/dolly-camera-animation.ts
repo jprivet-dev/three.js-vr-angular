@@ -1,6 +1,5 @@
-import { Camera } from 'three';
+import { Camera, WebGLRenderer } from 'three';
 import { LoopControls } from '../models';
-import { VRRenderer } from '../renderers';
 import { DollyCamera } from './dolly-camera';
 
 export class DollyCameraAnimation implements LoopControls {
@@ -9,7 +8,7 @@ export class DollyCameraAnimation implements LoopControls {
   private cycle = [0, 1, 0, -1];
   private indexCycle = 0;
 
-  constructor(private dolly: DollyCamera, private renderer: VRRenderer) {
+  constructor(private dolly: DollyCamera, private renderer: WebGLRenderer) {
     this.xrCamera = this.renderer.xr.getCamera(dolly.camera);
   }
 
