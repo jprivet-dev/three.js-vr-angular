@@ -7,7 +7,6 @@ import {
 } from '@shared/threejs/cameras';
 import { Container } from '@shared/threejs/containers';
 import { SwitchControls, VRControllerFactory } from '@shared/threejs/controls';
-import { FlyControlsManager } from '@shared/threejs/controls/fly';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
@@ -28,6 +27,7 @@ import {
 } from '@shared/threejs/objects3d';
 import { StarsScene } from '@shared/threejs/scenes';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { PlanetsFacade } from '../store/planets.facade';
 import { planetsDollyCameraParams } from './planets.params';
 
 @Injectable({
@@ -37,7 +37,7 @@ export class PlanetsService {
   private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
   private controls!: SwitchControls;
 
-  constructor(private store: StoreService) {}
+  constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
   buildScene(container: Container): void {
     const resize = new WindowResizeManager(container);
@@ -89,6 +89,7 @@ export class PlanetsService {
 
     const mercury = new Mercury(this.store);
     mercury.mesh.position.set(1.5, -2, 4);
+    console.log(mercury);
     scene.add(mercury.mesh);
     loop.add(mercury);
 

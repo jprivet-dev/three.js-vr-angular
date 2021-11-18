@@ -4,6 +4,8 @@ import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/threejs/containers';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
+import { PlanetsActions } from '../../store/actions';
+import { PlanetsFacade } from '../../store/planets.facade';
 
 @Component({
   selector: 'app-planets-page',
@@ -20,7 +22,8 @@ export class PlanetsPageComponent implements AfterViewInit {
   constructor(
     private window: Window,
     private store: StoreService,
-    private service: PlanetsService
+    private service: PlanetsService,
+    private facade: PlanetsFacade,
   ) {}
 
   ngAfterViewInit(): void {
@@ -37,6 +40,7 @@ export class PlanetsPageComponent implements AfterViewInit {
   }
 
   onSwitchDefinition(): void {
-    this.store.switchDefinition();
+    //this.store.switchDefinition();
+    this.facade.dispatch(PlanetsActions.switchDefinition())
   }
 }
