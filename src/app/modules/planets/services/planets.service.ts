@@ -10,6 +10,7 @@ import { SwitchControls, VRControllerFactory } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
+  TextureManager,
   VRRendererBuilder,
   VRSessionManager,
   WindowResizeManager,
@@ -43,6 +44,7 @@ export class PlanetsService {
     const resize = new WindowResizeManager(container);
     const rendererBuilder = new VRRendererBuilder(container);
     const loop = new LoopManager();
+    const texture = new TextureManager();
     const scene = new StarsScene(this.store).scene;
 
     const dolly = new DollyCamera(container, this.dollyCameraParams);
@@ -87,11 +89,11 @@ export class PlanetsService {
     const sun = new SunLight(this.store);
     scene.add(sun.light);
 
-    const mercury = new Mercury(this.store);
+    const mercury = new Mercury();
     mercury.mesh.position.set(1.5, -2, 4);
-    console.log(mercury);
     scene.add(mercury.mesh);
     loop.add(mercury);
+    texture.add(mercury);
 
     const venus = new Venus(this.store);
     venus.mesh.position.set(-1.5, -2, 4);
@@ -156,6 +158,10 @@ export class PlanetsService {
     controls.enableDamping = true;
     controls.target = earth.mesh.position;
     loop.add(controls);
+
+    this.facade.definition$.subscribe((definition) =>
+      texture.loadTextureByDefinition(definition)
+    );
 
     renderer.setAnimationLoop(() => {
       loop.update();

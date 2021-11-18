@@ -21,7 +21,7 @@ export class BasicMaterialTextureByDefinitionLoader
     this.setPath(texturesPath);
   }
 
-  loadByDefinition(definition: Definition) {
+  loadTextureByDefinition(definition: Definition) {
     const keys: BasicMaterialTexturesByDefinitionKeys[] = [
       'map',
       'specularMap',

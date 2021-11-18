@@ -73,7 +73,7 @@ export class Saturn implements HasMesh, Loop {
     );
 
     this.store.definition$.subscribe((definition) => {
-      loader.loadByDefinition(definition);
+      loader.loadTextureByDefinition(definition);
     });
 
     const mesh = new Mesh(geometry, material);

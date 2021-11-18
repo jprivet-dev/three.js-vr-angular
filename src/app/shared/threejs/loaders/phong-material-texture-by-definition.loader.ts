@@ -19,7 +19,7 @@ export class PhongMaterialTextureByDefinitionLoader
     this.setPath(texturesPath);
   }
 
-  loadByDefinition(definition: Definition) {
+  loadTextureByDefinition(definition: Definition) {
     const keys: PhongMaterialTexturesByDefinitionKeys[] = [
       'map',
       'bumpMap',
