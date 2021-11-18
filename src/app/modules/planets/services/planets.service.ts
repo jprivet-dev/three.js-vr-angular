@@ -95,10 +95,11 @@ export class PlanetsService {
     loop.add(mercury);
     texture.add(mercury);
 
-    const venus = new Venus(this.store);
+    const venus = new Venus();
     venus.mesh.position.set(-1.5, -2, 4);
     scene.add(venus.mesh);
     loop.add(venus);
+    texture.add(venus);
 
     const earth = new Earth(this.store);
     earth.mesh.position.set(1.5, 0, 0);
