@@ -17,7 +17,7 @@ export class PlanetsPageComponent implements AfterViewInit {
 
   isFlyMode$: Observable<boolean> = this.store.isFlyMode$;
   isAntialias$: Observable<boolean> = this.store.isAntialias$;
-  isHDDefinition$: Observable<boolean> = this.store.isHDDefinition$;
+  isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
 
   constructor(
     private window: Window,
@@ -40,7 +40,6 @@ export class PlanetsPageComponent implements AfterViewInit {
   }
 
   onSwitchDefinition(): void {
-    //this.store.switchDefinition();
     this.facade.dispatch(PlanetsActions.switchDefinition())
   }
 }

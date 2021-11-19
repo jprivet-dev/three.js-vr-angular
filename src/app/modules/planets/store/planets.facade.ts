@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PlanetsActionsType } from './actions';
 import { PlanetsSelectors } from './selectors';
-import { getDefinition } from './selectors/planets.selectors';
 
 @Injectable({
   providedIn: 'root',

@@ -98,6 +98,10 @@ export class PlanetsService {
     //   isSelecting ? dollyAnimation.moveBackward() :  dollyAnimation.stop();
     // });
 
+    /**
+     * Objects of the scene
+     */
+
     const sun = new SunLight();
     scene.add(sun.light);
     texture.add(sun);
@@ -172,6 +176,10 @@ export class PlanetsService {
     // });
     // controls.orbit.target = earth.mesh.position;
     //loop.add(controls);
+
+    /**
+     * Controls
+     */
 
     const controls = new OrbitControls(dolly.camera, renderer.domElement);
     controls.autoRotateSpeed = 0.2;

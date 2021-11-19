@@ -10,9 +10,6 @@ export class StoreService {
   private definition = new BehaviorSubject<Definition>('sd');
   public definition$ = this.definition.asObservable();
 
-  private isHDDefinition = new BehaviorSubject<boolean>(false);
-  public isHDDefinition$ = this.isHDDefinition.asObservable();
-
   private isAntialias = new BehaviorSubject<boolean>(false);
   public isAntialias$ = this.isAntialias.asObservable();
 
@@ -45,19 +42,6 @@ export class StoreService {
 
   flyModeOff() {
     this.isFlyMode.next(false);
-  }
-
-  changeDefinition(definition: Definition) {
-    this.log('changeDefinition', definition);
-    this.definition.next(definition);
-  }
-
-  switchDefinition() {
-    const isHDDefinition = !this.isHDDefinition.getValue();
-    const definition = isHDDefinition ? 'hd' : 'sd';
-    this.definition.next(definition);
-    this.isHDDefinition.next(isHDDefinition);
-    this.log('switchDefinition', definition);
   }
 
   switchAntialias() {
