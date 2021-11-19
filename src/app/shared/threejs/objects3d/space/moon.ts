@@ -1,41 +1,53 @@
-import { StoreService } from '@core/store/store.service';
-import { Mesh } from 'three';
+import { Definition } from '@core/store/store.model';
+import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
-import { rotateOrbitalAxis } from '../../../utils';
-import { SCOBuilder } from '../../builders';
-import { HasMesh, Loop } from '../../models';
+import {
+  getTextureByDefinition,
+  rotateOrbitalAxis,
+  setAxialTilt,
+} from '../../../utils';
+import { HasMesh, Loop, TexturesByDefinition } from '../../models';
 
-export class Moon implements HasMesh, Loop {
+export class Moon implements HasMesh, Loop, TexturesByDefinition {
+  private loader: TextureLoader;
+  private geometry: SphereGeometry;
+  private material: MeshPhongMaterial;
+
   mesh: Mesh;
 
-  constructor(private store: StoreService) {
-    this.mesh = this.createMoon();
+  constructor() {
+    this.loader = new TextureLoader().setPath(
+      'assets/threejs/textures/space/moon/'
+    );
+
+    this.geometry = new SphereGeometry(RadiusRatioEarth.Moon, 64, 32);
+    this.material = new MeshPhongMaterial({
+      wireframe: false,
+      bumpScale: 0.005,
+      shininess: 0,
+    });
+
+    this.mesh = new Mesh(this.geometry, this.material);
+    setAxialTilt(this.mesh, AxialTilt.Moon);
+  }
+
+  loadTexturesByDefinition(definition: Definition): void {
+    this.material.map = this.loader.load(
+      getTextureByDefinition(definition, {
+        sd: 'moon_map_512x256.jpg',
+        hd: 'moon_map_1024x512.jpg',
+      })
+    );
+
+    this.material.bumpMap = this.loader.load(
+      getTextureByDefinition(definition, {
+        sd: 'moon_bump_512x256.jpg',
+        hd: 'moon_bump_1024x512.jpg',
+      })
+    );
   }
 
   update(delta: number) {
     rotateOrbitalAxis(this.mesh, delta, 5);
-  }
-
-  private createMoon(): Mesh {
-    return new SCOBuilder(this.store, 'moon')
-      .setSize(RadiusRatioEarth.Moon)
-      .setAxialTilt(AxialTilt.Moon)
-      .setMaterialParameters({
-        wireframe: false,
-        bumpScale: 0.005,
-        shininess: 0,
-      })
-      .setTexturesPath('assets/threejs/textures/space/moon/')
-      .setTexturesByDefinition({
-        map: {
-          sd: 'moon_map_512x256.jpg',
-          hd: 'moon_map_1024x512.jpg',
-        },
-        bumpMap: {
-          sd: 'moon_bump_512x256.jpg',
-          hd: 'moon_bump_1024x512.jpg',
-        },
-      })
-      .build();
   }
 }

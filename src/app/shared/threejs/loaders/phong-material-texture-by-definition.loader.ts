@@ -1,6 +1,6 @@
 import { Definition } from '@core/store/store.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
-import { TextureByDefinition } from '../models';
+import { TexturesByDefinition } from '../models';
 import {
   PhongMaterialTextureByDefinition,
   PhongMaterialTexturesByDefinitionKeys,
@@ -8,7 +8,7 @@ import {
 
 export class PhongMaterialTextureByDefinitionLoader
   extends TextureLoader
-  implements TextureByDefinition
+  implements TexturesByDefinition
 {
   constructor(
     private material: MeshPhongMaterial,
@@ -19,7 +19,7 @@ export class PhongMaterialTextureByDefinitionLoader
     this.setPath(texturesPath);
   }
 
-  loadTextureByDefinition(definition: Definition) {
+  loadTexturesByDefinition(definition: Definition) {
     const keys: PhongMaterialTexturesByDefinitionKeys[] = [
       'map',
       'bumpMap',

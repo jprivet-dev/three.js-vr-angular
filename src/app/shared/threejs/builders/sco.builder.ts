@@ -54,7 +54,7 @@ export class SCOBuilder {
     );
 
     this.store.definition$.subscribe((definition) => {
-      loader.loadTextureByDefinition(definition);
+      loader.loadTexturesByDefinition(definition);
     });
 
     const mesh = new Mesh(geometry, material);

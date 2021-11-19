@@ -41,11 +41,23 @@ export class PlanetsService {
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
   buildScene(container: Container): void {
+    /**
+     * Managers
+     */
+
     const resize = new WindowResizeManager(container);
-    const rendererBuilder = new VRRendererBuilder(container);
-    const loop = new LoopManager();
     const texture = new TextureManager();
-    const scene = new StarsScene(this.store).scene;
+    const loop = new LoopManager();
+
+    /**
+     * Scene
+     */
+
+    const stars = new StarsScene();
+    texture.add(stars);
+    const scene = stars.scene;
+
+    const rendererBuilder = new VRRendererBuilder(container);
 
     const dolly = new DollyCamera(container, this.dollyCameraParams);
     scene.add(dolly);
@@ -86,54 +98,62 @@ export class PlanetsService {
     //   isSelecting ? dollyAnimation.moveBackward() :  dollyAnimation.stop();
     // });
 
-    const sun = new SunLight(this.store);
+    const sun = new SunLight();
     scene.add(sun.light);
+    texture.add(sun);
 
     const mercury = new Mercury();
     mercury.mesh.position.set(1.5, -2, 4);
     scene.add(mercury.mesh);
-    loop.add(mercury);
     texture.add(mercury);
+    loop.add(mercury);
 
     const venus = new Venus();
     venus.mesh.position.set(-1.5, -2, 4);
     scene.add(venus.mesh);
-    loop.add(venus);
     texture.add(venus);
+    loop.add(venus);
 
-    const earth = new Earth(this.store);
+    const earth = new Earth();
     earth.mesh.position.set(1.5, 0, 0);
     scene.add(earth.mesh);
+    texture.add(earth);
     loop.add(earth);
 
-    const moon = new Moon(this.store);
+    const moon = new Moon();
     moon.mesh.position.set(earth.mesh.position.x + 2, 0, earth.mesh.position.z);
     scene.add(moon.mesh);
+    texture.add(moon);
     loop.add(moon);
 
-    const mars = new Mars(this.store);
+    const mars = new Mars();
     mars.mesh.position.set(-1.5, 0, 0);
     scene.add(mars.mesh);
+    texture.add(mars);
     loop.add(mars);
 
-    const jupiter = new Jupiter(this.store);
+    const jupiter = new Jupiter();
     jupiter.mesh.position.set(-17, 0, 0);
     scene.add(jupiter.mesh);
+    texture.add(jupiter);
     loop.add(jupiter);
 
-    const saturn = new Saturn(this.store);
+    const saturn = new Saturn();
     saturn.mesh.position.set(17, 0, 0);
     scene.add(saturn.mesh);
+    texture.add(saturn);
     loop.add(saturn);
 
-    const uranus = new Uranus(this.store);
+    const uranus = new Uranus();
     uranus.mesh.position.set(-5, 3, -13);
     scene.add(uranus.mesh);
+    texture.add(uranus);
     loop.add(uranus);
 
-    const neptune = new Neptune(this.store);
+    const neptune = new Neptune();
     neptune.mesh.position.set(5, 5, -13);
     scene.add(neptune.mesh);
+    texture.add(neptune);
     loop.add(neptune);
 
     // this.controls = new SwitchControls(dolly.camera, renderer.domElement);
@@ -161,7 +181,7 @@ export class PlanetsService {
     loop.add(controls);
 
     this.facade.definition$.subscribe((definition) =>
-      texture.loadTextureByDefinition(definition)
+      texture.loadTexturesByDefinition(definition)
     );
 
     renderer.setAnimationLoop(() => {

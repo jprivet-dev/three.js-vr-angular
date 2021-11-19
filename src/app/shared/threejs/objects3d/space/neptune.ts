@@ -1,36 +1,45 @@
-import { StoreService } from '@core/store/store.service';
-import { Mesh } from 'three';
+import { Definition } from '@core/store/store.model';
+import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
-import { rotateOrbitalAxis } from '../../../utils';
-import { SCOBuilder } from '../../builders';
-import { HasMesh, Loop } from '../../models';
+import {
+  getTextureByDefinition,
+  rotateOrbitalAxis,
+  setAxialTilt,
+} from '../../../utils';
+import { HasMesh, Loop, TexturesByDefinition } from '../../models';
 
-export class Neptune implements HasMesh, Loop {
+export class Neptune implements HasMesh, Loop, TexturesByDefinition {
+  private loader: TextureLoader;
+  private geometry: SphereGeometry;
+  private material: MeshPhongMaterial;
+
   mesh: Mesh;
 
-  constructor(private store: StoreService) {
-    this.mesh = this.createNeptune();
+  constructor() {
+    this.loader = new TextureLoader().setPath(
+      'assets/threejs/textures/space/neptune/'
+    );
+
+    this.geometry = new SphereGeometry(RadiusRatioEarth.Neptune, 64, 32);
+    this.material = new MeshPhongMaterial({
+      wireframe: false,
+      shininess: 0,
+    });
+
+    this.mesh = new Mesh(this.geometry, this.material);
+    setAxialTilt(this.mesh, AxialTilt.Neptune);
+  }
+
+  loadTexturesByDefinition(definition: Definition): void {
+    this.material.map = this.loader.load(
+      getTextureByDefinition(definition, {
+        sd: 'neptune_map_1024x512.jpg',
+        hd: 'neptune_map_2048x1024.jpg',
+      })
+    );
   }
 
   update(delta: number) {
     rotateOrbitalAxis(this.mesh, delta, 5);
-  }
-
-  private createNeptune(): Mesh {
-    return new SCOBuilder(this.store, 'neptune')
-      .setSize(RadiusRatioEarth.Neptune)
-      .setAxialTilt(AxialTilt.Neptune)
-      .setMaterialParameters({
-        wireframe: false,
-        shininess: 0,
-      })
-      .setTexturesPath('assets/threejs/textures/space/neptune/')
-      .setTexturesByDefinition({
-        map: {
-          sd: 'neptune_map_1024x512.jpg',
-          hd: 'neptune_map_2048x1024.jpg',
-        },
-      })
-      .build();
   }
 }

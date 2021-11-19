@@ -1,14 +1,14 @@
 import { Definition } from '@core/store/store.model';
-import { TextureByDefinition } from '../models';
+import { TexturesByDefinition } from '../models';
 
-export class TextureManager implements TextureByDefinition {
-  private list: TextureByDefinition[] = [];
+export class TextureManager implements TexturesByDefinition {
+  private list: TexturesByDefinition[] = [];
 
-  add(element: TextureByDefinition): void {
+  add(element: TexturesByDefinition): void {
     this.list.push(element);
   }
 
-  loadTextureByDefinition(definition: Definition): void {
-    this.list.map((element) => element.loadTextureByDefinition(definition));
+  loadTexturesByDefinition(definition: Definition): void {
+    this.list.map((element) => element.loadTexturesByDefinition(definition));
   }
 }

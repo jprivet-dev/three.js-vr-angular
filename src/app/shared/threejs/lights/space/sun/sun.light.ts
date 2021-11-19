@@ -1,7 +1,6 @@
 import { Definition } from '@core/store/store.model';
-import { StoreService } from '@core/store/store.service';
 import { DirectionalLight } from 'three';
-import { HasLight } from '../../../models';
+import { HasLight, TexturesByDefinition } from '../../../models';
 import { SunLensflareTextureLoader } from './sun-lensflare-texture.loader';
 import { sunLensflareTextureParams } from './sun-lensflare-texture.params';
 import {
@@ -10,11 +9,14 @@ import {
   SunLensflareTexturesParams,
 } from './sun.model';
 
-export class SunLight implements HasLight {
+export class SunLight implements HasLight, TexturesByDefinition {
+  private loader: SunLensflareTextureLoader = new SunLensflareTextureLoader();
+  private list: SunLensflareElement[] = [];
   private elements: SunLensflareTexturesParams[] = sunLensflareTextureParams;
+
   light: DirectionalLight;
 
-  constructor(private store: StoreService) {
+  constructor() {
     this.light = new DirectionalLight(0xffffff, 1.3);
     this.light.position.set(0, 0, 1000);
 
@@ -22,28 +24,24 @@ export class SunLight implements HasLight {
     this.light.add(sunLensflare);
   }
 
+  loadTexturesByDefinition(definition: Definition): void {
+    this.list.map((current) => {
+      current.texture = this.loader.getTexture(current.type, definition);
+    });
+  }
+
   private createSunLensflare(): SunLensflare {
     const definition: Definition = 'sd';
-
     const sunLensflare = new SunLensflare();
-    const loader = new SunLensflareTextureLoader();
-    const list: SunLensflareElement[] = [];
 
-    this.elements.map((current) => {
-      const element = new SunLensflareElement(
-        loader.getTexture(current.type, definition),
-        current
+    this.elements.map((element) => {
+      const lensflare = new SunLensflareElement(
+        this.loader.getTexture(element.type, definition),
+        element
       );
 
-      list.push(element);
-      sunLensflare.addElement(element);
-    });
-
-    // Refresh texture on definition changing
-    this.store.definition$.subscribe((definition) => {
-      list.map((current) => {
-        current.texture = loader.getTexture(current.type, definition);
-      });
+      this.list.push(lensflare);
+      sunLensflare.addElement(lensflare);
     });
 
     return sunLensflare;

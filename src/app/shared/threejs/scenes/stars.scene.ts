@@ -1,33 +1,30 @@
 import { Definition } from '@core/store/store.model';
-import { StoreService } from '@core/store/store.service';
-import { CubeTexture, CubeTextureLoader, Scene } from 'three';
-import { HasScene } from '../models';
+import { CubeTextureLoader, Scene } from 'three';
+import { HasScene, TexturesByDefinition } from '../models';
 
-export class StarsScene implements HasScene {
+export class StarsScene implements HasScene, TexturesByDefinition {
+  private loader: CubeTextureLoader = new CubeTextureLoader();
   private dimensions = {
     sd: '512x512',
     hd: '1024x1024',
   };
 
   scene: Scene = new Scene();
-  loader: CubeTextureLoader = new CubeTextureLoader();
 
-  constructor(private store: StoreService) {
+  constructor() {
     this.loader.setPath('assets/threejs/textures/space/stars/');
-
-    this.store.definition$.subscribe((definition) => {
-      this.scene.background = this.getTextureByDefinition(definition);
-    });
   }
 
-  getTextureByDefinition(definition: Definition): CubeTexture {
+  loadTexturesByDefinition(definition: Definition): void {
+    this.scene.background = this.loader.load(this.getFilenames(definition));
+  }
+
+  private getFilenames(definition: Definition): string[] {
     const list = ['posx', 'negx', 'posy', 'negy', 'posz', 'negz'];
 
-    const filenameList = list.map((position) => {
+    return list.map((position) => {
       const dimension = this.dimensions[definition];
       return `stars_${position}_${dimension}.jpg`;
     });
-
-    return this.loader.load(filenameList);
   }
 }

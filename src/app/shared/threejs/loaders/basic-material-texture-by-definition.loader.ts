@@ -1,7 +1,7 @@
 import { Definition } from '@core/store/store.model';
 import { TextureLoader } from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
-import { TextureByDefinition } from '../models';
+import { TexturesByDefinition } from '../models';
 
 import {
   BasicMaterialTexturesByDefinition,
@@ -10,7 +10,7 @@ import {
 
 export class BasicMaterialTextureByDefinitionLoader
   extends TextureLoader
-  implements TextureByDefinition
+  implements TexturesByDefinition
 {
   constructor(
     private material: MeshBasicMaterial,
@@ -21,7 +21,7 @@ export class BasicMaterialTextureByDefinitionLoader
     this.setPath(texturesPath);
   }
 
-  loadTextureByDefinition(definition: Definition) {
+  loadTexturesByDefinition(definition: Definition) {
     const keys: BasicMaterialTexturesByDefinitionKeys[] = [
       'map',
       'specularMap',
