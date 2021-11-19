@@ -1,11 +1,7 @@
-import { Definition } from '@core/store/store.model';
-import { createAction, props } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 
-export const switchDefinition = createAction(
-  '[Planets] switch definition',
-);
+export const switchFlyMode = createAction('[Planets] switch fly mode');
 
-export const changeDefinition = createAction(
-  '[Planets] change definition',
-  props<{ definition: Definition }>()
-);
+export const switchAntialias = createAction('[Planets] switch antialias');
+
+export const switchDefinition = createAction('[Planets] switch definition');

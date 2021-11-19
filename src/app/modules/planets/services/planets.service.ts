@@ -63,16 +63,9 @@ export class PlanetsService {
     scene.add(dolly);
     resize.add(dolly);
 
-    let lastAntialias = false;
-    let renderer = rendererBuilder.build({ antialias: lastAntialias });
+    let lastIsAntialias = false;
+    let renderer = rendererBuilder.build({ antialias: lastIsAntialias });
     resize.add(renderer);
-
-    this.store.isAntialias$.subscribe((antialias) => {
-      if (lastAntialias === antialias) return;
-      renderer = rendererBuilder.build({ antialias });
-      resize.add(renderer);
-      lastAntialias = antialias;
-    });
 
     const vr = new VRSessionManager(this.store, renderer);
     vr.add(dolly);
@@ -188,9 +181,25 @@ export class PlanetsService {
     controls.target = earth.mesh.position;
     loop.add(controls);
 
+    /**
+     * Store events
+     */
+
+    this.facade.isAntialias$.subscribe((isAntialias) => {
+      // console.log('antialias', isAntialias);
+      // if (lastIsAntialias === isAntialias) return;
+      // renderer = rendererBuilder.build({ antialias: isAntialias });
+      // resize.add(renderer);
+      // lastIsAntialias = isAntialias;
+    });
+
     this.facade.definition$.subscribe((definition) =>
       texture.loadTexturesByDefinition(definition)
     );
+
+    /**
+     * Loop
+     */
 
     renderer.setAnimationLoop(() => {
       loop.update();

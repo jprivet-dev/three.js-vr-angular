@@ -7,6 +7,8 @@ import { PlanetsSelectors } from './selectors';
   providedIn: 'root',
 })
 export class PlanetsFacade {
+  readonly isFlyMode$ = this.store.select(PlanetsSelectors.isFlyMode);
+  readonly isAntialias$ = this.store.select(PlanetsSelectors.isAntialias);
   readonly definition$ = this.store.select(PlanetsSelectors.getDefinition);
   readonly isHDDefinition$ = this.store.select(PlanetsSelectors.isHDDefinition);
 

@@ -5,14 +5,14 @@ import { PlanetsActions } from '../actions';
 export const featureKey = 'planets';
 
 export interface State {
-  fly: boolean;
+  flyMode: boolean;
   antialias: boolean;
   definition: Definition;
   vrSession: boolean;
 }
 
 export const initialState: State = {
-  fly: false,
+  flyMode: false,
   antialias: false,
   definition: 'sd',
   vrSession: false,
@@ -20,6 +20,14 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
+  on(PlanetsActions.switchFlyMode, (state) => ({
+    ...state,
+    flyMode: !state.flyMode,
+  })),
+  on(PlanetsActions.switchAntialias, (state) => ({
+    ...state,
+    antialias: !state.antialias,
+  })),
   on(PlanetsActions.switchDefinition, (state) => ({
     ...state,
     definition: state.definition === 'sd' ? 'hd' : 'sd',

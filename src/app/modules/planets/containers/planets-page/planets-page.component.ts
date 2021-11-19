@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { Definition } from '@core/store/store.model';
-import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/threejs/containers';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
@@ -15,15 +13,14 @@ import { PlanetsFacade } from '../../store/planets.facade';
 export class PlanetsPageComponent implements AfterViewInit {
   @ViewChild('container') private containerRef!: ElementRef;
 
-  isFlyMode$: Observable<boolean> = this.store.isFlyMode$;
-  isAntialias$: Observable<boolean> = this.store.isAntialias$;
+  isFlyMode$: Observable<boolean> = this.facade.isFlyMode$;
+  isAntialias$: Observable<boolean> = this.facade.isAntialias$;
   isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
 
   constructor(
     private window: Window,
-    private store: StoreService,
     private service: PlanetsService,
-    private facade: PlanetsFacade,
+    private facade: PlanetsFacade
   ) {}
 
   ngAfterViewInit(): void {
@@ -32,14 +29,14 @@ export class PlanetsPageComponent implements AfterViewInit {
   }
 
   onSwitchFlyMode(): void {
-    this.store.switchFlyMode();
+    this.facade.dispatch(PlanetsActions.switchFlyMode());
   }
 
   onSwitchAntialias(): void {
-    this.store.switchAntialias();
+    this.facade.dispatch(PlanetsActions.switchAntialias());
   }
 
   onSwitchDefinition(): void {
-    this.facade.dispatch(PlanetsActions.switchDefinition())
+    this.facade.dispatch(PlanetsActions.switchDefinition());
   }
 }
