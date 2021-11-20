@@ -1,15 +1,14 @@
-import { StoreService } from '@core/store/store.service';
 import { VRSession } from '../models';
-import { Renderer } from '../renderers';
 
 export class VRSessionManager implements VRSession {
   private list: VRSession[] = [];
 
-  constructor(private store: StoreService, private renderer: Renderer) {
-    this.connect();
-  }
-
   add(element: VRSession): void {
+    if (this.list.includes(element)) {
+      console.error('Element already exists:', element);
+      return;
+    }
+
     this.list.push(element);
   }
 
@@ -19,17 +18,5 @@ export class VRSessionManager implements VRSession {
 
   onSessionEnd(): void {
     this.list.forEach((element) => element.onSessionEnd());
-  }
-
-  private connect(): void {
-    this.renderer.xr.addEventListener('sessionstart', () => {
-      this.onSessionStart();
-      this.store.vrSessionStart();
-    });
-
-    this.renderer.xr.addEventListener('sessionend', () => {
-      this.onSessionEnd();
-      this.store.vrSessionEnd();
-    });
   }
 }

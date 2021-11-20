@@ -5,6 +5,11 @@ export class TextureManager implements TexturesByDefinition {
   private list: TexturesByDefinition[] = [];
 
   add(element: TexturesByDefinition): void {
+    if (this.list.includes(element)) {
+      console.error('Element already exists:', element);
+      return;
+    }
+
     this.list.push(element);
   }
 

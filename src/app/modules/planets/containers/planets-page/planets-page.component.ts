@@ -13,9 +13,9 @@ import { PlanetsFacade } from '../../store/planets.facade';
 export class PlanetsPageComponent implements AfterViewInit {
   @ViewChild('container') private containerRef!: ElementRef;
 
-  isFlyMode$: Observable<boolean> = this.facade.isFlyMode$;
-  isAntialias$: Observable<boolean> = this.facade.isAntialias$;
+  flyMode$: Observable<boolean> = this.facade.flyMode$;
   isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
+  antialias$: Observable<boolean> = this.facade.antialias$;
 
   constructor(
     private window: Window,
@@ -32,11 +32,11 @@ export class PlanetsPageComponent implements AfterViewInit {
     this.facade.dispatch(PlanetsActions.switchFlyMode());
   }
 
-  onSwitchAntialias(): void {
-    this.facade.dispatch(PlanetsActions.switchAntialias());
-  }
-
   onSwitchDefinition(): void {
     this.facade.dispatch(PlanetsActions.switchDefinition());
+  }
+
+  onSwitchAntialias(): void {
+    this.facade.dispatch(PlanetsActions.switchAntialias());
   }
 }

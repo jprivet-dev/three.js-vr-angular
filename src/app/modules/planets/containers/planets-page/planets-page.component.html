@@ -1,12 +1,12 @@
 <div #container id="container"></div>
 <app-menu
-  [isflyMode]="isFlyMode$ | async"
+  [isflyMode]="flyMode$ | async"
   (switchFlyMode)="onSwitchFlyMode()"
-
-  [isAntialias]="isAntialias$ | async"
-  (switchAntialias)="onSwitchAntialias()"
 
   [isHDDefinition]="isHDDefinition$ | async"
   (switchDefinition)="onSwitchDefinition()"
+
+  [isAntialias]="antialias$ | async"
+  (switchAntialias)="onSwitchAntialias()"
 ></app-menu>
 

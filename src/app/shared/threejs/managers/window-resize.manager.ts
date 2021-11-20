@@ -1,5 +1,5 @@
 import { Container } from '../containers';
-import { WindowResize } from '../models';
+import { LoopWithUpdate, WindowResize } from '../models';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];
@@ -11,7 +11,20 @@ export class WindowResizeManager implements WindowResize {
   }
 
   add(element: WindowResize): void {
+    if (this.list.includes(element)) {
+      console.error('Element already exists:', element);
+      return;
+    }
+
     this.list.push(element);
+  }
+
+  remove(element: WindowResize): void {
+    this.list.forEach((current, index) => {
+      if (current === element) {
+        this.list.splice(index, 1);
+      }
+    });
   }
 
   resize(): void {

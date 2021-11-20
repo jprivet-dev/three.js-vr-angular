@@ -5,8 +5,13 @@ export class LoopManager implements Loop {
   private clock = new Clock();
   private list: LoopWithUpdate[] = [];
 
-  add(loop: LoopWithUpdate): void {
-    this.list.push(loop);
+  add(element: LoopWithUpdate): void {
+    if (this.list.includes(element)) {
+      console.error('Element already exists:', element);
+      return;
+    }
+
+    this.list.push(element);
   }
 
   remove(element: LoopWithUpdate): void {

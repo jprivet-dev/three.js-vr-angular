@@ -7,12 +7,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
   @Input() isflyMode!: boolean | null;
-  @Input() isAntialias!: boolean | null;
   @Input() isHDDefinition!: boolean | null;
+  @Input() isAntialias!: boolean | null;
 
   @Output() switchFlyMode = new EventEmitter();
-  @Output() switchAntialias = new EventEmitter();
   @Output() switchDefinition = new EventEmitter();
+  @Output() switchAntialias = new EventEmitter();
 
   ngOnInit(): void {}
 
@@ -20,11 +20,11 @@ export class MenuComponent implements OnInit {
     this.switchFlyMode.next();
   }
 
-  onSwitchAntialias() {
-    this.switchAntialias.next();
-  }
-
   onSwitchDefinition() {
     this.switchDefinition.next();
+  }
+
+  onSwitchAntialias() {
+    this.switchAntialias.next();
   }
 }

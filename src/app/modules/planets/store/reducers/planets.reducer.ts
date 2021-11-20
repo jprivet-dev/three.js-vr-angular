@@ -24,12 +24,20 @@ export const reducer = createReducer(
     ...state,
     flyMode: !state.flyMode,
   })),
+  on(PlanetsActions.switchDefinition, (state) => ({
+    ...state,
+    definition: state.definition === 'sd' ? 'hd' : 'sd',
+  })),
   on(PlanetsActions.switchAntialias, (state) => ({
     ...state,
     antialias: !state.antialias,
   })),
-  on(PlanetsActions.switchDefinition, (state) => ({
+  on(PlanetsActions.vrSessionStart, (state) => ({
     ...state,
-    definition: state.definition === 'sd' ? 'hd' : 'sd',
+    vrSession: true,
+  })),
+  on(PlanetsActions.vrSessionEnd, (state) => ({
+    ...state,
+    vrSession: false,
   }))
 );

@@ -33,10 +33,11 @@ import { planetsDollyCameraParams } from './planets.params';
 @Injectable({
   providedIn: 'root',
 })
-export class PlanetsService {
+export class PlanetsServiceOLD {
   private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
   private controls!: SwitchControls;
   private subscription = new Subscription();
+
 
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
@@ -75,6 +76,27 @@ export class PlanetsService {
     scene.add(dolly);
     resize.add(dolly);
     vr.add(dolly);
+
+    // const vrControllerFactory = new VRControllerFactory(
+    //   this.store,
+    //   scene,
+    //   renderer
+    // );
+    // const controllerRight = vrControllerFactory.createRight();
+    // // const controllerLeft = vrControllerFactory.createLeft();
+    //
+    // const dollyAnimation = new DollyCameraAnimation(dolly, renderer);
+    // loop.add(dollyAnimation);
+    //
+    // this.store.vrControllerRightIsSelecting$.subscribe((isSelecting) => {
+    //   if (isSelecting) {
+    //     dollyAnimation.moveSwitch();
+    //   }
+    // });
+    //
+    // // this.store.vrControllerLeftIsSelecting$.subscribe((isSelecting) => {
+    // //   isSelecting ? dollyAnimation.moveBackward() :  dollyAnimation.stop();
+    // // });
 
     /**
      * Objects of the scene
@@ -137,6 +159,23 @@ export class PlanetsService {
     scene.add(neptune.mesh);
     texture.add(neptune);
     loop.add(neptune);
+
+    // this.controls = new SwitchControls(dolly.camera, renderer.domElement);
+    // loop.add(this.controls);
+
+    // const controls = new FlyControlsManager(container, dolly);
+    //
+    // this.store.isFlyMode$.subscribe((state) => {
+    //   state ? controls.pointer.enable() : controls.pointer.disable();
+    // });
+    //
+    // controls.pointer.isLocked$.subscribe((isLocked) => {
+    //   if (!isLocked) {
+    //     this.store.flyModeOff();
+    //   }
+    // });
+    // controls.orbit.target = earth.mesh.position;
+    //loop.add(controls);
 
     /**
      * Renderer

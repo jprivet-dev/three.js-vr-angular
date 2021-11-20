@@ -7,13 +7,13 @@ import { PlanetsSelectors } from './selectors';
   providedIn: 'root',
 })
 export class PlanetsFacade {
-  readonly isFlyMode$ = this.store.select(PlanetsSelectors.isFlyMode);
-  readonly isAntialias$ = this.store.select(PlanetsSelectors.isAntialias);
+  readonly flyMode$ = this.store.select(PlanetsSelectors.getFlyMode);
   readonly definition$ = this.store.select(PlanetsSelectors.getDefinition);
   readonly isHDDefinition$ = this.store.select(PlanetsSelectors.isHDDefinition);
+  readonly antialias$ = this.store.select(PlanetsSelectors.getAntialias);
+  readonly vrSession$ = this.store.select(PlanetsSelectors.getVRSession);
 
-  constructor(private store: Store) {
-  }
+  constructor(private store: Store) {}
 
   dispatch(action: PlanetsActionsType): void {
     this.store.dispatch(action);
