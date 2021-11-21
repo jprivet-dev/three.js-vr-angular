@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   Output,
   ViewChild,
@@ -19,6 +20,9 @@ import { RendererInitEvent } from './renderer.model';
 })
 export class RendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') private containerRef!: ElementRef;
+
+  @Input() antialias!: boolean;
+
   @Output() rendererInit = new EventEmitter<RendererInitEvent>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
@@ -28,6 +32,11 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
   constructor(private window: Window) {}
 
   ngAfterViewInit(): void {
+    if (!this.antialias) {
+      throw new Error('"antialias" must be defined.')
+      return;
+    }
+
     const container = new Container(this.window, this.containerRef);
 
     this.renderer = new Renderer({ antialias: false });
