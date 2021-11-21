@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
+import { RendererInitEvent } from '@shared/renderer/renderer.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
-import { Container } from '@shared/threejs/containers';
 import { SwitchControls } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
@@ -21,12 +21,9 @@ import {
   Uranus,
   Venus,
 } from '@shared/threejs/objects3d';
-import { Renderer } from '@shared/threejs/renderers';
 import { StarsScene } from '@shared/threejs/scenes';
 import { Subscription } from 'rxjs';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton';
-import { PlanetsActions } from '../store/actions';
 import { PlanetsFacade } from '../store/planets.facade';
 import { planetsDollyCameraParams } from './planets.params';
 
@@ -40,14 +37,10 @@ export class PlanetsService {
 
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
-  buildScene(container: Container): void {
-    this.facade.antialias$.subscribe((antialias) => {
-      this.buildSceneAntialias(container, antialias);
-    });
-  }
+  buildScene(event: RendererInitEvent) {
+    const { container, renderer } = event;
 
-  private buildSceneAntialias(container: Container, antialias: boolean) {
-    let renderer: Renderer;
+    // let renderer: Renderer;
     let controls: OrbitControls;
 
     /**
@@ -75,6 +68,17 @@ export class PlanetsService {
     scene.add(dolly);
     resize.add(dolly);
     vr.add(dolly);
+
+    /**
+     * Renderer
+     */
+
+    resize.add(renderer);
+
+    renderer.setAnimationLoop(() => {
+      loop.update();
+      renderer.render(scene, dolly.camera);
+    });
 
     /**
      * Objects of the scene
@@ -139,65 +143,15 @@ export class PlanetsService {
     loop.add(neptune);
 
     /**
-     * Renderer
-     */
-
-    renderer = new Renderer({ antialias });
-    renderer.setPixelRatio(container.window.devicePixelRatio);
-    renderer.resize(container);
-
-    container.empty();
-    container.appendChild(renderer.domElement);
-
-    // https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
-    const button = VRButton.createButton(renderer);
-    renderer.xr.enabled = true; // enable XR rendering
-    renderer.xr.setReferenceSpaceType('local');
-    container.appendChild(button);
-
-    resize.add(renderer);
-
-    const rendererConnect = () => {
-      renderer.xr.addEventListener('sessionstart', eventVRSessionStart);
-      renderer.xr.addEventListener('sessionend', eventVRSessionEnd);
-    };
-
-    const rendererDisconnect = () => {
-      renderer.xr.removeEventListener('sessionstart', eventVRSessionStart);
-      renderer.xr.removeEventListener('sessionend', eventVRSessionEnd);
-    };
-
-    const eventVRSessionStart = () => {
-      console.log('eventVRSessionStart');
-      this.facade.dispatch(PlanetsActions.vrSessionStart());
-    };
-
-    const eventVRSessionEnd = () => {
-      this.facade.dispatch(PlanetsActions.vrSessionEnd());
-    };
-
-    const animate = () => {
-      renderer.setAnimationLoop(render);
-    };
-
-    const render = () => {
-      loop.update();
-      renderer.render(scene, dolly.camera);
-    };
-
-    rendererConnect();
-    animate();
-
-    /**
      * Controls
      */
 
-    controls = new OrbitControls(dolly.camera, renderer.domElement);
-    controls.autoRotateSpeed = 0.2;
-    controls.autoRotate = true;
-    controls.enableDamping = true;
-    controls.target = earth.mesh.position;
-    loop.add(controls);
+    // controls = new OrbitControls(dolly.camera, renderer.domElement);
+    // controls.autoRotateSpeed = 0.2;
+    // controls.autoRotate = true;
+    // controls.enableDamping = true;
+    // controls.target = earth.mesh.position;
+    // loop.add(controls);
 
     /**
      * Store events

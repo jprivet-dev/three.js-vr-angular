@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Container } from '@shared/threejs/containers';
+import { RendererInitEvent } from '@shared/renderer/renderer.model';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
 import { PlanetsActions } from '../../store/actions';
@@ -21,6 +21,10 @@ export class PlanetsPageComponent {
     private facade: PlanetsFacade
   ) {}
 
+  onRendererInit(event: RendererInitEvent): void {
+    this.service.buildScene(event);
+  }
+
   onSwitchFlyMode(): void {
     this.facade.dispatch(PlanetsActions.switchFlyMode());
   }
@@ -33,7 +37,11 @@ export class PlanetsPageComponent {
     this.facade.dispatch(PlanetsActions.switchAntialias());
   }
 
-  onContainerInit(container: Container): void {
-    this.service.buildScene(container);
+  onVRSessionStart() {
+    this.facade.dispatch(PlanetsActions.vrSessionStart());
+  }
+
+  onVRSessionEnd() {
+    this.facade.dispatch(PlanetsActions.vrSessionEnd());
   }
 }

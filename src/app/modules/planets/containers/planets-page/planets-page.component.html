@@ -1,5 +1,7 @@
 <app-renderer
-  (containerInit)="onContainerInit($event)"
+  (rendererInit)="onRendererInit($event)"
+  (vrSessionStart)="onVRSessionStart()"
+  (vrSessionEnd)="onVRSessionEnd()"
 ></app-renderer>
 <app-menu
   [isflyMode]="flyMode$ | async"
