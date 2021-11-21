@@ -1,11 +1,9 @@
-<ng-container *ngIf="(antialias$ | async) !== null as antialias">
-  <app-renderer
-    [antialias]="antialias"
-    (rendererInit)="onRendererInit($event)"
-    (vrSessionStart)="onVRSessionStart()"
-    (vrSessionEnd)="onVRSessionEnd()"
-  ></app-renderer>
-</ng-container>
+<app-renderer
+  [antialias$]="antialias$"
+  (rendererInit)="onRendererInit($event)"
+  (vrSessionStart)="onVRSessionStart()"
+  (vrSessionEnd)="onVRSessionEnd()"
+></app-renderer>
 <app-menu
   [isflyMode]="flyMode$ | async"
   (switchFlyMode)="onSwitchFlyMode()"

@@ -22,7 +22,7 @@ export class PlanetsPageComponent {
   ) {}
 
   onRendererInit(event: RendererInitEvent): void {
-    this.service.buildScene(event);
+    this.service.buildScene(event.container, event.renderer);
   }
 
   onSwitchFlyMode(): void {

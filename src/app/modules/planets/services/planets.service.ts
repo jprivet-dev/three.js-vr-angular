@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
-import { RendererInitEvent } from '@shared/renderer/renderer.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
-import { SwitchControls } from '@shared/threejs/controls';
+import { Container } from '@shared/threejs/containers';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
@@ -21,9 +20,11 @@ import {
   Uranus,
   Venus,
 } from '@shared/threejs/objects3d';
+import { Renderer } from '@shared/threejs/renderers';
 import { StarsScene } from '@shared/threejs/scenes';
 import { Subscription } from 'rxjs';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { Camera, Vector3 } from 'three/src/Three';
 import { PlanetsFacade } from '../store/planets.facade';
 import { planetsDollyCameraParams } from './planets.params';
 
@@ -32,13 +33,25 @@ import { planetsDollyCameraParams } from './planets.params';
 })
 export class PlanetsService {
   private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
-  private controls!: SwitchControls;
   private subscription = new Subscription();
+
+  private renderer!: Renderer;
+
+  private controls!: OrbitControls;
+  private orbitControlsCamera!: Camera;
+  private orbitControlsTarget!: Vector3;
+
+  private alreadyBuilt: boolean = false;
 
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
-  buildScene(event: RendererInitEvent) {
-    const { container, renderer } = event;
+  buildScene(container: Container, renderer: Renderer) {
+    this.renderer = renderer;
+
+    if (this.alreadyBuilt) {
+      this.updateControls(this.renderer.domElement);
+      return;
+    }
 
     // let renderer: Renderer;
     let controls: OrbitControls;
@@ -73,11 +86,11 @@ export class PlanetsService {
      * Renderer
      */
 
-    resize.add(renderer);
+    resize.add(this.renderer);
 
-    renderer.setAnimationLoop(() => {
+    this.renderer.setAnimationLoop(() => {
       loop.update();
-      renderer.render(scene, dolly.camera);
+      this.renderer.render(scene, dolly.camera);
     });
 
     /**
@@ -143,17 +156,6 @@ export class PlanetsService {
     loop.add(neptune);
 
     /**
-     * Controls
-     */
-
-    // controls = new OrbitControls(dolly.camera, renderer.domElement);
-    // controls.autoRotateSpeed = 0.2;
-    // controls.autoRotate = true;
-    // controls.enableDamping = true;
-    // controls.target = earth.mesh.position;
-    // loop.add(controls);
-
-    /**
      * Store events
      */
 
@@ -168,5 +170,43 @@ export class PlanetsService {
         vrSession ? vr.onSessionStart() : vr.onSessionEnd();
       })
     );
+
+    /**
+     * Controls
+     */
+
+    this.controls = this.createControls(
+      dolly.camera,
+      this.renderer.domElement,
+      earth.mesh.position
+    );
+    loop.add(this.controls);
+
+    this.alreadyBuilt = true;
+  }
+
+  createControls(
+    camera: Camera,
+    domElement: HTMLElement,
+    target: Vector3
+  ): OrbitControls {
+    this.orbitControlsCamera = camera;
+    this.orbitControlsTarget = target;
+
+    const controls = new OrbitControls(camera, domElement);
+    controls.autoRotateSpeed = 0.2;
+    controls.autoRotate = true;
+    controls.enableDamping = true;
+    controls.target = target;
+
+    return controls;
+  }
+
+  updateControls(domElement: HTMLElement) {
+    const controls = new OrbitControls(this.orbitControlsCamera, domElement);
+    controls.autoRotateSpeed = 0.2;
+    controls.autoRotate = true;
+    controls.enableDamping = true;
+    controls.target = this.orbitControlsTarget;
   }
 }

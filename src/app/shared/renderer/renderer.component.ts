@@ -8,6 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { Container } from '../threejs/containers';
 import { Renderer } from '../threejs/renderers';
@@ -21,29 +22,31 @@ import { RendererInitEvent } from './renderer.model';
 export class RendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') private containerRef!: ElementRef;
 
-  @Input() antialias!: boolean;
+  @Input() antialias$: Observable<boolean> = of(false);
 
   @Output() rendererInit = new EventEmitter<RendererInitEvent>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
+  subscription!: Subscription;
   renderer!: Renderer;
 
   constructor(private window: Window) {}
 
   ngAfterViewInit(): void {
-    if (!this.antialias) {
-      throw new Error('"antialias" must be defined.')
-      return;
-    }
+    this.subscription = this.antialias$.subscribe((antialias) =>
+      this.init(antialias)
+    );
+  }
 
+  init(antialias: boolean): void {
     const container = new Container(this.window, this.containerRef);
 
-    this.renderer = new Renderer({ antialias: false });
+    this.renderer = new Renderer({ antialias });
     this.renderer.setPixelRatio(container.window.devicePixelRatio);
     this.renderer.resize(container);
 
-    //container.empty();
+    container.empty();
     container.appendChild(this.renderer.domElement);
 
     // https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
@@ -58,10 +61,6 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
       container,
       renderer: this.renderer,
     });
-  }
-
-  ngOnDestroy() {
-    this.disconnect();
   }
 
   connect() {
@@ -92,5 +91,13 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 
   vrSessionEndEvent() {
     this.vrSessionEnd.next();
+  }
+
+  ngOnDestroy() {
+    this.disconnect();
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
