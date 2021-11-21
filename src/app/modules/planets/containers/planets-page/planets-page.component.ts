@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Container } from '@shared/threejs/containers';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
@@ -10,9 +10,7 @@ import { PlanetsFacade } from '../../store/planets.facade';
   templateUrl: './planets-page.component.html',
   styleUrls: ['./planets-page.component.scss'],
 })
-export class PlanetsPageComponent implements AfterViewInit {
-  @ViewChild('container') private containerRef!: ElementRef;
-
+export class PlanetsPageComponent {
   flyMode$: Observable<boolean> = this.facade.flyMode$;
   isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
   antialias$: Observable<boolean> = this.facade.antialias$;
@@ -22,11 +20,6 @@ export class PlanetsPageComponent implements AfterViewInit {
     private service: PlanetsService,
     private facade: PlanetsFacade
   ) {}
-
-  ngAfterViewInit(): void {
-    const container = new Container(this.window, this.containerRef);
-    this.service.buildScene(container);
-  }
 
   onSwitchFlyMode(): void {
     this.facade.dispatch(PlanetsActions.switchFlyMode());
@@ -38,5 +31,9 @@ export class PlanetsPageComponent implements AfterViewInit {
 
   onSwitchAntialias(): void {
     this.facade.dispatch(PlanetsActions.switchAntialias());
+  }
+
+  onContainerInit(container: Container): void {
+    this.service.buildScene(container);
   }
 }

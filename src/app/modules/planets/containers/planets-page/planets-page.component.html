@@ -1,4 +1,6 @@
-<div #container id="container"></div>
+<app-renderer
+  (containerInit)="onContainerInit($event)"
+></app-renderer>
 <app-menu
   [isflyMode]="flyMode$ | async"
   (switchFlyMode)="onSwitchFlyMode()"
