@@ -70,12 +70,16 @@ export class EarthService {
     });
 
     /**
-     * Objects of the scene
+     * Lights
      */
 
     const sun = new SunLight();
     scene.add(sun.light);
     texture.add(sun);
+
+    /**
+     * Objects of the scene
+     */
 
     const earth = new Earth();
     scene.add(earth.mesh);

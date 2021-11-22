@@ -7,7 +7,7 @@
     FLY
   </button>
 
-  <button (click)="onSwitchDefinition()" [class.active]="isHDDefinition">
+  <button *ngIf="hdDefinitionActive" (click)="onSwitchDefinition()" [class.active]="isHDDefinition">
     HD
   </button>
 

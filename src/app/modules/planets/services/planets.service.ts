@@ -80,12 +80,16 @@ export class PlanetsService {
     });
 
     /**
-     * Objects of the scene
+     * Lights
      */
 
     const sun = new SunLight();
     scene.add(sun.light);
     texture.add(sun);
+
+    /**
+     * Objects of the scene
+     */
 
     const mercury = new Mercury();
     mercury.mesh.position.set(1.5, -2, 4);

@@ -8,8 +8,6 @@ import { AviatorSelectors } from './selectors';
 })
 export class AviatorFacade {
   readonly flyMode$ = this.store.select(AviatorSelectors.getFlyMode);
-  readonly definition$ = this.store.select(AviatorSelectors.getDefinition);
-  readonly isHDDefinition$ = this.store.select(AviatorSelectors.isHDDefinition);
   readonly antialias$ = this.store.select(AviatorSelectors.getAntialias);
   readonly vrSession$ = this.store.select(AviatorSelectors.getVRSession);
 

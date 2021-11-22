@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { RendererInitEvent } from '@shared/renderer/renderer.model';
 import { Observable } from 'rxjs';
+import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { AviatorService } from '../../services/aviator.service';
 import { AviatorActions } from '../../store/actions';
 import { AviatorFacade } from '../../store/aviator.facade';
@@ -11,8 +12,11 @@ import { AviatorFacade } from '../../store/aviator.facade';
   styleUrls: ['./aviator-page.component.scss'],
 })
 export class AviatorPageComponent implements OnDestroy {
+  rendererParameters: WebGLRendererParameters = {
+    alpha: true,
+  };
+
   flyMode$: Observable<boolean> = this.facade.flyMode$;
-  isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
   antialias$: Observable<boolean> = this.facade.antialias$;
 
   constructor(
@@ -31,10 +35,6 @@ export class AviatorPageComponent implements OnDestroy {
 
   onSwitchFlyMode(): void {
     this.facade.dispatch(AviatorActions.switchFlyMode());
-  }
-
-  onSwitchDefinition(): void {
-    this.facade.dispatch(AviatorActions.switchDefinition());
   }
 
   onSwitchAntialias(): void {

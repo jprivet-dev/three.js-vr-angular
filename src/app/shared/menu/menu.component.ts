@@ -6,6 +6,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+  @Input() hdDefinitionActive: boolean = true;
+
   @Input() isflyMode!: boolean | null;
   @Input() isHDDefinition!: boolean | null;
   @Input() isAntialias!: boolean | null;

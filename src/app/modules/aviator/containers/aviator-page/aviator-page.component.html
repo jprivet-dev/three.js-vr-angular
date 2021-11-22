@@ -1,5 +1,6 @@
 <app-renderer
   [antialias$]="antialias$"
+  [parameters]="rendererParameters"
   (rendererInit)="onRendererInit($event)"
   (rendererUpdate)="onRendererUpdate($event)"
 
@@ -11,8 +12,7 @@
   [isflyMode]="flyMode$ | async"
   (switchFlyMode)="onSwitchFlyMode()"
 
-  [isHDDefinition]="isHDDefinition$ | async"
-  (switchDefinition)="onSwitchDefinition()"
+  [hdDefinitionActive]="false"
 
   [isAntialias]="antialias$ | async"
   (switchAntialias)="onSwitchAntialias()"
