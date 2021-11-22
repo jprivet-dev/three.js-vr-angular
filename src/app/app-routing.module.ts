@@ -18,6 +18,11 @@ const routes: Routes = [
       import('./modules/planets/planets.module').then((m) => m.PlanetsModule),
   },
   {
+    path: 'aviator',
+    loadChildren: () =>
+      import('./modules/aviator/aviator.module').then((m) => m.AviatorModule),
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full',
