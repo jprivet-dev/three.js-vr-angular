@@ -5,10 +5,7 @@ export const selectState = createFeatureSelector<PlanetsReducer.State>(
   PlanetsReducer.featureKey
 );
 
-export const getFlyMode = createSelector(
-  selectState,
-  (state) => state.flyMode
-);
+export const getFlyMode = createSelector(selectState, (state) => state.flyMode);
 
 export const getDefinition = createSelector(
   selectState,

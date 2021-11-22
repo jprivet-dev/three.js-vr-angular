@@ -4,10 +4,7 @@ import { AviatorReducer } from './store/reducers';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature(
-      AviatorReducer.featureKey,
-      AviatorReducer.reducer
-    )
+    StoreModule.forFeature(AviatorReducer.featureKey, AviatorReducer.reducer),
   ],
 })
 export class AviatorStoreModule {}

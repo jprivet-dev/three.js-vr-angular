@@ -4,10 +4,7 @@ import { EarthReducer } from './store/reducers';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature(
-      EarthReducer.featureKey,
-      EarthReducer.reducer
-    )
+    StoreModule.forFeature(EarthReducer.featureKey, EarthReducer.reducer),
   ],
 })
 export class EarthStoreModule {}

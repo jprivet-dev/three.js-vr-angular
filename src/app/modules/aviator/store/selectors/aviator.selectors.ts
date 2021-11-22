@@ -5,10 +5,7 @@ export const selectState = createFeatureSelector<AviatorReducer.State>(
   AviatorReducer.featureKey
 );
 
-export const getFlyMode = createSelector(
-  selectState,
-  (state) => state.flyMode
-);
+export const getFlyMode = createSelector(selectState, (state) => state.flyMode);
 
 export const getDefinition = createSelector(
   selectState,

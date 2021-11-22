@@ -1,7 +1,5 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { StoreService } from '@core/store/store.service';
+import { Component, OnDestroy } from '@angular/core';
 import { RendererInitEvent } from '@shared/renderer/renderer.model';
-import { Container } from '@shared/threejs/containers';
 import { Observable } from 'rxjs';
 import { EarthService } from '../../services/earth.service';
 import { EarthActions } from '../../store/actions';

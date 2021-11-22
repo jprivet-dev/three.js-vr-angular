@@ -4,10 +4,7 @@ import { PlanetsReducer } from './store/reducers';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature(
-      PlanetsReducer.featureKey,
-      PlanetsReducer.reducer
-    )
+    StoreModule.forFeature(PlanetsReducer.featureKey, PlanetsReducer.reducer),
   ],
 })
 export class PlanetsStoreModule {}
