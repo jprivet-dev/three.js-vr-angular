@@ -1,26 +1,57 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
+import { RendererInitEvent } from '@shared/renderer/renderer.model';
 import { Container } from '@shared/threejs/containers';
+import { Observable } from 'rxjs';
 import { EarthService } from '../../services/earth.service';
+import { EarthActions } from '../../store/actions';
+import { EarthFacade } from '../../store/earth.facade';
 
 @Component({
   selector: 'app-earth-page',
   templateUrl: './earth-page.component.html',
   styleUrls: ['./earth-page.component.scss'],
 })
-export class EarthPageComponent implements OnInit {
-  @ViewChild('container') private containerRef!: ElementRef;
+export class EarthPageComponent implements OnDestroy {
+  flyMode$: Observable<boolean> = this.facade.flyMode$;
+  isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
+  antialias$: Observable<boolean> = this.facade.antialias$;
 
   constructor(
     private window: Window,
-    private store: StoreService,
-    private service: EarthService
+    private service: EarthService,
+    private facade: EarthFacade
   ) {}
 
-  ngOnInit(): void {}
+  onRendererInit(event: RendererInitEvent): void {
+    this.service.buildScene(event.container, event.renderer);
+  }
 
-  ngAfterViewInit(): void {
-    const container = new Container(this.window, this.containerRef);
-    this.service.buildScene(container);
+  onRendererUpdate(event: RendererInitEvent): void {
+    this.service.updateRenderer(event.renderer);
+  }
+
+  onSwitchFlyMode(): void {
+    this.facade.dispatch(EarthActions.switchFlyMode());
+  }
+
+  onSwitchDefinition(): void {
+    this.facade.dispatch(EarthActions.switchDefinition());
+  }
+
+  onSwitchAntialias(): void {
+    this.facade.dispatch(EarthActions.switchAntialias());
+  }
+
+  onVRSessionStart() {
+    this.facade.dispatch(EarthActions.vrSessionStart());
+  }
+
+  onVRSessionEnd() {
+    this.facade.dispatch(EarthActions.vrSessionEnd());
+  }
+
+  ngOnDestroy() {
+    this.service.unsubscribe();
   }
 }

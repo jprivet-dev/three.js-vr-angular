@@ -1,2 +1,19 @@
-<div #container id="container"></div>
+<app-renderer
+  [antialias$]="antialias$"
+  (rendererInit)="onRendererInit($event)"
+  (rendererUpdate)="onRendererUpdate($event)"
 
+  [vrButton]="true"
+  (vrSessionStart)="onVRSessionStart()"
+  (vrSessionEnd)="onVRSessionEnd()"
+></app-renderer>
+<app-menu
+  [isflyMode]="flyMode$ | async"
+  (switchFlyMode)="onSwitchFlyMode()"
+
+  [isHDDefinition]="isHDDefinition$ | async"
+  (switchDefinition)="onSwitchDefinition()"
+
+  [isAntialias]="antialias$ | async"
+  (switchAntialias)="onSwitchAntialias()"
+></app-menu>
