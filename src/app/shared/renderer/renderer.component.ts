@@ -23,47 +23,79 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') private containerRef!: ElementRef;
 
   @Input() antialias$: Observable<boolean> = of(false);
+  @Input() vrButton: boolean = false;
 
   @Output() rendererInit = new EventEmitter<RendererInitEvent>();
+  @Output() rendererUpdate = new EventEmitter<RendererInitEvent>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
+  container!: Container;
   subscription!: Subscription;
   renderer!: Renderer;
+  firstCall: boolean = true;
 
   constructor(private window: Window) {}
 
   ngAfterViewInit(): void {
+    this.container = new Container(this.window, this.containerRef);
     this.subscription = this.antialias$.subscribe((antialias) =>
-      this.init(antialias)
+      this.createRenderer(antialias)
     );
   }
 
-  init(antialias: boolean): void {
-    const container = new Container(this.window, this.containerRef);
+  private createRenderer(antialias: boolean): void {
+    /**
+     * Renderer
+     */
+
+    this.disconnectVRSessionEvents();
 
     this.renderer = new Renderer({ antialias });
-    this.renderer.setPixelRatio(container.window.devicePixelRatio);
-    this.renderer.resize(container);
+    this.renderer.setPixelRatio(this.container.window.devicePixelRatio);
+    this.renderer.resize(this.container);
 
-    container.empty();
-    container.appendChild(this.renderer.domElement);
+    this.container.empty();
+    this.container.appendChild(this.renderer.domElement);
 
-    // https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
-    const button = VRButton.createButton(this.renderer);
-    this.renderer.xr.enabled = true; // enable XR rendering
-    this.renderer.xr.setReferenceSpaceType('local');
-    container.appendChild(button);
+    /**
+     * VR button
+     */
 
-    this.connect();
+    if (this.vrButton) {
+      // https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
+      const button = VRButton.createButton(this.renderer);
+      this.renderer.xr.enabled = true; // enable XR rendering
+      this.renderer.xr.setReferenceSpaceType('local');
+      this.container.appendChild(button);
 
-    this.rendererInit.next({
-      container,
+      this.connectVRSessionEvents();
+    }
+
+    /**
+     * Events
+     */
+
+    if (this.firstCall) {
+      this.rendererInit.next({
+        container: this.container,
+        renderer: this.renderer,
+      });
+      this.firstCall = false;
+      return;
+    }
+
+    this.rendererUpdate.next({
+      container: this.container,
       renderer: this.renderer,
     });
   }
 
-  connect() {
+  private connectVRSessionEvents(): void {
+    if (!this.renderer) {
+      return;
+    }
+
     this.renderer.xr.addEventListener(
       'sessionstart',
       this.vrSessionStartEvent.bind(this)
@@ -74,7 +106,11 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  disconnect() {
+  private disconnectVRSessionEvents(): void {
+    if (!this.renderer) {
+      return;
+    }
+
     this.renderer.xr.removeEventListener(
       'sessionstart',
       this.vrSessionStartEvent.bind(this)
@@ -85,16 +121,16 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  vrSessionStartEvent() {
+  private vrSessionStartEvent() {
     this.vrSessionStart.next();
   }
 
-  vrSessionEndEvent() {
+  private vrSessionEndEvent() {
     this.vrSessionEnd.next();
   }
 
   ngOnDestroy() {
-    this.disconnect();
+    this.disconnectVRSessionEvents();
 
     if (this.subscription) {
       this.subscription.unsubscribe();

@@ -1,6 +1,9 @@
 <app-renderer
   [antialias$]="antialias$"
   (rendererInit)="onRendererInit($event)"
+  (rendererUpdate)="onRendererUpdate($event)"
+
+  [vrButton]="true"
   (vrSessionStart)="onVRSessionStart()"
   (vrSessionEnd)="onVRSessionEnd()"
 ></app-renderer>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { RendererInitEvent } from '@shared/renderer/renderer.model';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
@@ -10,7 +10,7 @@ import { PlanetsFacade } from '../../store/planets.facade';
   templateUrl: './planets-page.component.html',
   styleUrls: ['./planets-page.component.scss'],
 })
-export class PlanetsPageComponent {
+export class PlanetsPageComponent implements OnDestroy {
   flyMode$: Observable<boolean> = this.facade.flyMode$;
   isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
   antialias$: Observable<boolean> = this.facade.antialias$;
@@ -23,6 +23,10 @@ export class PlanetsPageComponent {
 
   onRendererInit(event: RendererInitEvent): void {
     this.service.buildScene(event.container, event.renderer);
+  }
+
+  onRendererUpdate(event: RendererInitEvent): void {
+    this.service.updateRenderer(event.renderer);
   }
 
   onSwitchFlyMode(): void {
@@ -43,5 +47,9 @@ export class PlanetsPageComponent {
 
   onVRSessionEnd() {
     this.facade.dispatch(PlanetsActions.vrSessionEnd());
+  }
+
+  ngOnDestroy() {
+    this.service.unsubscribe();
   }
 }

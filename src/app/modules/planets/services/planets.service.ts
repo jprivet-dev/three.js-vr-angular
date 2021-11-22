@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
 import { Container } from '@shared/threejs/containers';
+import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
@@ -23,8 +24,6 @@ import {
 import { Renderer } from '@shared/threejs/renderers';
 import { StarsScene } from '@shared/threejs/scenes';
 import { Subscription } from 'rxjs';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Camera, Vector3 } from 'three/src/Three';
 import { PlanetsFacade } from '../store/planets.facade';
 import { planetsDollyCameraParams } from './planets.params';
 
@@ -36,25 +35,12 @@ export class PlanetsService {
   private subscription = new Subscription();
 
   private renderer!: Renderer;
-
-  private controls!: OrbitControls;
-  private orbitControlsCamera!: Camera;
-  private orbitControlsTarget!: Vector3;
-
-  private alreadyBuilt: boolean = false;
+  private controls!: OrbitControlsUpdater;
 
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
   buildScene(container: Container, renderer: Renderer) {
     this.renderer = renderer;
-
-    if (this.alreadyBuilt) {
-      this.updateControls(this.renderer.domElement);
-      return;
-    }
-
-    // let renderer: Renderer;
-    let controls: OrbitControls;
 
     /**
      * Managers
@@ -175,38 +161,25 @@ export class PlanetsService {
      * Controls
      */
 
-    this.controls = this.createControls(
+    this.controls = new OrbitControlsUpdater(
       dolly.camera,
       this.renderer.domElement,
-      earth.mesh.position
+      {
+        autoRotateSpeed: 0.2,
+        autoRotate: true,
+        target: earth.mesh.position,
+      }
     );
+
     loop.add(this.controls);
-
-    this.alreadyBuilt = true;
   }
 
-  createControls(
-    camera: Camera,
-    domElement: HTMLElement,
-    target: Vector3
-  ): OrbitControls {
-    this.orbitControlsCamera = camera;
-    this.orbitControlsTarget = target;
-
-    const controls = new OrbitControls(camera, domElement);
-    controls.autoRotateSpeed = 0.2;
-    controls.autoRotate = true;
-    controls.enableDamping = true;
-    controls.target = target;
-
-    return controls;
+  updateRenderer(renderer: Renderer): void {
+    this.renderer = renderer;
+    this.controls.updateDomElement(this.renderer.domElement);
   }
 
-  updateControls(domElement: HTMLElement) {
-    const controls = new OrbitControls(this.orbitControlsCamera, domElement);
-    controls.autoRotateSpeed = 0.2;
-    controls.autoRotate = true;
-    controls.enableDamping = true;
-    controls.target = this.orbitControlsTarget;
+  unsubscribe(): void {
+    this.subscription.unsubscribe();
   }
 }
