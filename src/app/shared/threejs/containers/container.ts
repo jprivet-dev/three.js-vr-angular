@@ -41,7 +41,7 @@ export class Container {
   }
 
   isPointerLockElement(): boolean {
-    return this.domElement.ownerDocument.pointerLockElement === this.domElement
+    return this.domElement.ownerDocument.pointerLockElement === this.domElement;
   }
 
   lock() {

@@ -216,6 +216,8 @@ export class FlyDashboardPointerLockControls
   }
 
   private pointerlockerror(event: any): void {
-    console.error('FlyDashboardPointerLockControls: Unable to use Pointer Lock API');
+    console.error(
+      'FlyDashboardPointerLockControls: Unable to use Pointer Lock API'
+    );
   }
 }

@@ -1,15 +1,24 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Container } from '../threejs/containers';
 import { Renderer } from '../threejs/renderers';
-import { RendererInitEvent } from './renderer.model';
+import { RendererEvent } from './renderer.model';
 
 @Component({
-  selector: 'app-renderer', templateUrl: './renderer.component.html', styleUrls: ['./renderer.component.scss'],
+  selector: 'app-renderer',
+  templateUrl: './renderer.component.html',
+  styleUrls: ['./renderer.component.scss'],
 })
 export class RendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') private containerRef!: ElementRef;
@@ -18,8 +27,8 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
   @Input() parameters: WebGLRendererParameters = {};
   @Input() vrButton: boolean = false;
 
-  @Output() rendererInit = new EventEmitter<RendererInitEvent>();
-  @Output() rendererUpdate = new EventEmitter<RendererInitEvent>();
+  @Output() rendererInit = new EventEmitter<RendererEvent>();
+  @Output() rendererUpdate = new EventEmitter<RendererEvent>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
@@ -28,8 +37,7 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
   renderer!: Renderer;
   firstCall: boolean = true;
 
-  constructor(private window: Window) {
-  }
+  constructor(private window: Window) {}
 
   ngAfterViewInit(): void {
     this.container = new Container(this.window, this.containerRef);
@@ -73,14 +81,16 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 
     if (this.firstCall) {
       this.rendererInit.next({
-        container: this.container, renderer: this.renderer,
+        container: this.container,
+        renderer: this.renderer,
       });
       this.firstCall = false;
       return;
     }
 
     this.rendererUpdate.next({
-      container: this.container, renderer: this.renderer,
+      container: this.container,
+      renderer: this.renderer,
     });
   }
 
@@ -89,8 +99,14 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.renderer.xr.addEventListener('sessionstart', this.vrSessionStartEvent.bind(this));
-    this.renderer.xr.addEventListener('sessionend', this.vrSessionEndEvent.bind(this));
+    this.renderer.xr.addEventListener(
+      'sessionstart',
+      this.vrSessionStartEvent.bind(this)
+    );
+    this.renderer.xr.addEventListener(
+      'sessionend',
+      this.vrSessionEndEvent.bind(this)
+    );
   }
 
   private disconnectVRSessionEvents(): void {
@@ -98,8 +114,14 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.renderer.xr.removeEventListener('sessionstart', this.vrSessionStartEvent.bind(this));
-    this.renderer.xr.removeEventListener('sessionend', this.vrSessionEndEvent.bind(this));
+    this.renderer.xr.removeEventListener(
+      'sessionstart',
+      this.vrSessionStartEvent.bind(this)
+    );
+    this.renderer.xr.removeEventListener(
+      'sessionend',
+      this.vrSessionEndEvent.bind(this)
+    );
   }
 
   private vrSessionStartEvent() {

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
+import { BuildUpdateScene } from '@shared/models';
+import { RendererEvent } from '@shared/renderer/renderer.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
 import { Container } from '@shared/threejs/containers';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
@@ -30,7 +32,7 @@ import { planetsDollyCameraParams } from './planets.params';
 @Injectable({
   providedIn: 'root',
 })
-export class PlanetsService {
+export class PlanetsService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
   private subscription = new Subscription();
 
@@ -39,8 +41,9 @@ export class PlanetsService {
 
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
-  buildScene(container: Container, renderer: Renderer) {
-    this.renderer = renderer;
+  buildScene(event: RendererEvent) {
+    const container: Container = event.container;
+    this.renderer = event.renderer;
 
     /**
      * Managers
@@ -178,8 +181,8 @@ export class PlanetsService {
     loop.add(this.controls);
   }
 
-  updateRenderer(renderer: Renderer): void {
-    this.renderer = renderer;
+  updateRenderer(event: RendererEvent): void {
+    this.renderer = event.renderer;
     this.controls.updateDomElement(this.renderer.domElement);
   }
 

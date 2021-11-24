@@ -4,8 +4,7 @@ import { Container } from '../containers';
 import { Renderer } from '../renderers';
 
 export class VRRendererBuilder {
-  constructor(private container: Container) {
-  }
+  constructor(private container: Container) {}
 
   build(parameters?: WebGLRendererParameters): Renderer {
     const renderer = new Renderer(parameters);

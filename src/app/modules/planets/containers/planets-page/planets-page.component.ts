@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { RendererInitEvent } from '@shared/renderer/renderer.model';
+import { RendererEvent } from '@shared/renderer/renderer.model';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
 import { PlanetsActions } from '../../store/actions';
@@ -21,12 +21,12 @@ export class PlanetsPageComponent implements OnDestroy {
     private facade: PlanetsFacade
   ) {}
 
-  onRendererInit(event: RendererInitEvent): void {
-    this.service.buildScene(event.container, event.renderer);
+  onRendererInit(event: RendererEvent): void {
+    this.service.buildScene(event);
   }
 
-  onRendererUpdate(event: RendererInitEvent): void {
-    this.service.updateRenderer(event.renderer);
+  onRendererUpdate(event: RendererEvent): void {
+    this.service.updateRenderer(event);
   }
 
   onSwitchFlyMode(): void {

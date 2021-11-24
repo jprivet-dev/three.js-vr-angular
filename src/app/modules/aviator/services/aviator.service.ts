@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
+import { BuildUpdateScene } from '@shared/models';
+import { RendererEvent } from '@shared/renderer/renderer.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
 import { Container } from '@shared/threejs/containers';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
-import {
-  LoopManager,
-  VRSessionManager,
-  WindowResizeManager,
-} from '@shared/threejs/managers';
+import { LoopManager, VRSessionManager, WindowResizeManager, } from '@shared/threejs/managers';
 import { Loop } from '@shared/threejs/models';
 import { Renderer } from '@shared/threejs/renderers';
-import { applyOffsetXYZ, applyOffsetXYZAs } from '@shared/utils';
+import { applyOffsetXYZAs } from '@shared/utils';
 import { Subscription } from 'rxjs';
 import {
   AmbientLight,
@@ -37,7 +35,7 @@ import { aviatorDollyCameraParams } from './aviator.params';
 @Injectable({
   providedIn: 'root',
 })
-export class AviatorService {
+export class AviatorService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = aviatorDollyCameraParams;
   private subscription = new Subscription();
 
@@ -47,8 +45,9 @@ export class AviatorService {
 
   constructor(private store: StoreService, private facade: AviatorFacade) {}
 
-  buildScene(container: Container, renderer: Renderer) {
-    this.renderer = renderer;
+  buildScene(event: RendererEvent) {
+    const container: Container = event.container;
+    this.renderer = event.renderer;
 
     /**
      * Managers
@@ -485,8 +484,8 @@ export class AviatorService {
     }
   }
 
-  updateRenderer(renderer: Renderer): void {
-    this.renderer = renderer;
+  updateRenderer(event: RendererEvent): void {
+    this.renderer = event.renderer;
     if (this.controlsActive) {
       this.controls.updateDomElement(this.renderer.domElement);
     }

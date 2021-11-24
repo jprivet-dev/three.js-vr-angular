@@ -36,7 +36,10 @@ export class FlyControlsManager implements Loop {
   }
 
   private createFlyPointerLockControls(): FlyDashboardPointerLockControls {
-    return new FlyDashboardPointerLockControls(this.container, this.dolly.camera);
+    return new FlyDashboardPointerLockControls(
+      this.container,
+      this.dolly.camera
+    );
   }
 
   private createFlyMobileControls(): FlyMobileControls {

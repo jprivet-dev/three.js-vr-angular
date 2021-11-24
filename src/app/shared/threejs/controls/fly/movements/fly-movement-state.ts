@@ -1,8 +1,7 @@
 export class FlyMovementState {
   private _state: boolean = false;
 
-  constructor(readonly name: string = '') {
-  }
+  constructor(readonly name: string = '') {}
 
   start(): void {
     this.log('start');

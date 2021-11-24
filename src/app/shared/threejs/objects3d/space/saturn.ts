@@ -1,8 +1,19 @@
 import { Definition } from '@core/store/store.model';
-import { DoubleSide, Mesh, MeshPhongMaterial, RingBufferGeometry, SphereGeometry, TextureLoader } from 'three';
+import {
+  DoubleSide,
+  Mesh,
+  MeshPhongMaterial,
+  RingBufferGeometry,
+  SphereGeometry,
+  TextureLoader,
+} from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { degToRad } from 'three/src/math/MathUtils';
-import { AxialTilt, RadiusRatioEarth, SaturnRingsRatioEarth } from '../../../constants';
+import {
+  AxialTilt,
+  RadiusRatioEarth,
+  SaturnRingsRatioEarth,
+} from '../../../constants';
 import {
   getTextureByDefinition,
   rotateOrbitalAxis,

@@ -1,5 +1,5 @@
 import { Container } from '../containers';
-import { LoopWithUpdate, WindowResize } from '../models';
+import { WindowResize } from '../models';
 
 export class WindowResizeManager implements WindowResize {
   private list: WindowResize[] = [];

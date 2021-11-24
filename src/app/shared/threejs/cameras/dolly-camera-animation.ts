@@ -12,8 +12,7 @@ export class DollyCameraAnimation implements LoopControls {
     this.xrCamera = this.renderer.xr.getCamera(dolly.camera);
   }
 
-  start() {
-  }
+  start() {}
 
   stop(): void {
     this.direction = 0;

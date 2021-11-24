@@ -12,4 +12,8 @@ export interface Loop {
   update(delta: number): void;
 }
 
-export type LoopWithUpdate = Loop | OrbitControls | FlyControls | FirstPersonControls;
+export type LoopWithUpdate =
+  | Loop
+  | OrbitControls
+  | FlyControls
+  | FirstPersonControls;

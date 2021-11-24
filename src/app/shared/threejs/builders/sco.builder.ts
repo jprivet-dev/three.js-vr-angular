@@ -2,10 +2,7 @@ import { StoreService } from '@core/store/store.service';
 import { Mesh, MeshPhongMaterial, SphereGeometry } from 'three';
 import { MeshPhongMaterialParameters } from 'three/src/materials/MeshPhongMaterial';
 import { setAxialTilt } from '../../utils';
-import {
-  PhongMaterialTextureByDefinition,
-  PhongMaterialTextureByDefinitionLoader,
-} from '../loaders';
+import { PhongMaterialTextureByDefinition, PhongMaterialTextureByDefinitionLoader, } from '../loaders';
 
 /**
  * Spherical Celestial Object Builder
