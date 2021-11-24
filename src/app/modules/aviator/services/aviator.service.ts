@@ -10,6 +10,7 @@ import {
 } from '@shared/threejs/managers';
 import { Loop } from '@shared/threejs/models';
 import { Renderer } from '@shared/threejs/renderers';
+import { applyOffsetXYZ, applyOffsetXYZAs } from '@shared/utils';
 import { Subscription } from 'rxjs';
 import {
   AmbientLight,
@@ -270,14 +271,11 @@ export class AviatorService {
 
         const geomCockpit = new BoxGeometry(80, 50, 50, 1, 1, 1);
 
-        // geomCockpit.vertices[4].y -= 10;
-        // geomCockpit.vertices[4].z += 20;
-        // geomCockpit.vertices[5].y -= 10;
-        // geomCockpit.vertices[5].z -= 20;
-        // geomCockpit.vertices[6].y += 30;
-        // geomCockpit.vertices[6].z += 20;
-        // geomCockpit.vertices[7].y += 30;
-        // geomCockpit.vertices[7].z -= 20;
+        const verticesCockpit = geomCockpit.getAttribute('position');
+        applyOffsetXYZAs(verticesCockpit, 4, 0, -10, 20);
+        applyOffsetXYZAs(verticesCockpit, 5, 0, -10, -20);
+        applyOffsetXYZAs(verticesCockpit, 6, 0, 30, 20);
+        applyOffsetXYZAs(verticesCockpit, 7, 0, 30, -20);
 
         const matCockpit = new MeshPhongMaterial({
           color: AviatorColors.red,
@@ -344,14 +342,12 @@ export class AviatorService {
         this.mesh.add(windshield);
 
         const geomPropeller = new BoxGeometry(20, 10, 10, 1, 1, 1);
-        // geomPropeller.vertices[4].y -= 5;
-        // geomPropeller.vertices[4].z += 5;
-        // geomPropeller.vertices[5].y -= 5;
-        // geomPropeller.vertices[5].z -= 5;
-        // geomPropeller.vertices[6].y += 5;
-        // geomPropeller.vertices[6].z += 5;
-        // geomPropeller.vertices[7].y += 5;
-        // geomPropeller.vertices[7].z -= 5;
+
+        const verticesPropeller = geomPropeller.getAttribute('position');
+        applyOffsetXYZAs(verticesPropeller, 4, 0, -5, 5);
+        applyOffsetXYZAs(verticesPropeller, 5, 0, -5, -5);
+        applyOffsetXYZAs(verticesPropeller, 6, 0, 5, 5);
+        applyOffsetXYZAs(verticesPropeller, 7, 0, 5, -5);
 
         const matPropeller = new MeshPhongMaterial({
           color: AviatorColors.brown,
@@ -367,15 +363,14 @@ export class AviatorService {
           color: AviatorColors.brownDark,
           flatShading: true,
         });
+
         const blade1 = new Mesh(geomBlade, matBlade);
         blade1.position.set(8, 0, 0);
-
         blade1.castShadow = true;
         blade1.receiveShadow = true;
 
         const blade2 = blade1.clone();
         blade2.rotation.x = Math.PI / 2;
-
         blade2.castShadow = true;
         blade2.receiveShadow = true;
 
