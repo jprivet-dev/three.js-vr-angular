@@ -1,9 +1,9 @@
 import { DollyCameraParams } from '@shared/threejs/cameras';
 
 export const aviatorDollyCameraParams: DollyCameraParams = {
-  fov: 60,
+  fov: 80,
   near: 1,
-  far: 10000,
+  far: 20000,
   onVRSessionStartPosition: {
     camera: {
       x: 0,
@@ -19,8 +19,8 @@ export const aviatorDollyCameraParams: DollyCameraParams = {
   onVRSessionEndPosition: {
     camera: {
       x: 0,
-      y: 100,
-      z: 200,
+      y: 50, // 100
+      z: 150, // 200
     },
     dolly: {
       x: 0,

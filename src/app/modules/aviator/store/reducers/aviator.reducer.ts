@@ -11,7 +11,7 @@ export interface State {
 
 export const initialState: State = {
   flyMode: false,
-  antialias: false,
+  antialias: true,
   vrSession: false,
 };
 
