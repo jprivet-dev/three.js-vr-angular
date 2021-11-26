@@ -3,11 +3,11 @@ import { StoreService } from '@core/store/store.service';
 import { BuildUpdateScene } from '@shared/models';
 import { RendererEvent } from '@shared/renderer/renderer.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
-import { Container } from '@shared/threejs/containers';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
+  RendererManager,
   TextureManager,
   VRSessionManager,
   WindowResizeManager,
@@ -15,7 +15,6 @@ import {
 import { Earth, Moon } from '@shared/threejs/objects3d';
 import { StarsScene } from '@shared/threejs/scenes';
 import { Subscription } from 'rxjs';
-import { WebGLRenderer } from 'three';
 import { EarthFacade } from '../store/earth.facade';
 import { earthDollyCameraParams } from './earth.params';
 
@@ -26,15 +25,12 @@ export class EarthService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
   private subscription = new Subscription();
 
-  private renderer!: WebGLRenderer;
+  private rendererManager!: RendererManager;
   private controls!: OrbitControlsUpdater;
 
   constructor(private store: StoreService, private facade: EarthFacade) {}
 
-  buildScene(event: RendererEvent) {
-    const container: Container = event.container;
-    this.renderer = event.renderer;
-
+  buildScene({ container, renderer }: RendererEvent) {
     /**
      * Managers
      */
@@ -58,19 +54,20 @@ export class EarthService implements BuildUpdateScene {
 
     const dolly = new DollyCamera(container, this.dollyCameraParams);
     scene.add(dolly);
-    // resize.add(dolly); TODO: to remove
     vr.add(dolly);
 
     /**
      * Renderer
      */
 
-    // resize.add(this.renderer);
+    this.rendererManager = new RendererManager(
+      loop,
+      renderer,
+      scene,
+      dolly.camera
+    );
 
-    this.renderer.setAnimationLoop(() => {
-      loop.update();
-      this.renderer.render(scene, dolly.camera);
-    });
+    resize.add(this.rendererManager);
 
     /**
      * Lights
@@ -117,7 +114,7 @@ export class EarthService implements BuildUpdateScene {
 
     this.controls = new OrbitControlsUpdater(
       dolly.camera,
-      this.renderer.domElement,
+      renderer.domElement,
       {
         autoRotateSpeed: 0.2,
         autoRotate: true,
@@ -128,9 +125,9 @@ export class EarthService implements BuildUpdateScene {
     loop.add(this.controls);
   }
 
-  updateRenderer(event: RendererEvent): void {
-    this.renderer = event.renderer;
-    this.controls.updateDomElement(this.renderer.domElement);
+  updateRenderer({ renderer }: RendererEvent): void {
+    this.rendererManager.updateRenderer(renderer);
+    this.controls.updateDomElement(renderer.domElement);
   }
 
   unsubscribe(): void {
