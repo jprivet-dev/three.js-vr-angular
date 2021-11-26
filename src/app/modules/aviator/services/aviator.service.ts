@@ -3,19 +3,19 @@ import { StoreService } from '@core/store/store.service';
 import { BuildUpdateScene } from '@shared/models';
 import { RendererEvent } from '@shared/renderer/renderer.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
-import { Container } from '@shared/threejs/containers';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import {
   LoopManager,
+  RendererManager,
   VRSessionManager,
   WindowResizeManager,
 } from '@shared/threejs/managers';
 import { Loop } from '@shared/threejs/models';
-import { Renderer } from '@shared/threejs/renderers';
 import { angleXZ } from '@shared/utils';
 import { Subscription } from 'rxjs';
 import {
-  AmbientLight, Color,
+  AmbientLight,
+  Color,
   DirectionalLight,
   DoubleSide,
   Fog,
@@ -24,7 +24,6 @@ import {
   MeshLambertMaterial,
   MeshPhongMaterial,
   Object3D,
-  PerspectiveCamera,
   PlaneGeometry,
   Scene,
   Vector3,
@@ -50,16 +49,13 @@ export class AviatorService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = aviatorDollyCameraParams;
   private subscription = new Subscription();
 
-  private renderer!: Renderer;
+  private rendererManager!: RendererManager;
   private controls!: OrbitControlsUpdater;
   private controlsActive: boolean = false;
 
   constructor(private store: StoreService, private facade: AviatorFacade) {}
 
-  buildScene(event: RendererEvent) {
-    const container: Container = event.container;
-    this.renderer = event.renderer;
-
+  buildScene({ container, renderer }: RendererEvent) {
     /**
      * Managers
      */
@@ -81,18 +77,7 @@ export class AviatorService implements BuildUpdateScene {
      */
 
     const dolly = new DollyCamera(container, this.dollyCameraParams);
-    resize.add(dolly);
     vr.add(dolly);
-
-
-    // const camera = new PerspectiveCamera(
-    //   50,
-    //   window.innerWidth / window.innerHeight,
-    //   0.1,
-    //   30000
-    // );
-    // camera.position.y = 0.7;
-    // camera.position.z = 3;
 
     const train = new Object3D();
     train.add(dolly);
@@ -102,13 +87,14 @@ export class AviatorService implements BuildUpdateScene {
      * Renderer
      */
 
-    resize.add(this.renderer);
+    this.rendererManager = new RendererManager(
+      loop,
+      renderer,
+      scene,
+      dolly.camera
+    );
 
-    this.renderer.setAnimationLoop(() => {
-      loop.update();
-      // this.renderer.render(scene, camera);
-      this.renderer.render(scene, dolly.camera);
-    });
+    resize.add(this.rendererManager);
 
     /**
      * Lights
@@ -196,19 +182,6 @@ export class AviatorService implements BuildUpdateScene {
     };
 
     /**
-     * Sea
-     */
-
-    // const createSea = () => {
-    //   const sea = new Sea();
-    //   sea.mesh.position.y = -600;
-    //   scene.add(sea.mesh);
-    //   loop.add(sea);
-    // };
-    //
-    // createSea();
-
-    /**
      * Ground
      */
 
@@ -259,7 +232,7 @@ export class AviatorService implements BuildUpdateScene {
     const airplane = new AirPlane();
     const airplaneScale = 0.01;
     airplane.mesh.scale.set(airplaneScale, airplaneScale, airplaneScale);
-    train.add(airplane.mesh)
+    train.add(airplane.mesh);
     loop.add(airplane);
 
     /**
@@ -292,7 +265,7 @@ export class AviatorService implements BuildUpdateScene {
     if (this.controlsActive) {
       this.controls = new OrbitControlsUpdater(
         dolly.camera,
-        this.renderer.domElement,
+        renderer.domElement,
         {
           autoRotateSpeed: 0.2,
           autoRotate: true,
@@ -304,10 +277,10 @@ export class AviatorService implements BuildUpdateScene {
     }
   }
 
-  updateRenderer(event: RendererEvent): void {
-    this.renderer = event.renderer;
+  updateRenderer({ renderer }: RendererEvent): void {
+    this.rendererManager.updateRenderer(renderer);
     if (this.controlsActive) {
-      this.controls.updateDomElement(this.renderer.domElement);
+      this.controls.updateDomElement(renderer.domElement);
     }
   }
 

@@ -13,9 +13,9 @@ import {
   WindowResizeManager,
 } from '@shared/threejs/managers';
 import { Earth, Moon } from '@shared/threejs/objects3d';
-import { Renderer } from '@shared/threejs/renderers';
 import { StarsScene } from '@shared/threejs/scenes';
 import { Subscription } from 'rxjs';
+import { WebGLRenderer } from 'three';
 import { EarthFacade } from '../store/earth.facade';
 import { earthDollyCameraParams } from './earth.params';
 
@@ -26,7 +26,7 @@ export class EarthService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
   private subscription = new Subscription();
 
-  private renderer!: Renderer;
+  private renderer!: WebGLRenderer;
   private controls!: OrbitControlsUpdater;
 
   constructor(private store: StoreService, private facade: EarthFacade) {}
@@ -58,14 +58,14 @@ export class EarthService implements BuildUpdateScene {
 
     const dolly = new DollyCamera(container, this.dollyCameraParams);
     scene.add(dolly);
-    resize.add(dolly);
+    // resize.add(dolly); TODO: to remove
     vr.add(dolly);
 
     /**
      * Renderer
      */
 
-    resize.add(this.renderer);
+    // resize.add(this.renderer);
 
     this.renderer.setAnimationLoop(() => {
       loop.update();

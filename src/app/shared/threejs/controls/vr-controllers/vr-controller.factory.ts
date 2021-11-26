@@ -1,7 +1,6 @@
 import { StoreService } from '@core/store/store.service';
-import { Scene } from 'three';
+import { Scene, WebGLRenderer } from 'three';
 import { FactoryVRController } from '../../models';
-import { Renderer } from '../../renderers';
 import { VRController } from './vr-controller';
 import { VRControllerType } from './vr-controller.model';
 
@@ -9,7 +8,7 @@ export class VRControllerFactory implements FactoryVRController {
   constructor(
     private store: StoreService,
     private scene: Scene,
-    private renderer: Renderer
+    private renderer: WebGLRenderer
   ) {}
 
   createRight(): VRController {

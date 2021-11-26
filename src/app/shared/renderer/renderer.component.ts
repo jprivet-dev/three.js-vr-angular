@@ -9,10 +9,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
+import { WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Container } from '../threejs/containers';
-import { Renderer } from '../threejs/renderers';
 import { RendererEvent } from './renderer.model';
 
 @Component({
@@ -34,7 +34,7 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 
   container!: Container;
   subscription!: Subscription;
-  renderer!: Renderer;
+  renderer!: WebGLRenderer;
   firstCall: boolean = true;
 
   constructor(private window: Window) {}
@@ -53,10 +53,11 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
      */
 
     this.disconnectVRSessionEvents();
+    this.stopAnimationLoop();
 
-    this.renderer = new Renderer(parameters);
+    this.renderer = new WebGLRenderer(parameters);
     this.renderer.setPixelRatio(this.container.window.devicePixelRatio);
-    this.renderer.resize(this.container);
+    this.renderer.setSize(this.container.width(), this.container.height());
 
     this.container.empty();
     this.container.appendChild(this.renderer.domElement);
@@ -122,6 +123,14 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
       'sessionend',
       this.vrSessionEndEvent.bind(this)
     );
+  }
+
+  private stopAnimationLoop() {
+    if (!this.renderer) {
+      return;
+    }
+
+    this.renderer.setAnimationLoop(null);
   }
 
   private vrSessionStartEvent() {
