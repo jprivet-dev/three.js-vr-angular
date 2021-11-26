@@ -12,9 +12,10 @@ import {
 } from '@shared/threejs/managers';
 import { Loop } from '@shared/threejs/models';
 import { Renderer } from '@shared/threejs/renderers';
+import { angleXZ } from '@shared/utils';
 import { Subscription } from 'rxjs';
 import {
-  AmbientLight,
+  AmbientLight, Color,
   DirectionalLight,
   DoubleSide,
   Fog,
@@ -22,7 +23,8 @@ import {
   Mesh,
   MeshLambertMaterial,
   MeshPhongMaterial,
-  Object3D, PerspectiveCamera,
+  Object3D,
+  PerspectiveCamera,
   PlaneGeometry,
   Scene,
   Vector3,
@@ -71,20 +73,31 @@ export class AviatorService implements BuildUpdateScene {
      */
 
     const scene = new Scene();
-    scene.fog = new Fog(0xf7d9aa, 100, 25000);
+    scene.fog = new Fog(0xf7d9aa, 0.1, 500);
+    scene.background = new Color(0xf7d9aa);
 
     /**
      * Camera
      */
 
-    // const dolly = new DollyCamera(container, this.dollyCameraParams);
-    // scene.add(dolly);
-    // resize.add(dolly);
-    // vr.add(dolly);
+    const dolly = new DollyCamera(container, this.dollyCameraParams);
+    resize.add(dolly);
+    vr.add(dolly);
 
-    const camera = new PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 30000 );
-    camera.position.y = 80;
-    camera.position.z = 400;
+
+    // const camera = new PerspectiveCamera(
+    //   50,
+    //   window.innerWidth / window.innerHeight,
+    //   0.1,
+    //   30000
+    // );
+    // camera.position.y = 0.7;
+    // camera.position.z = 3;
+
+    const train = new Object3D();
+    train.add(dolly);
+    scene.add(train);
+
     /**
      * Renderer
      */
@@ -93,8 +106,8 @@ export class AviatorService implements BuildUpdateScene {
 
     this.renderer.setAnimationLoop(() => {
       loop.update();
-      this.renderer.render(scene, camera);
-      // this.renderer.render(scene, dolly.camera);
+      // this.renderer.render(scene, camera);
+      this.renderer.render(scene, dolly.camera);
     });
 
     /**
@@ -150,36 +163,36 @@ export class AviatorService implements BuildUpdateScene {
     const positionOffset = new Vector3();
     const tangent = new Vector3();
     const lookAt = new Vector3();
-    let velocity = 0.00008;
+    let velocity = 0; // 0.00008
     let progress = 0;
     const offset = 0.0001;
-    let dx = 0;
     let dy = 0;
-    let dz = 0;
-    let angleH = 0;
-    let angleV = 0;
-    let angleHPrevious = 0;
-    let diffH = 0;
+    let angle = 0;
+    let lastAngleXZ = 0;
+    let diff = 0;
 
     const progressOnCurve = (airPlane: AirPlane, delta: number) => {
       progress += velocity;
-
-      position.copy(curve.getPointAt(progress));
+      progress = progress % 1;
       positionOffset.copy(curve.getPointAt(progress - offset));
 
-      dx = positionOffset.x - position.x;
       dy = positionOffset.y - position.y;
-      dz = positionOffset.z - position.z;
-      angleH = Math.atan2(dz, dx);
-      diffH = angleHPrevious - angleH;
-      angleHPrevious = angleH;
+      angle = angleXZ(position, positionOffset);
+      diff = lastAngleXZ - angle;
 
-      airPlane.mesh.position.copy(position);
-      airPlane.group.rotation.set(-dy * 3 , diffH * 60, diffH * 80);
-      airPlane.group.position.y = -dy * 500;
-
+      position.copy(curve.getPointAt(progress));
+      train.position.copy(position);
+      airPlane.mesh.rotation.set(-dy * 10, diff * 30, diff * 110);
+      airPlane.mesh.position.y = -dy * 30 + 0.2;
+      dolly.rotation.set(0, 0, diff * 20);
       tangent.copy(curve.getTangentAt(progress));
-      airPlane.mesh.lookAt(lookAt.copy(position).sub(tangent));
+
+      velocity -= tangent.y * 0.0000001 * delta;
+      velocity = Math.max(0.00008, Math.min(0.0002, velocity));
+
+      train.lookAt(lookAt.copy(position).sub(tangent));
+
+      lastAngleXZ = angle;
     };
 
     /**
@@ -246,9 +259,7 @@ export class AviatorService implements BuildUpdateScene {
     const airplane = new AirPlane();
     const airplaneScale = 0.01;
     airplane.mesh.scale.set(airplaneScale, airplaneScale, airplaneScale);
-    airplane.mesh.position.y = 5;
-    airplane.mesh.add(camera);
-    scene.add(airplane.mesh);
+    train.add(airplane.mesh)
     loop.add(airplane);
 
     /**
@@ -280,7 +291,7 @@ export class AviatorService implements BuildUpdateScene {
 
     if (this.controlsActive) {
       this.controls = new OrbitControlsUpdater(
-        camera,
+        dolly.camera,
         this.renderer.domElement,
         {
           autoRotateSpeed: 0.2,

@@ -6,14 +6,11 @@ import { Pilot } from './pilot';
 
 export class AirPlane implements HasMesh, Loop {
   mesh: Object3D;
-  group: Object3D;
-  all: Object3D;
   propeller: Mesh;
   pilot: Pilot;
 
   constructor() {
-    this.group = new Object3D();
-    this.all = new Object3D();
+    const all = new Object3D();
 
     this.mesh = new Object3D();
     this.mesh.name = 'airPlane';
@@ -36,7 +33,7 @@ export class AirPlane implements HasMesh, Loop {
     const cockpit = new Mesh(geomCockpit, matCockpit);
     cockpit.castShadow = true;
     cockpit.receiveShadow = true;
-    this.all.add(cockpit);
+    all.add(cockpit);
 
     // Engine
 
@@ -49,7 +46,7 @@ export class AirPlane implements HasMesh, Loop {
     engine.position.x = 50;
     engine.castShadow = true;
     engine.receiveShadow = true;
-    this.all.add(engine);
+    all.add(engine);
 
     // Tail Plane
 
@@ -62,7 +59,7 @@ export class AirPlane implements HasMesh, Loop {
     tailPlane.position.set(-40, 20, 0);
     tailPlane.castShadow = true;
     tailPlane.receiveShadow = true;
-    this.all.add(tailPlane);
+    all.add(tailPlane);
 
     // Wings
 
@@ -75,7 +72,7 @@ export class AirPlane implements HasMesh, Loop {
     sideWing.position.set(0, 15, 0);
     sideWing.castShadow = true;
     sideWing.receiveShadow = true;
-    this.all.add(sideWing);
+    all.add(sideWing);
 
     const geomWindshield = new BoxGeometry(3, 15, 20, 1, 1, 1);
     const matWindshield = new MeshPhongMaterial({
@@ -90,7 +87,7 @@ export class AirPlane implements HasMesh, Loop {
     windshield.castShadow = true;
     windshield.receiveShadow = true;
 
-    this.all.add(windshield);
+    all.add(windshield);
 
     const geomPropeller = new BoxGeometry(20, 10, 10, 1, 1, 1);
 
@@ -128,7 +125,7 @@ export class AirPlane implements HasMesh, Loop {
     this.propeller.add(blade1);
     this.propeller.add(blade2);
     this.propeller.position.set(60, 0, 0);
-    this.all.add(this.propeller);
+    all.add(this.propeller);
 
     const wheelProtecGeom = new BoxGeometry(30, 15, 10, 1, 1, 1);
     const wheelProtecMat = new MeshPhongMaterial({
@@ -137,7 +134,7 @@ export class AirPlane implements HasMesh, Loop {
     });
     const wheelProtecR = new Mesh(wheelProtecGeom, wheelProtecMat);
     wheelProtecR.position.set(25, -20, 25);
-    this.all.add(wheelProtecR);
+    all.add(wheelProtecR);
 
     const wheelTireGeom = new BoxGeometry(24, 24, 4);
     const wheelTireMat = new MeshPhongMaterial({
@@ -155,20 +152,20 @@ export class AirPlane implements HasMesh, Loop {
     const wheelAxis = new Mesh(wheelAxisGeom, wheelAxisMat);
     wheelTireR.add(wheelAxis);
 
-    this.all.add(wheelTireR);
+    all.add(wheelTireR);
 
     const wheelProtecL = wheelProtecR.clone();
     wheelProtecL.position.z = -wheelProtecR.position.z;
-    this.all.add(wheelProtecL);
+    all.add(wheelProtecL);
 
     const wheelTireL = wheelTireR.clone();
     wheelTireL.position.z = -wheelTireR.position.z;
-    this.all.add(wheelTireL);
+    all.add(wheelTireL);
 
     const wheelTireB = wheelTireR.clone();
     wheelTireB.scale.set(0.5, 0.5, 0.5);
     wheelTireB.position.set(-35, -5, 0);
-    this.all.add(wheelTireB);
+    all.add(wheelTireB);
 
     const suspensionGeom = new BoxGeometry(4, 20, 4);
     suspensionGeom.applyMatrix4(new Matrix4().makeTranslation(0, 10, 0));
@@ -179,18 +176,17 @@ export class AirPlane implements HasMesh, Loop {
     const suspension = new Mesh(suspensionGeom, suspensionMat);
     suspension.position.set(-35, -5, 0);
     suspension.rotation.z = -0.3;
-    this.all.add(suspension);
+    all.add(suspension);
 
     this.pilot = new Pilot();
     this.pilot.mesh.position.set(-10, 27, 0);
-    this.all.add(this.pilot.mesh);
+    all.add(this.pilot.mesh);
 
-    this.all.castShadow = true;
-    this.all.receiveShadow = true;
+    all.castShadow = true;
+    all.receiveShadow = true;
 
-    this.all.rotateY(Math.PI / 2);
-    this.group.add(this.all);
-    this.mesh.add(this.group);
+    all.rotateY(Math.PI / 2);
+    this.mesh.add(all);
   }
 
   update(delta: number): void {

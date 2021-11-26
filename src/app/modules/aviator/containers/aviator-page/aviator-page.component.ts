@@ -13,7 +13,6 @@ import { AviatorFacade } from '../../store/aviator.facade';
 })
 export class AviatorPageComponent implements OnDestroy {
   rendererParameters: WebGLRendererParameters = {
-    alpha: true,
   };
 
   flyMode$: Observable<boolean> = this.facade.flyMode$;
