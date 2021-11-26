@@ -53,7 +53,6 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
      */
 
     this.disconnectVRSessionEvents();
-    this.stopAnimationLoop();
 
     this.renderer = new WebGLRenderer(parameters);
     this.renderer.setPixelRatio(this.container.window.devicePixelRatio);
@@ -123,14 +122,6 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
       'sessionend',
       this.vrSessionEndEvent.bind(this)
     );
-  }
-
-  private stopAnimationLoop() {
-    if (!this.renderer) {
-      return;
-    }
-
-    this.renderer.setAnimationLoop(null);
   }
 
   private vrSessionStartEvent() {

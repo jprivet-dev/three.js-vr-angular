@@ -20,6 +20,7 @@ export class RendererManager implements WindowResize {
   }
 
   updateRenderer(renderer: WebGLRenderer): void {
+    this.renderer.setAnimationLoop(null);
     this.renderer = renderer;
     this.setAnimationLoop();
   }
