@@ -13,8 +13,8 @@ export interface State {
 
 export const initialState: State = {
   flyMode: false,
-  antialias: false,
-  definition: 'sd',
+  antialias: true,
+  definition: 'hd',
   vrSession: false,
 };
 

@@ -30,7 +30,7 @@ export class EarthService implements BuildUpdateScene {
 
   constructor(private store: StoreService, private facade: EarthFacade) {}
 
-  buildScene({ container, renderer }: RendererEvent) {
+  buildScene({ container, renderer, stats }: RendererEvent) {
     /**
      * Managers
      */
@@ -39,6 +39,14 @@ export class EarthService implements BuildUpdateScene {
     const resize = new WindowResizeManager(container);
     const texture = new TextureManager();
     const loop = new LoopManager();
+
+    /**
+     * Stats
+     */
+
+    if (stats) {
+      loop.add(stats);
+    }
 
     /**
      * Scene

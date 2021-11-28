@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { WebGLRenderer } from 'three';
+import Stats from 'three/examples/jsm/libs/stats.module';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Container } from '../threejs/containers';
@@ -26,15 +27,17 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
   @Input() antialias$: Observable<boolean> = of(false);
   @Input() parameters: WebGLRendererParameters = {};
   @Input() vrButton: boolean = false;
+  @Input() statsEnable: boolean = false;
 
   @Output() rendererInit = new EventEmitter<RendererEvent>();
   @Output() rendererUpdate = new EventEmitter<RendererEvent>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
-  container!: Container;
   subscription!: Subscription;
+  container!: Container;
   renderer!: WebGLRenderer;
+  stats!: Stats;
   firstCall: boolean = true;
 
   constructor(private window: Window) {}
@@ -76,6 +79,22 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
+     * Stats
+     */
+
+    if (this.statsEnable) {
+      if (this.stats === undefined) {
+        this.stats = Stats();
+        this.stats.dom.style.top = '';
+        this.stats.dom.style.left = '';
+        this.stats.dom.style.bottom = '0';
+        this.stats.dom.style.right = '0';
+      }
+
+      this.container.appendChild(this.stats.dom);
+    }
+
+    /**
      * Events
      */
 
@@ -83,6 +102,7 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
       this.rendererInit.next({
         container: this.container,
         renderer: this.renderer,
+        stats: this.stats,
       });
       this.firstCall = false;
       return;
@@ -91,6 +111,7 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
     this.rendererUpdate.next({
       container: this.container,
       renderer: this.renderer,
+      stats: this.stats,
     });
   }
 

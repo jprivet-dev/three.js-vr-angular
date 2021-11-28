@@ -6,6 +6,8 @@
   [vrButton]="true"
   (vrSessionStart)="onVRSessionStart()"
   (vrSessionEnd)="onVRSessionEnd()"
+
+  [statsEnable]="true"
 ></app-renderer>
 <app-menu
   [isflyMode]="flyMode$ | async"

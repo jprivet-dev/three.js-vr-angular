@@ -40,7 +40,7 @@ export class PlanetsService implements BuildUpdateScene {
 
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
-  buildScene({ container, renderer }: RendererEvent) {
+  buildScene({ container, renderer, stats }: RendererEvent) {
     /**
      * Managers
      */
@@ -49,6 +49,14 @@ export class PlanetsService implements BuildUpdateScene {
     const resize = new WindowResizeManager(container);
     const texture = new TextureManager();
     const loop = new LoopManager();
+
+    /**
+     * Stats
+     */
+
+    if (stats) {
+      loop.add(stats);
+    }
 
     /**
      * Scene

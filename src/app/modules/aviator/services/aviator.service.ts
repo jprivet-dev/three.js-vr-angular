@@ -55,7 +55,7 @@ export class AviatorService implements BuildUpdateScene {
 
   constructor(private store: StoreService, private facade: AviatorFacade) {}
 
-  buildScene({ container, renderer }: RendererEvent) {
+  buildScene({ container, renderer, stats }: RendererEvent) {
     /**
      * Managers
      */
@@ -63,6 +63,14 @@ export class AviatorService implements BuildUpdateScene {
     const vr = new VRSessionManager();
     const resize = new WindowResizeManager(container);
     const loop = new LoopManager();
+
+    /**
+     * Stats
+     */
+
+    if (stats) {
+      loop.add(stats);
+    }
 
     /**
      * Scene
@@ -152,25 +160,25 @@ export class AviatorService implements BuildUpdateScene {
     let velocity = 0; // 0.00008
     let progress = 0;
     const offset = 0.0001;
-    let dy = 0;
-    let angle = 0;
+    let diffY = 0;
+    let currentAngleXZ = 0;
     let lastAngleXZ = 0;
-    let diff = 0;
+    let diffAngleXZ = 0;
 
     const progressOnCurve = (airPlane: AirPlane, delta: number) => {
       progress += velocity;
       progress = progress % 1;
       positionOffset.copy(curve.getPointAt(progress - offset));
 
-      dy = positionOffset.y - position.y;
-      angle = angleXZ(position, positionOffset);
-      diff = lastAngleXZ - angle;
+      diffY = positionOffset.y - position.y;
+      currentAngleXZ = angleXZ(position, positionOffset);
+      diffAngleXZ = lastAngleXZ - currentAngleXZ;
 
       position.copy(curve.getPointAt(progress));
       train.position.copy(position);
-      airPlane.mesh.rotation.set(-dy * 10, diff * 30, diff * 110);
-      airPlane.mesh.position.y = -dy * 30 + 0.2;
-      dolly.rotation.set(0, 0, diff * 20);
+      airPlane.mesh.rotation.set(-diffY * 10, diffAngleXZ * 30, diffAngleXZ * 110);
+      airPlane.mesh.position.y = -diffY * 30 + 0.2;
+      dolly.rotation.set(0, 0, diffAngleXZ * 20);
       tangent.copy(curve.getTangentAt(progress));
 
       velocity -= tangent.y * 0.0000001 * delta;
@@ -178,7 +186,7 @@ export class AviatorService implements BuildUpdateScene {
 
       train.lookAt(lookAt.copy(position).sub(tangent));
 
-      lastAngleXZ = angle;
+      lastAngleXZ = currentAngleXZ;
     };
 
     /**
@@ -190,7 +198,6 @@ export class AviatorService implements BuildUpdateScene {
       geometry.rotateX(-Math.PI / 2);
 
       const positions = geometry.getAttribute('position').array;
-      console.log('positions', positions);
       const vertex = new Vector3();
 
       for (let i = 0; i < positions.length; i += 3) {
