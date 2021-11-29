@@ -9,9 +9,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { WebGLRenderer } from 'three';
-import Stats from 'three/examples/jsm/libs/stats.module';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Container } from '../threejs/containers';
 import { RendererEvent } from './renderer.model';
@@ -36,8 +33,6 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 
   subscription!: Subscription;
   container!: Container;
-  renderer!: WebGLRenderer;
-  stats!: Stats;
   firstCall: boolean = true;
 
   constructor(private window: Window) {}
@@ -56,25 +51,14 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
      */
 
     this.disconnectVRSessionEvents();
-
-    this.renderer = new WebGLRenderer(parameters);
-    this.renderer.setPixelRatio(this.container.window.devicePixelRatio);
-    this.renderer.setSize(this.container.width(), this.container.height());
-
-    this.container.empty();
-    this.container.appendChild(this.renderer.domElement);
+    this.container.createRenderer(parameters);
 
     /**
      * VR button
      */
 
     if (this.vrButton) {
-      // https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
-      const button = VRButton.createButton(this.renderer);
-      this.renderer.xr.enabled = true; // enable XR rendering
-      this.renderer.xr.setReferenceSpaceType('local');
-      this.container.appendChild(button);
-
+      this.container.createVRButton();
       this.connectVRSessionEvents();
     }
 
@@ -83,15 +67,7 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
      */
 
     if (this.statsEnable) {
-      if (this.stats === undefined) {
-        this.stats = Stats();
-        this.stats.dom.style.top = '';
-        this.stats.dom.style.left = '';
-        this.stats.dom.style.bottom = '0';
-        this.stats.dom.style.right = '0';
-      }
-
-      this.container.appendChild(this.stats.dom);
+      this.container.createStats();
     }
 
     /**
@@ -101,8 +77,8 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
     if (this.firstCall) {
       this.rendererInit.next({
         container: this.container,
-        renderer: this.renderer,
-        stats: this.stats,
+        renderer: this.container.renderer,
+        stats: this.container.stats,
       });
       this.firstCall = false;
       return;
@@ -110,36 +86,36 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 
     this.rendererUpdate.next({
       container: this.container,
-      renderer: this.renderer,
-      stats: this.stats,
+      renderer: this.container.renderer,
+      stats: this.container.stats,
     });
   }
 
   private connectVRSessionEvents(): void {
-    if (!this.renderer) {
+    if (!this.container.renderer) {
       return;
     }
 
-    this.renderer.xr.addEventListener(
+    this.container.renderer.xr.addEventListener(
       'sessionstart',
       this.vrSessionStartEvent.bind(this)
     );
-    this.renderer.xr.addEventListener(
+    this.container.renderer.xr.addEventListener(
       'sessionend',
       this.vrSessionEndEvent.bind(this)
     );
   }
 
   private disconnectVRSessionEvents(): void {
-    if (!this.renderer) {
+    if (!this.container.renderer) {
       return;
     }
 
-    this.renderer.xr.removeEventListener(
+    this.container.renderer.xr.removeEventListener(
       'sessionstart',
       this.vrSessionStartEvent.bind(this)
     );
-    this.renderer.xr.removeEventListener(
+    this.container.renderer.xr.removeEventListener(
       'sessionend',
       this.vrSessionEndEvent.bind(this)
     );
