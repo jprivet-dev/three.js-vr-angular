@@ -1,4 +1,4 @@
-import { RendererEvent } from '../renderer/renderer.model';
+import { RendererEvent } from '../container/container.model';
 
 export interface BuildUpdateScene {
   buildScene(event: RendererEvent): void;

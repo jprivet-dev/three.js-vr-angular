@@ -1,4 +1,4 @@
-<app-renderer
+<app-container
   [antialias$]="antialias$"
   [parameters]="rendererParameters"
   (rendererInit)="onRendererInit($event)"
@@ -9,7 +9,7 @@
   (vrSessionEnd)="onVRSessionEnd()"
 
   [statsEnable]="true"
-></app-renderer>
+></app-container>
 <app-menu
   [isflyMode]="flyMode$ | async"
   (switchFlyMode)="onSwitchFlyMode()"

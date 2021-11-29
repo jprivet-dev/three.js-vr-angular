@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { BuildUpdateScene } from '@shared/models';
-import { RendererEvent } from '@shared/renderer/renderer.model';
+import { RendererEvent } from '@shared/container/container.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';

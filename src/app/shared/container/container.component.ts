@@ -11,14 +11,14 @@ import {
 import { Observable, of, Subscription } from 'rxjs';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Container } from '../threejs/containers';
-import { RendererEvent } from './renderer.model';
+import { RendererEvent } from './container.model';
 
 @Component({
-  selector: 'app-renderer',
-  templateUrl: './renderer.component.html',
-  styleUrls: ['./renderer.component.scss'],
+  selector: 'app-container',
+  templateUrl: './container.component.html',
+  styleUrls: ['./container.component.scss'],
 })
-export class RendererComponent implements AfterViewInit, OnDestroy {
+export class ContainerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') private containerRef!: ElementRef;
 
   @Input() antialias$: Observable<boolean> = of(false);

@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { RendererEvent } from '@shared/renderer/renderer.model';
+import { RendererEvent } from '@shared/container/container.model';
 import { Observable } from 'rxjs';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { AviatorService } from '../../services/aviator.service';
