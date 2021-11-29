@@ -9,9 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Container } from '../threejs/containers';
-import { ContainerEvent } from './container.model';
 
 @Component({
   selector: 'app-container',
@@ -22,73 +20,32 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') private containerRef!: ElementRef;
 
   @Input() antialias$: Observable<boolean> = of(false);
-  @Input() parameters: WebGLRendererParameters = {};
   @Input() vrButton: boolean = false;
   @Input() statsEnable: boolean = false;
 
-  @Output() rendererInit = new EventEmitter<ContainerEvent>();
-  @Output() rendererUpdate = new EventEmitter<ContainerEvent>();
+  @Output() containerInit = new EventEmitter<Container>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
   subscription!: Subscription;
   container!: Container;
-  firstCall: boolean = true;
 
   constructor(private window: Window) {}
 
   ngAfterViewInit(): void {
-    this.container = new Container(this.window, this.containerRef);
+    this.container = new Container(
+      this.window,
+      this.containerRef,
+      this.vrButton,
+      this.statsEnable
+    );
 
     this.subscription = this.antialias$.subscribe((antialias) => {
-      this.parameters.antialias = antialias;
-      this.createRenderer(this.parameters);
-    });
-  }
-
-  private createRenderer(parameters: WebGLRendererParameters): void {
-    /**
-     * Renderer
-     */
-
-    this.disconnectVRSessionEvents();
-    this.container.createRenderer(parameters);
-
-    /**
-     * VR button
-     */
-
-    if (this.vrButton) {
-      this.container.createVRButton();
-      this.connectVRSessionEvents();
-    }
-
-    /**
-     * Stats
-     */
-
-    if (this.statsEnable) {
-      this.container.createStats();
-    }
-
-    /**
-     * Events
-     */
-
-    if (this.firstCall) {
-      this.rendererInit.next({
-        container: this.container,
-        renderer: this.container.renderer,
-        stats: this.container.stats,
+      this.container.createRenderer({
+        antialias,
       });
-      this.firstCall = false;
-      return;
-    }
 
-    this.rendererUpdate.next({
-      container: this.container,
-      renderer: this.container.renderer,
-      stats: this.container.stats,
+      this.containerInit.next(this.container);
     });
   }
 

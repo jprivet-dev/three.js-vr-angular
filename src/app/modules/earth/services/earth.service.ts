@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { BuildUpdateScene } from '@shared/models';
-import { ContainerEvent } from '@shared/container/container.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
+import { Container } from '@shared/threejs/containers';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
-  AnimationManager,
   TextureManager,
   VRSessionManager,
   WindowResizeManager,
@@ -25,12 +24,11 @@ export class EarthService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
   private subscription = new Subscription();
 
-  private rendererManager!: AnimationManager;
   private controls!: OrbitControlsUpdater;
 
   constructor(private store: StoreService, private facade: EarthFacade) {}
 
-  buildScene({ container }: ContainerEvent) {
+  buildScene(container: Container) {
     /**
      * Managers
      */
@@ -66,12 +64,12 @@ export class EarthService implements BuildUpdateScene {
      * Renderer
      */
 
-    this.rendererManager = new AnimationManager(
-      loop,
-      container,
-      scene,
-      dolly.camera
-    );
+    // this.rendererManager = new AnimationManager(
+    //   loop,
+    //   container,
+    //   scene,
+    //   dolly.camera
+    // );
 
     // resize.add(this.rendererManager);
 
@@ -129,11 +127,6 @@ export class EarthService implements BuildUpdateScene {
     );
 
     loop.add(this.controls);
-  }
-
-  updateContainer({ renderer }: ContainerEvent): void {
-    this.rendererManager.updateRenderer(renderer);
-    this.controls.updateDomElement(renderer.domElement);
   }
 
   unsubscribe(): void {

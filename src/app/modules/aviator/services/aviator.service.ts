@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
-import { ContainerEvent } from '@shared/container/container.model';
 import { BuildUpdateScene } from '@shared/models';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
+import { Container } from '@shared/threejs/containers';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
-import {
-  AnimationManager,
-  LoopManager,
-  VRSessionManager,
-} from '@shared/threejs/managers';
-import { Loop } from '@shared/threejs/models';
+import { LoopManager, VRSessionManager } from '@shared/threejs/managers';
 import { angleXZ } from '@shared/utils';
 import { Subscription } from 'rxjs';
 import {
@@ -48,13 +43,24 @@ export class AviatorService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = aviatorDollyCameraParams;
   private subscription = new Subscription();
 
-  private animationManager!: AnimationManager;
   private controls!: OrbitControlsUpdater;
   private controlsActive: boolean = false;
+  private animate: () => void = () => {};
+  private alreadyBuilt = false;
 
   constructor(private store: StoreService, private facade: AviatorFacade) {}
 
-  buildScene({ container }: ContainerEvent) {
+  buildScene(container: Container) {
+    if (this.alreadyBuilt) {
+      this.animate();
+
+      if (this.controlsActive) {
+        this.controls.updateDomElement(container.renderer.domElement);
+      }
+
+      return;
+    }
+
     /**
      * Managers
      */
@@ -235,14 +241,11 @@ export class AviatorService implements BuildUpdateScene {
      * Global Animation
      */
 
-    class GlobalAnimation implements Loop {
-      update(delta: number) {
+    loop.add({
+      update: (delta: number) => {
         progressOnCurve(airplane, delta);
-      }
-    }
-
-    const animation = new GlobalAnimation();
-    loop.add(animation);
+      },
+    });
 
     /**
      * Store events
@@ -273,22 +276,19 @@ export class AviatorService implements BuildUpdateScene {
     }
 
     /**
-     * Animation Manager
+     * Animate
      */
 
-    this.animationManager = new AnimationManager(
-      loop,
-      container,
-      scene,
-      dolly.camera
-    );
-  }
+    this.animate = () => {
+      container.renderer.setAnimationLoop(() => {
+        loop.update();
+        container.renderer.render(scene, dolly.camera);
+      });
+    };
 
-  updateContainer({ renderer }: ContainerEvent): void {
-    this.animationManager.updateRenderer(renderer);
-    if (this.controlsActive) {
-      this.controls.updateDomElement(renderer.domElement);
-    }
+    this.animate();
+
+    this.alreadyBuilt = true;
   }
 
   unsubscribe(): void {

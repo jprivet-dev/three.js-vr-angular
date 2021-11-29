@@ -1,9 +1,7 @@
-import { ContainerEvent } from '../container/container.model';
+import { Container } from '../threejs/containers';
 
 export interface BuildUpdateScene {
-  buildScene(event: ContainerEvent): void;
-
-  updateContainer(event: ContainerEvent): void;
+  buildScene(container: Container): void;
 
   unsubscribe(): void;
 }

@@ -1,7 +1,6 @@
 <app-container
   [antialias$]="antialias$"
-  (rendererInit)="onRendererInit($event)"
-  (rendererUpdate)="onRendererUpdate($event)"
+  (containerInit)="onContainerInit($event)"
 
   [vrButton]="true"
   (vrSessionStart)="onVRSessionStart()"

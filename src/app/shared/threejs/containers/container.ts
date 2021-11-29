@@ -15,7 +15,7 @@ export class Container implements Loop, WindowResize {
   public stats!: Stats;
   private lastParameters!: WebGLRendererParameters;
 
-  constructor(window: Window, containerRef: ElementRef) {
+  constructor(window: Window, containerRef: ElementRef, private vrButton: boolean, private statsEnable: boolean) {
     this.window = window;
     const nativeElement: HTMLDivElement = containerRef?.nativeElement;
 
@@ -84,6 +84,15 @@ export class Container implements Loop, WindowResize {
   // --------
 
   createRenderer(parameters: WebGLRendererParameters): void {
+    /**
+     * Renderer
+     */
+
+    if (this.renderer) {
+      this.empty();
+      this.renderer.setAnimationLoop(null);
+    }
+
     this.renderer = new WebGLRenderer(parameters);
     this.renderer.setPixelRatio(this.window.devicePixelRatio);
     this.renderer.setSize(this.width(), this.height());
@@ -91,23 +100,29 @@ export class Container implements Loop, WindowResize {
     this.appendChild(this.renderer.domElement);
 
     this.lastParameters = parameters;
-  }
 
-  refreshRenderer(): void {
-    this.empty();
-    this.createRenderer(this.lastParameters);
+    /**
+     * VR button
+     */
+
+    if (this.vrButton) {
+      this.createVRButton();
+    }
+
+    /**
+     * Stats
+     */
+
+    if (this.statsEnable) {
+      this.createStats();
+    }
   }
 
   // ---------
   // VR Button
   // ---------
 
-  createVRButton(): void {
-    if (this.renderer === undefined) {
-      console.error('Create renderer element before.');
-      return;
-    }
-
+  private createVRButton(): void {
     // https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
     const button = VRButton.createButton(this.renderer);
     this.renderer.xr.enabled = true; // enable XR rendering
@@ -119,7 +134,7 @@ export class Container implements Loop, WindowResize {
   // Stats
   // -----
 
-  createStats(): void {
+  private createStats(): void {
     if (this.renderer === undefined) {
       console.error('Create renderer element before.');
       return;
