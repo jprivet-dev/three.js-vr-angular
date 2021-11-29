@@ -1,9 +1,9 @@
-import { RendererEvent } from '../container/container.model';
+import { ContainerEvent } from '../container/container.model';
 
 export interface BuildUpdateScene {
-  buildScene(event: RendererEvent): void;
+  buildScene(event: ContainerEvent): void;
 
-  updateRenderer(event: RendererEvent): void;
+  updateContainer(event: ContainerEvent): void;
 
   unsubscribe(): void;
 }

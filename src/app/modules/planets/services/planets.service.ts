@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
 import { BuildUpdateScene } from '@shared/models';
-import { RendererEvent } from '@shared/container/container.model';
+import { ContainerEvent } from '@shared/container/container.model';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
-  RendererManager,
+  AnimationManager,
   TextureManager,
   VRSessionManager,
   WindowResizeManager,
@@ -35,12 +35,12 @@ export class PlanetsService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
   private subscription = new Subscription();
 
-  private rendererManager!: RendererManager;
+  private rendererManager!: AnimationManager;
   private controls!: OrbitControlsUpdater;
 
   constructor(private store: StoreService, private facade: PlanetsFacade) {}
 
-  buildScene({ container, renderer, stats }: RendererEvent) {
+  buildScene({ container }: ContainerEvent) {
     /**
      * Managers
      */
@@ -51,12 +51,10 @@ export class PlanetsService implements BuildUpdateScene {
     const loop = new LoopManager();
 
     /**
-     * Stats
+     * Container
      */
 
-    if (stats) {
-      loop.add(stats);
-    }
+    loop.add(container);
 
     /**
      * Scene
@@ -70,7 +68,7 @@ export class PlanetsService implements BuildUpdateScene {
      * Camera
      */
 
-    const dolly = new DollyCamera(container, this.dollyCameraParams);
+    const dolly = new DollyCamera(this.dollyCameraParams);
     scene.add(dolly);
     vr.add(dolly);
 
@@ -78,14 +76,14 @@ export class PlanetsService implements BuildUpdateScene {
      * Renderer
      */
 
-    this.rendererManager = new RendererManager(
+    this.rendererManager = new AnimationManager(
       loop,
-      renderer,
+      container,
       scene,
       dolly.camera
     );
 
-    resize.add(this.rendererManager);
+    // resize.add(this.rendererManager);
 
     /**
      * Lights
@@ -175,7 +173,7 @@ export class PlanetsService implements BuildUpdateScene {
 
     this.controls = new OrbitControlsUpdater(
       dolly.camera,
-      renderer.domElement,
+      container.renderer.domElement,
       {
         autoRotateSpeed: 0.2,
         autoRotate: true,
@@ -186,7 +184,7 @@ export class PlanetsService implements BuildUpdateScene {
     loop.add(this.controls);
   }
 
-  updateRenderer({ renderer }: RendererEvent): void {
+  updateContainer({ renderer }: ContainerEvent): void {
     this.rendererManager.updateRenderer(renderer);
     this.controls.updateDomElement(renderer.domElement);
   }

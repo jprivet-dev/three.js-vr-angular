@@ -11,7 +11,7 @@ import {
 import { Observable, of, Subscription } from 'rxjs';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Container } from '../threejs/containers';
-import { RendererEvent } from './container.model';
+import { ContainerEvent } from './container.model';
 
 @Component({
   selector: 'app-container',
@@ -26,8 +26,8 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   @Input() vrButton: boolean = false;
   @Input() statsEnable: boolean = false;
 
-  @Output() rendererInit = new EventEmitter<RendererEvent>();
-  @Output() rendererUpdate = new EventEmitter<RendererEvent>();
+  @Output() rendererInit = new EventEmitter<ContainerEvent>();
+  @Output() rendererUpdate = new EventEmitter<ContainerEvent>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
@@ -39,6 +39,7 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.container = new Container(this.window, this.containerRef);
+
     this.subscription = this.antialias$.subscribe((antialias) => {
       this.parameters.antialias = antialias;
       this.createRenderer(this.parameters);

@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { RendererEvent } from '@shared/container/container.model';
+import { ContainerEvent } from '@shared/container/container.model';
 import { Observable } from 'rxjs';
 import { EarthService } from '../../services/earth.service';
 import { EarthActions } from '../../store/actions';
@@ -21,12 +21,12 @@ export class EarthPageComponent implements OnDestroy {
     private facade: EarthFacade
   ) {}
 
-  onRendererInit(event: RendererEvent): void {
+  onRendererInit(event: ContainerEvent): void {
     this.service.buildScene(event);
   }
 
-  onRendererUpdate(event: RendererEvent): void {
-    this.service.updateRenderer(event);
+  onRendererUpdate(event: ContainerEvent): void {
+    this.service.updateContainer(event);
   }
 
   onSwitchFlyMode(): void {

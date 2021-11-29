@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { RendererEvent } from '@shared/container/container.model';
+import { ContainerEvent } from '@shared/container/container.model';
 import { Observable } from 'rxjs';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { AviatorService } from '../../services/aviator.service';
@@ -24,12 +24,12 @@ export class AviatorPageComponent implements OnDestroy {
     private facade: AviatorFacade
   ) {}
 
-  onRendererInit(event: RendererEvent): void {
+  onContainerInit(event: ContainerEvent): void {
     this.service.buildScene(event);
   }
 
-  onRendererUpdate(event: RendererEvent): void {
-    this.service.updateRenderer(event);
+  onContainerUpdate(event: ContainerEvent): void {
+    this.service.updateContainer(event);
   }
 
   onSwitchFlyMode(): void {

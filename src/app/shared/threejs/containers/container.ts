@@ -3,24 +3,37 @@ import { WebGLRenderer } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
+import { Loop, WindowResize } from '../models';
 
-export class Container {
+export class Container implements Loop, WindowResize {
+  private list: WindowResize[] = [];
+
   readonly window: Window;
   readonly domElement!: HTMLElement;
+
   public renderer!: WebGLRenderer;
   public stats!: Stats;
+  private lastParameters!: WebGLRendererParameters;
 
   constructor(window: Window, containerRef: ElementRef) {
     this.window = window;
     const nativeElement: HTMLDivElement = containerRef?.nativeElement;
 
-    if (nativeElement) {
-      this.domElement = nativeElement;
+    if (!nativeElement) {
+      throw new Error('containerRef.nativeElement is undefined.');
       return;
     }
 
-    throw new Error('containerRef.nativeElement is undefined.');
+    this.domElement = nativeElement;
+
+    this.window.addEventListener('resize', () => {
+      this.resize();
+    });
   }
+
+  // ----------
+  // Dimensions
+  // ----------
 
   width(): number {
     return this.domElement.clientWidth;
@@ -34,6 +47,14 @@ export class Container {
     return this.width() / this.height();
   }
 
+  // --------
+  // Contents
+  // --------
+
+  empty(): void {
+    this.domElement.innerHTML = '';
+  }
+
   appendChild(child: HTMLElement): void {
     this.domElement.appendChild(child);
   }
@@ -42,9 +63,9 @@ export class Container {
     this.domElement.removeChild(child);
   }
 
-  empty(): void {
-    this.domElement.innerHTML = '';
-  }
+  // --------------------
+  // Pointer Lock Element
+  // --------------------
 
   isPointerLockElement(): boolean {
     return this.domElement.ownerDocument.pointerLockElement === this.domElement;
@@ -58,14 +79,28 @@ export class Container {
     this.domElement.ownerDocument.exitPointerLock();
   }
 
+  // --------
+  // Renderer
+  // --------
+
   createRenderer(parameters: WebGLRendererParameters): void {
     this.renderer = new WebGLRenderer(parameters);
     this.renderer.setPixelRatio(this.window.devicePixelRatio);
     this.renderer.setSize(this.width(), this.height());
 
-    this.empty();
     this.appendChild(this.renderer.domElement);
+
+    this.lastParameters = parameters;
   }
+
+  refreshRenderer(): void {
+    this.empty();
+    this.createRenderer(this.lastParameters);
+  }
+
+  // ---------
+  // VR Button
+  // ---------
 
   createVRButton(): void {
     if (this.renderer === undefined) {
@@ -80,6 +115,10 @@ export class Container {
     this.appendChild(button);
   }
 
+  // -----
+  // Stats
+  // -----
+
   createStats(): void {
     if (this.renderer === undefined) {
       console.error('Create renderer element before.');
@@ -93,5 +132,39 @@ export class Container {
     this.stats.dom.style.right = '0';
 
     this.appendChild(this.stats.dom);
+  }
+
+  // ------
+  // Resize
+  // ------
+
+  resizeAdd(element: WindowResize): void {
+    if (this.list.includes(element)) {
+      console.error('Element already exists:', element);
+      return;
+    }
+
+    this.list.push(element);
+  }
+
+  resizeRemove(element: WindowResize): void {
+    this.list.forEach((current, index) => {
+      if (current === element) {
+        this.list.splice(index, 1);
+      }
+    });
+  }
+
+  resize() {
+    this.renderer.setSize(this.width(), this.height());
+    this.list.map((element) => element.resize(this));
+  }
+
+  // ----
+  // Loop
+  // ----
+
+  update() {
+    this.stats.update();
   }
 }
