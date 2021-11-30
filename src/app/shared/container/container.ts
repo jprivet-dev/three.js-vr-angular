@@ -144,7 +144,6 @@ export class Container implements Loop, WindowResize {
   }
 
   connectVRSessionEvents(params: ConnectVRSessionParams): void {
-    console.log('Container | connectVRSessionEvents');
     if (!this.renderer) {
       return;
     }
@@ -164,7 +163,6 @@ export class Container implements Loop, WindowResize {
   }
 
   disconnectVRSessionEvents(): void {
-    console.log('Container | disconnectVRSessionEvents');
     if (!this.renderer) {
       return;
     }

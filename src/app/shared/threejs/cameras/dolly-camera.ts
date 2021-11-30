@@ -30,7 +30,6 @@ export class DollyCamera extends Object3D implements VRSession, WindowResize {
   }
 
   onSessionStart() {
-    console.log('DollyCamera | onSessionStart');
     this.setPosition(
       this.params.onVRSessionStartPosition.camera,
       this.params.onVRSessionStartPosition.dolly
@@ -38,7 +37,6 @@ export class DollyCamera extends Object3D implements VRSession, WindowResize {
   }
 
   onSessionEnd() {
-    console.log('DollyCamera | onSessionEnd');
     this.setPosition(
       this.params.onVRSessionEndPosition.camera,
       this.params.onVRSessionEndPosition.dolly

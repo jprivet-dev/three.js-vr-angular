@@ -33,12 +33,10 @@ export class AviatorPageComponent implements OnDestroy {
   }
 
   onVRSessionStart() {
-    console.log('AviatorPageComponent | onVRSessionStart');
     this.facade.dispatch(AviatorActions.vrSessionStart());
   }
 
   onVRSessionEnd() {
-    console.log('AviatorPageComponent | onVRSessionEnd');
     this.facade.dispatch(AviatorActions.vrSessionEnd());
   }
 

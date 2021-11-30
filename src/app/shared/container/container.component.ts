@@ -33,7 +33,6 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   constructor(private window: Window) {}
 
   ngAfterViewInit(): void {
-    console.log('ContainerComponent | ngAfterViewInit');
     this.container = new Container(
       this.window,
       this.containerRef,
@@ -47,14 +46,8 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
       });
 
       this.container.connectVRSessionEvents({
-        start: () => {
-          console.log('start');
-          this.vrSessionStart.next();
-        },
-        end: () => {
-          console.log('end');
-          this.vrSessionEnd.next();
-        },
+        start: () => this.vrSessionStart.next(),
+        end: () => this.vrSessionEnd.next(),
       });
 
       this.containerInit.next(this.container);
@@ -62,10 +55,9 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('ContainerComponent | ngOnDestroy');
     if (this.subscription) {
-      this.container.disconnectVRSessionEvents();
       this.subscription.unsubscribe();
     }
+    this.container.disconnectVRSessionEvents();
   }
 }

@@ -46,23 +46,20 @@ export class AviatorService implements BuildUpdateScene {
   private controls!: OrbitControlsUpdater;
   private controlsActive: boolean = false;
   private animate: () => void = () => {};
-  private alreadyBuilt = false;
+  private completed = false;
 
   constructor(private store: StoreService, private facade: AviatorFacade) {}
 
   buildScene(container: Container) {
-    if (this.alreadyBuilt) {
-      this.animate();
-
-      if (this.controlsActive) {
-        this.controls.updateDomElement(container.renderer.domElement);
-      }
-
-      return;
+    if (this.completed) {
+      this.update(container);
+    } else {
+      this.create(container);
+      this.completed = true;
     }
+  }
 
-    this.alreadyBuilt = true;
-
+  create(container: Container): void {
     /**
      * Managers
      */
@@ -253,9 +250,7 @@ export class AviatorService implements BuildUpdateScene {
      * Store events
      */
 
-    console.log('**** AviatorService | vrSession$ | subscription');
     this.subscription = this.facade.vrSession$.subscribe((vrSession) => {
-      console.log('---- AviatorService | vrSession$');
       vrSession ? vr.onSessionStart() : vr.onSessionEnd();
     });
 
@@ -291,8 +286,16 @@ export class AviatorService implements BuildUpdateScene {
     this.animate();
   }
 
+  update(container: Container): void {
+    this.animate();
+
+    if (this.controlsActive) {
+      this.controls.updateDomElement(container.renderer.domElement);
+    }
+  }
+
   unsubscribe(): void {
-    this.alreadyBuilt = false;
+    this.completed = false;
     this.subscription.unsubscribe();
   }
 }
