@@ -1,7 +1,14 @@
-export interface cameraPosition {
-  x: number;
-  y: number;
-  z: number;
+export interface DollyCameraPositionRotation {
+  position: {
+    x: number;
+    y: number;
+    z: number;
+  };
+  rotation: {
+    x: number;
+    y: number;
+    z: number;
+  };
 }
 
 export interface DollyCameraParams {
@@ -9,12 +16,14 @@ export interface DollyCameraParams {
   aspect?: number;
   near: number;
   far: number;
-  onVRSessionStartPosition: {
-    camera: cameraPosition;
-    dolly: cameraPosition;
-  };
-  onVRSessionEndPosition: {
-    camera: cameraPosition;
-    dolly: cameraPosition;
+  vrSession: {
+    onStart: {
+      camera: DollyCameraPositionRotation;
+      dolly: DollyCameraPositionRotation;
+    };
+    onEnd: {
+      camera: DollyCameraPositionRotation;
+      dolly: DollyCameraPositionRotation;
+    };
   };
 }

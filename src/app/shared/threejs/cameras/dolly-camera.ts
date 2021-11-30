@@ -1,7 +1,7 @@
 import { Object3D, PerspectiveCamera } from 'three';
 import { Container } from '../../container';
 import { VRSession, WindowResize } from '../models';
-import { cameraPosition, DollyCameraParams } from './dolly-camera.model';
+import { DollyCameraPositionRotation, DollyCameraParams } from './dolly-camera.model';
 
 export class DollyCamera extends Object3D implements VRSession, WindowResize {
   public camera: PerspectiveCamera;
@@ -30,22 +30,23 @@ export class DollyCamera extends Object3D implements VRSession, WindowResize {
   }
 
   onSessionStart() {
-    this.setPosition(
-      this.params.onVRSessionStartPosition.camera,
-      this.params.onVRSessionStartPosition.dolly
+    this.setPositionRotation(
+      this.params.vrSession.onStart.camera,
+      this.params.vrSession.onStart.dolly
     );
   }
 
   onSessionEnd() {
-    this.setPosition(
-      this.params.onVRSessionEndPosition.camera,
-      this.params.onVRSessionEndPosition.dolly
+    this.setPositionRotation(
+      this.params.vrSession.onEnd.camera,
+      this.params.vrSession.onEnd.dolly
     );
-    this.camera.rotation.set(0, 0, 0);
   }
 
-  private setPosition(camera: cameraPosition, dolly: cameraPosition) {
-    this.camera.position.set(camera.x, camera.y, camera.z);
-    this.position.set(dolly.x, dolly.y, dolly.z);
+  private setPositionRotation(camera: DollyCameraPositionRotation, dolly: DollyCameraPositionRotation) {
+    this.camera.position.set(camera.position.x, camera.position.y, camera.position.z);
+    this.camera.rotation.set(camera.rotation.x, camera.rotation.y, camera.rotation.z);
+    this.position.set(dolly.position.x, dolly.position.y, dolly.position.z);
+    this.rotation.set(dolly.rotation.x, dolly.rotation.y, dolly.rotation.z);
   }
 }
