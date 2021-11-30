@@ -1,6 +1,6 @@
-import { Definition } from '../../../models/definition.model';
 import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
+import { Definition } from '../../../models/definition.model';
 import {
   getTextureByDefinition,
   rotateOrbitalAxis,

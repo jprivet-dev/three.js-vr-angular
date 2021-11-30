@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { AppActions } from '@core/store/actions';
 import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
@@ -30,11 +31,11 @@ export class PlanetsPageComponent implements OnDestroy {
   }
 
   onSwitchDefinition(): void {
-    this.facade.dispatch(PlanetsActions.switchDefinition());
+    this.facade.dispatch(AppActions.switchDefinition());
   }
 
   onSwitchAntialias(): void {
-    this.facade.dispatch(PlanetsActions.switchAntialias());
+    this.facade.dispatch(AppActions.switchAntialias());
   }
 
   onVRSessionStart() {

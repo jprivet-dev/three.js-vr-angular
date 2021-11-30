@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { AppActions } from '@core/store/actions';
 import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
 import { EarthService } from '../../services/earth.service';
@@ -30,11 +31,11 @@ export class EarthPageComponent implements OnDestroy {
   }
 
   onSwitchDefinition(): void {
-    this.facade.dispatch(EarthActions.switchDefinition());
+    this.facade.dispatch(AppActions.switchDefinition());
   }
 
   onSwitchAntialias(): void {
-    this.facade.dispatch(EarthActions.switchAntialias());
+    this.facade.dispatch(AppActions.switchAntialias());
   }
 
   onVRSessionStart() {

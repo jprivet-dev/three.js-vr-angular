@@ -1,6 +1,6 @@
-import { Definition } from '../../models/definition.model';
 import { TextureLoader } from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
+import { Definition } from '../../models/definition.model';
 import { TexturesByDefinition } from '../models';
 
 import {

@@ -1,5 +1,5 @@
-import { Definition } from '../../../../models/definition.model';
 import { DirectionalLight } from 'three';
+import { Definition } from '../../../../models/definition.model';
 import { HasLight, TexturesByDefinition } from '../../../models';
 import { SunLensflareTextureLoader } from './sun-lensflare-texture.loader';
 import { sunLensflareTextureParams } from './sun-lensflare-texture.params';

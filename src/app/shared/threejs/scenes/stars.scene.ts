@@ -1,5 +1,5 @@
-import { Definition } from '../../models/definition.model';
 import { CubeTextureLoader, Scene } from 'three';
+import { Definition } from '../../models/definition.model';
 import { HasScene, TexturesByDefinition } from '../models';
 
 export class StarsScene implements HasScene, TexturesByDefinition {

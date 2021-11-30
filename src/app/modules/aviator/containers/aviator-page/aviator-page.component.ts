@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { AppActions } from '@core/store/actions';
 import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
 import { AviatorService } from '../../services/aviator.service';
@@ -29,7 +30,7 @@ export class AviatorPageComponent implements OnDestroy {
   }
 
   onSwitchAntialias(): void {
-    this.facade.dispatch(AviatorActions.switchAntialias());
+    this.facade.dispatch(AppActions.switchAntialias());
   }
 
   onVRSessionStart() {

@@ -1,6 +1,6 @@
-import { Definition } from '../../../../models/definition.model';
 import { Lensflare, LensflareElement, } from 'three/examples/jsm/objects/Lensflare';
 import { Texture } from 'three/src/textures/Texture';
+import { Definition } from '../../../../models/definition.model';
 
 /**
  * Sun Lensflare

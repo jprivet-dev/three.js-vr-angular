@@ -1,5 +1,5 @@
-import { Definition } from '../../models/definition.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
+import { Definition } from '../../models/definition.model';
 import { TexturesByDefinition } from '../models';
 import {
   PhongMaterialTextureByDefinition,

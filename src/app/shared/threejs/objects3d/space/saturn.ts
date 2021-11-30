@@ -1,4 +1,3 @@
-import { Definition } from '../../../models/definition.model';
 import {
   DoubleSide,
   Mesh,
@@ -14,6 +13,7 @@ import {
   RadiusRatioEarth,
   SaturnRingsRatioEarth,
 } from '../../../constants';
+import { Definition } from '../../../models/definition.model';
 import {
   getTextureByDefinition,
   rotateOrbitalAxis,

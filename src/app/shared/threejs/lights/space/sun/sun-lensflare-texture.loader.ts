@@ -1,6 +1,6 @@
-import { Definition } from '../../../../models/definition.model';
 import { TextureLoader } from 'three';
 import { Texture } from 'three/src/textures/Texture';
+import { Definition } from '../../../../models/definition.model';
 import {
   SunLensflareTexturesByDefinition,
   SunLensflareTexturesByDefinitionKeys,
