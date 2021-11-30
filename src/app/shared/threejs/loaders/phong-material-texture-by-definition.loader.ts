@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '../../models/definition.model';
 import { MeshPhongMaterial, TextureLoader } from 'three';
 import { TexturesByDefinition } from '../models';
 import {

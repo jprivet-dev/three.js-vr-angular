@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '../../../../models/definition.model';
 import { Lensflare, LensflareElement, } from 'three/examples/jsm/objects/Lensflare';
 import { Texture } from 'three/src/textures/Texture';
 

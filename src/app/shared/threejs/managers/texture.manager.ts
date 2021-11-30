@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '../../models/definition.model';
 import { TexturesByDefinition } from '../models';
 
 export class TextureManager implements TexturesByDefinition {

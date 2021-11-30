@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { VRControllerType } from '@shared/threejs/controls';
 import { BehaviorSubject } from 'rxjs';
-import { Definition } from './store.model';
+import { Definition } from '@shared/models/definition.model';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '../../../../models/definition.model';
 import { DirectionalLight } from 'three';
 import { HasLight, TexturesByDefinition } from '../../../models';
 import { SunLensflareTextureLoader } from './sun-lensflare-texture.loader';

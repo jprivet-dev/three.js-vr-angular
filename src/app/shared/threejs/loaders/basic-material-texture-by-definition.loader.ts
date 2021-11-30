@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '../../models/definition.model';
 import { TextureLoader } from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { TexturesByDefinition } from '../models';

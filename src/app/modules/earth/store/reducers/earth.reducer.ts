@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '@shared/models/definition.model';
 import { createReducer, on } from '@ngrx/store';
 import { EarthActions } from '../actions';
 

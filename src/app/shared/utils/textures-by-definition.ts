@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '../models';
 
 export const getTextureByDefinition = (
   definition: Definition,

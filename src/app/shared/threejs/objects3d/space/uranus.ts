@@ -1,4 +1,4 @@
-import { Definition } from '@core/store/store.model';
+import { Definition } from '../../../models/definition.model';
 import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { AxialTilt, RadiusRatioEarth } from '../../../constants';
 import {
