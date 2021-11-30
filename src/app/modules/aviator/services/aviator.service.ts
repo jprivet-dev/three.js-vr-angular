@@ -22,10 +22,7 @@ import {
   Scene,
   Vector3,
 } from 'three';
-import {
-  RollerCoasterGeometry,
-  TreesGeometry,
-} from 'three/examples/jsm/misc/RollerCoaster';
+import { RollerCoasterGeometry, TreesGeometry, } from 'three/examples/jsm/misc/RollerCoaster';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { AviatorFacade } from '../store/aviator.facade';
 import { RollerCoasterCurve } from '../threejs';

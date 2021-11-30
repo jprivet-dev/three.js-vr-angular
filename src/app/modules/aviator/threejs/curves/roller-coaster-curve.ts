@@ -1,6 +1,6 @@
 import { Curve, Vector3 } from 'three';
 
-export class RollerCoasterCurve extends Curve<Vector3>{
+export class RollerCoasterCurve extends Curve<Vector3> {
   private point = new Vector3();
   private tangent = new Vector3();
 

@@ -3,8 +3,8 @@ import { WebGLRenderer } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
-import { ConnectVRSessionParams } from './container.model';
 import { Loop, WindowResize } from '../threejs/models';
+import { ConnectVRSessionParams } from './container.model';
 
 export class Container implements Loop, WindowResize {
   private list: WindowResize[] = [];
