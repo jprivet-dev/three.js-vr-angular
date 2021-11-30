@@ -253,11 +253,11 @@ export class AviatorService implements BuildUpdateScene {
      * Store events
      */
 
-    this.subscription.add(
-      this.facade.vrSession$.subscribe((vrSession) => {
-        vrSession ? vr.onSessionStart() : vr.onSessionEnd();
-      })
-    );
+    console.log('**** AviatorService | vrSession$ | subscription');
+    this.subscription = this.facade.vrSession$.subscribe((vrSession) => {
+      console.log('---- AviatorService | vrSession$');
+      vrSession ? vr.onSessionStart() : vr.onSessionEnd();
+    });
 
     /**
      * Controls
