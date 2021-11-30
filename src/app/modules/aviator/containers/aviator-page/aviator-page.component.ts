@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Container } from '@shared/threejs/containers';
+import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
 import { AviatorService } from '../../services/aviator.service';
 import { AviatorActions } from '../../store/actions';
@@ -33,10 +33,12 @@ export class AviatorPageComponent implements OnDestroy {
   }
 
   onVRSessionStart() {
+    console.log('AviatorPageComponent | onVRSessionStart');
     this.facade.dispatch(AviatorActions.vrSessionStart());
   }
 
   onVRSessionEnd() {
+    console.log('AviatorPageComponent | onVRSessionEnd');
     this.facade.dispatch(AviatorActions.vrSessionEnd());
   }
 

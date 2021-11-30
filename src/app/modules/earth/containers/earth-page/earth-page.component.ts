@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Container } from '@shared/threejs/containers';
+import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
 import { EarthService } from '../../services/earth.service';
 import { EarthActions } from '../../store/actions';

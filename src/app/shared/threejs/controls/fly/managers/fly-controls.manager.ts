@@ -1,6 +1,6 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { Container } from '../../../../container';
 import { DollyCamera } from '../../../cameras';
-import { Container } from '../../../containers';
 import { Loop } from '../../../models';
 import { FlyDashboardPointerLockControls } from '../controls';
 import { FlyMobileControls } from '../mobile';

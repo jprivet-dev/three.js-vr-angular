@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/store/store.service';
+import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
-import { Container } from '@shared/threejs/containers';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { LoopManager, VRSessionManager } from '@shared/threejs/managers';
 import { angleXZ } from '@shared/utils';
@@ -60,6 +60,8 @@ export class AviatorService implements BuildUpdateScene {
 
       return;
     }
+
+    this.alreadyBuilt = true;
 
     /**
      * Managers
@@ -287,11 +289,10 @@ export class AviatorService implements BuildUpdateScene {
     };
 
     this.animate();
-
-    this.alreadyBuilt = true;
   }
 
   unsubscribe(): void {
+    this.alreadyBuilt = false;
     this.subscription.unsubscribe();
   }
 }

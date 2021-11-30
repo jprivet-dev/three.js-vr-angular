@@ -1,4 +1,4 @@
-import { Container } from '../containers';
+import { Container } from '../../container';
 import { WindowResize } from '../models';
 
 export class WindowResizeManager implements WindowResize {

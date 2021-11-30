@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { Camera, EventDispatcher } from 'three';
-import { Container } from '../../../containers';
+import { Container } from '../../../../container';
 import { Loop } from '../../../models';
 import { FlyControls } from '../models';
 import { FlyCameraMovements } from '../movements';

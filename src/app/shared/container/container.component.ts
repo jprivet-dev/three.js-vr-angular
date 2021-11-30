@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { Container } from '../threejs/containers';
+import { Container } from './container';
 
 @Component({
   selector: 'app-container',
@@ -33,6 +33,7 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   constructor(private window: Window) {}
 
   ngAfterViewInit(): void {
+    console.log('ContainerComponent | ngAfterViewInit');
     this.container = new Container(
       this.window,
       this.containerRef,
@@ -45,52 +46,25 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
         antialias,
       });
 
+      this.container.connectVRSessionEvents({
+        start: () => {
+          console.log('start');
+          this.vrSessionStart.next();
+        },
+        end: () => {
+          console.log('end');
+          this.vrSessionEnd.next();
+        },
+      });
+
       this.containerInit.next(this.container);
     });
   }
 
-  private connectVRSessionEvents(): void {
-    if (!this.container.renderer) {
-      return;
-    }
-
-    this.container.renderer.xr.addEventListener(
-      'sessionstart',
-      this.vrSessionStartEvent.bind(this)
-    );
-    this.container.renderer.xr.addEventListener(
-      'sessionend',
-      this.vrSessionEndEvent.bind(this)
-    );
-  }
-
-  private disconnectVRSessionEvents(): void {
-    if (!this.container.renderer) {
-      return;
-    }
-
-    this.container.renderer.xr.removeEventListener(
-      'sessionstart',
-      this.vrSessionStartEvent.bind(this)
-    );
-    this.container.renderer.xr.removeEventListener(
-      'sessionend',
-      this.vrSessionEndEvent.bind(this)
-    );
-  }
-
-  private vrSessionStartEvent() {
-    this.vrSessionStart.next();
-  }
-
-  private vrSessionEndEvent() {
-    this.vrSessionEnd.next();
-  }
-
   ngOnDestroy() {
-    this.disconnectVRSessionEvents();
-
+    console.log('ContainerComponent | ngOnDestroy');
     if (this.subscription) {
+      this.container.disconnectVRSessionEvents();
       this.subscription.unsubscribe();
     }
   }
