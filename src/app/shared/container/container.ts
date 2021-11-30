@@ -99,7 +99,6 @@ export class Container implements Loop, WindowResize {
     if (this.renderer) {
       this.empty();
       this.renderer.setAnimationLoop(null);
-      // this.disconnectVRSessionEvents();
       this.firstCall = false;
     }
 

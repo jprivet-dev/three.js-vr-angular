@@ -9,7 +9,6 @@ import {
   LoopManager,
   TextureManager,
   VRSessionManager,
-  WindowResizeManager,
 } from '@shared/threejs/managers';
 import { Earth, Moon } from '@shared/threejs/objects3d';
 import { StarsScene } from '@shared/threejs/scenes';
@@ -21,20 +20,31 @@ import { earthDollyCameraParams } from './earth.params';
   providedIn: 'root',
 })
 export class EarthService implements BuildUpdateScene {
-  private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
   private subscription = new Subscription();
 
+  private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
+
   private controls!: OrbitControlsUpdater;
+  private animate: () => void = () => {};
+  private completed = false;
 
   constructor(private store: StoreService, private facade: EarthFacade) {}
 
   buildScene(container: Container) {
+    if (this.completed) {
+      this.update(container);
+    } else {
+      this.create(container);
+      this.completed = true;
+    }
+  }
+
+  create(container: Container) {
     /**
      * Managers
      */
 
     const vr = new VRSessionManager();
-    const resize = new WindowResizeManager(container);
     const texture = new TextureManager();
     const loop = new LoopManager();
 
@@ -56,22 +66,11 @@ export class EarthService implements BuildUpdateScene {
      * Camera
      */
 
+    this.dollyCameraParams.aspect = container.ratio();
     const dolly = new DollyCamera(this.dollyCameraParams);
+    container.resizeAdd(dolly);
     scene.add(dolly);
     vr.add(dolly);
-
-    /**
-     * Renderer
-     */
-
-    // this.rendererManager = new AnimationManager(
-    //   loop,
-    //   container,
-    //   scene,
-    //   dolly.camera
-    // );
-
-    // resize.add(this.rendererManager);
 
     /**
      * Lights
@@ -97,7 +96,23 @@ export class EarthService implements BuildUpdateScene {
     loop.add(moon);
 
     /**
-     * Store events
+     * Controls
+     */
+
+    this.controls = new OrbitControlsUpdater(
+      dolly.camera,
+      container.renderer.domElement,
+      {
+        autoRotateSpeed: 0.2,
+        autoRotate: true,
+        target: earth.mesh.position,
+      }
+    );
+
+    loop.add(this.controls);
+
+    /**
+     * Subscription
      */
 
     this.subscription.add(
@@ -113,23 +128,28 @@ export class EarthService implements BuildUpdateScene {
     );
 
     /**
-     * Controls
+     * Animate
      */
 
-    this.controls = new OrbitControlsUpdater(
-      dolly.camera,
-      container.renderer.domElement,
-      {
-        autoRotateSpeed: 0.2,
-        autoRotate: true,
-        target: earth.mesh.position,
-      }
-    );
+    this.animate = () => {
+      container.renderer.setAnimationLoop(() => {
+        loop.update();
+        container.renderer.render(scene, dolly.camera);
+      });
+    };
 
-    loop.add(this.controls);
+    this.animate();
+  }
+
+  update(container: Container): void {
+    this.animate();
+    this.controls.updateDomElement(container.renderer.domElement);
   }
 
   unsubscribe(): void {
+    this.completed = false;
     this.subscription.unsubscribe();
+    // Force the initialization
+    this.subscription = new Subscription();
   }
 }

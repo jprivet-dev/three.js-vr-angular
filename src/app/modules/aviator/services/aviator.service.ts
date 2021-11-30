@@ -68,6 +68,12 @@ export class AviatorService implements BuildUpdateScene {
     const loop = new LoopManager();
 
     /**
+     * Container
+     */
+
+    loop.add(container);
+
+    /**
      * Scene
      */
 
@@ -87,12 +93,6 @@ export class AviatorService implements BuildUpdateScene {
     const train = new Object3D();
     train.add(dolly);
     scene.add(train);
-
-    /**
-     * Container
-     */
-
-    loop.add(container);
 
     /**
      * Lights
@@ -247,14 +247,6 @@ export class AviatorService implements BuildUpdateScene {
     });
 
     /**
-     * Store events
-     */
-
-    this.subscription = this.facade.vrSession$.subscribe((vrSession) => {
-      vrSession ? vr.onSessionStart() : vr.onSessionEnd();
-    });
-
-    /**
      * Controls
      */
 
@@ -271,6 +263,14 @@ export class AviatorService implements BuildUpdateScene {
 
       loop.add(this.controls);
     }
+
+    /**
+     * Subscription
+     */
+
+    this.subscription = this.facade.vrSession$.subscribe((vrSession) => {
+      vrSession ? vr.onSessionStart() : vr.onSessionEnd();
+    });
 
     /**
      * Animate
@@ -297,5 +297,7 @@ export class AviatorService implements BuildUpdateScene {
   unsubscribe(): void {
     this.completed = false;
     this.subscription.unsubscribe();
+    // Force the initialization
+    this.subscription = new Subscription();
   }
 }
