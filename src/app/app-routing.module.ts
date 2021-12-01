@@ -1,15 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ThreeJsPageComponent } from '@modules/three-js/containers/three-js-page/three-js-page.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: ThreeJsPageComponent,
+    path: 'home',
+    loadChildren: () =>
+      import('./modules/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: 'earth',
+    loadChildren: () =>
+      import('./modules/earth/earth.module').then((m) => m.EarthModule),
+  },
+  {
+    path: 'planets',
+    loadChildren: () =>
+      import('./modules/planets/planets.module').then((m) => m.PlanetsModule),
+  },
+  {
+    path: 'aviator',
+    loadChildren: () =>
+      import('./modules/aviator/aviator.module').then((m) => m.AviatorModule),
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 ];

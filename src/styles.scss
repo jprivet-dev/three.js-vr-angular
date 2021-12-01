@@ -2,4 +2,71 @@ html, body {
   width: 100%;
   height: 100%;
   margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
+  background: #242425;
 }
+
+element.style {
+  padding: 12px 6px;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  color: rgb(255, 255, 255);
+  font-size: 13px;
+  text-align: center;
+  opacity: 0.5;
+  outline: none;
+}
+
+.buttons {
+  .button,
+  button {
+    display: inline-block;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    text-align: center;
+    opacity: 0.5;
+    outline: none;
+    font-weight: 400;
+    line-height: 1.5;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    margin: 0.25rem;
+    padding: 12px;
+    text-transform: uppercase;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+    &.active {
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+      opacity: 1;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.buttons-top-left {
+  z-index: 998;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.buttons-top-right {
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+

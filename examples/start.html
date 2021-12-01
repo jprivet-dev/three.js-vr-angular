@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create your first Scene with a Cube Moving inside with VR</title>
+  <meta charset="utf-8"/>
+  <script type="module">
+    // https://www.youtube.com/watch?v=mpVG2Iitkqg
+    // Find the latest version by visiting https://cdn.skypack.dev/three.
+
+    import * as THREE from "https://cdn.skypack.dev/three";
+    // We are adding the import of VRButton here. For more information: https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
+    import {VRButton} from "https://cdn.skypack.dev/three/examples/jsm/webxr/VRButton.js";
+
+    //////////// CREATING THE SCENE ////////////
+    const scene = new THREE.Scene();
+
+    //////////// CREATING THE CAMERA ////////////
+    // More info about the camera here: https://threejsfundamentals.org/threejs/lessons/threejs-cameras.html //
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+
+    const dolly = new THREE.Object3D();
+    dolly.position.x = 0;
+    dolly.position.y = 0;
+    dolly.position.z = 5;
+    dolly.add(camera);
+
+    const dummyCam = new THREE.Object3D();
+    camera.add(dummyCam);
+    scene.add(dolly);
+
+    //////////// CREATING THE RENDERER ////////////
+    // More info about the renderer here: https://threejs.org/docs/#api/en/renderers/WebGLRenderer //
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    // We tell to WebGLRenderer to enable XR rendering. To know more about WebXR here: https://github.com/immersive-web/webxr/blob/master/explainer.md
+    renderer.xr.enabled = true;
+    renderer.xr.setReferenceSpaceType('local');
+    document.body.appendChild(renderer.domElement);
+    // We are adding in the body the VR button.
+    document.body.appendChild(VRButton.createButton(renderer));
+
+    //////////// CREATING THE CUBE ////////////
+    // A BoxGeometry is the container for all the points(vertices) and fill(faces) of the cube.
+    const geometry = new THREE.BoxGeometry();
+    // To color the cube, we will need a material. Here, we are in a MeshBasicMaterial and we specify the color of the cube.
+    const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    // Mesh is an object who take the geometry and applies to the geometry the material on it.
+    const cube = new THREE.Mesh(geometry, material);
+
+    // After that, we add the cube inside our scene.
+    scene.add(cube);
+    // We put the cube at this place to make it possible to see it in VR.
+    // cube.position.y = 1.6;
+    // cube.position.z = -5;
+    // By default, when we call scene.add(), the thing we add will be added to the coordinates (0,0,0).
+    //This would cause both the camera and the cube to be inside each other. To avoid this, we simply move the camera out a bit.
+    // camera.position.z = 5;
+
+
+    //////////// CREATING ANIMATE FUNCTION ////////////
+    // To see something, we will need to render it.
+    // So we are creating a function that will be launch the rendering and recall the function directly.
+    function animate() {
+      // Every time the function animate is called, we will move a little bit the cube to create the rotation of it.
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+
+      // We are asking the renderer to render the scene and the camera.
+      renderer.render(scene, camera);
+    }
+
+    // Here, we will use this function to control the animation to make it more efficient for VR.
+    renderer.setAnimationLoop(animate);
+  </script>
+</head>
+<body></body>
+</html>
