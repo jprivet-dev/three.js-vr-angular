@@ -1,11 +1,5 @@
 import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  Output,
+  AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { Container } from './container';
@@ -24,6 +18,11 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
+  @HostListener('window:resize')
+  resize(): void {
+    this.container.resize();
+  }
+
   subscription!: Subscription;
   container!: Container;
 
@@ -32,7 +31,7 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.container = new Container(
       this.window,
-      this.elementRef,
+      this.elementRef.nativeElement,
       this.vrButton,
       this.statsEnable
     );

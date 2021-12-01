@@ -1,4 +1,3 @@
-import { ElementRef } from '@angular/core';
 import { WebGLRenderer } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
@@ -10,34 +9,16 @@ export class Container implements Loop, WindowResize {
   private list: WindowResize[] = [];
   private onVRSessionStartCallback = () => {};
   private onVRSessionEndCallback = () => {};
-  private firstCall = true;
-
-  readonly window: Window;
-  readonly domElement!: HTMLElement;
 
   public renderer!: WebGLRenderer;
   public stats!: Stats;
 
   constructor(
-    window: Window,
-    containerRef: ElementRef,
+    readonly window: Window,
+    readonly domElement: HTMLElement,
     private vrButton: boolean,
     private statsEnable: boolean
-  ) {
-    this.window = window;
-    const nativeElement: HTMLDivElement = containerRef?.nativeElement;
-
-    if (!nativeElement) {
-      throw new Error('containerRef.nativeElement is undefined.');
-      return;
-    }
-
-    this.domElement = nativeElement;
-
-    this.window.addEventListener('resize', () => {
-      this.resize();
-    });
-  }
+  ) {}
 
   // ----------
   // Dimensions
@@ -99,7 +80,6 @@ export class Container implements Loop, WindowResize {
     if (this.renderer) {
       this.empty();
       this.renderer.setAnimationLoop(null);
-      this.firstCall = false;
     }
 
     this.renderer = new WebGLRenderer(parameters);
@@ -122,12 +102,6 @@ export class Container implements Loop, WindowResize {
     if (this.statsEnable) {
       this.createStats();
     }
-
-    this.firstCall = false;
-  }
-
-  isAlreadyBuilt(): boolean {
-    return this.firstCall;
   }
 
   // ---------
