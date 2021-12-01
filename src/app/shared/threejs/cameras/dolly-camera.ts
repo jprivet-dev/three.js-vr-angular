@@ -24,26 +24,26 @@ export class DollyCamera extends Object3D implements VRSession, WindowResize {
     this.add(this.camera);
   }
 
-  resize(container: Container) {
+  resize(container: Container): void {
     this.camera.aspect = container.ratio();
     this.camera.updateProjectionMatrix();
   }
 
-  onSessionStart() {
+  onSessionStart(): void {
     this.setPositionRotation(
       this.params.vrSession.onStart.camera,
       this.params.vrSession.onStart.dolly
     );
   }
 
-  onSessionEnd() {
+  onSessionEnd(): void {
     this.setPositionRotation(
       this.params.vrSession.onEnd.camera,
       this.params.vrSession.onEnd.dolly
     );
   }
 
-  private setPositionRotation(camera: DollyCameraPositionRotation, dolly: DollyCameraPositionRotation) {
+  private setPositionRotation(camera: DollyCameraPositionRotation, dolly: DollyCameraPositionRotation): void {
     this.camera.position.set(camera.position.x, camera.position.y, camera.position.z);
     this.camera.rotation.set(camera.rotation.x, camera.rotation.y, camera.rotation.z);
     this.position.set(dolly.position.x, dolly.position.y, dolly.position.z);

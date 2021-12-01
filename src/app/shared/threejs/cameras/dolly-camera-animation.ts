@@ -12,7 +12,7 @@ export class DollyCameraAnimation implements LoopControls {
     this.xrCamera = this.renderer.xr.getCamera(dolly.camera);
   }
 
-  start() {}
+  start(): void {}
 
   stop(): void {
     this.direction = 0;
@@ -34,7 +34,7 @@ export class DollyCameraAnimation implements LoopControls {
     this.direction = 1;
   }
 
-  update(delta: number) {
+  update(delta: number): void {
     if (this.direction !== 0) {
       // https://stackoverflow.com/questions/58213242/efficient-way-to-translate-a-camera-dolly
       const speedDelta = delta * 1 * this.direction;

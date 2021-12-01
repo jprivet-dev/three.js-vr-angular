@@ -1,19 +1,21 @@
 <app-container
+  [stats$]="stats$"
   [antialias$]="antialias$"
   (containerInit)="onContainerInit($event)"
 
-  [vrButton]="true"
+  [vrButtonEnable]="true"
   (vrSessionStart)="onVRSessionStart()"
   (vrSessionEnd)="onVRSessionEnd()"
-
-  [statsEnable]="true"
 ></app-container>
 <app-menu
-  [isflyMode]="flyMode$ | async"
+  [flyModeActive]="flyMode$ | async"
   (switchFlyMode)="onSwitchFlyMode()"
 
-  [hdDefinitionActive]="false"
+  [statsActive]="stats$ | async"
+  (switchStats)="onSwitchStats()"
 
-  [isAntialias]="antialias$ | async"
+  [hdDefinitionEnable]="false"
+
+  [antialiasActive]="antialias$ | async"
   (switchAntialias)="onSwitchAntialias()"
 ></app-menu>

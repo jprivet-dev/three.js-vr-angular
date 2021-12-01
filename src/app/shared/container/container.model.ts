@@ -1,4 +1,4 @@
-export interface ConnectVRSessionParams {
+export interface ContainerVRSessionCallbacks {
   start: () => void;
   end: () => void;
 }

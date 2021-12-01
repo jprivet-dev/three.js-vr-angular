@@ -59,7 +59,7 @@ export class FlyPointerLockControls extends EventDispatcher {
     this.updateRotationVector();
   }
 
-  keydown(event: any) {
+  keydown(event: any): void {
     if (event.altKey) {
       return;
     }
@@ -117,7 +117,7 @@ export class FlyPointerLockControls extends EventDispatcher {
     this.updateRotationVector();
   }
 
-  keyup(event: any) {
+  keyup(event: any): void {
     switch (event.code) {
       case 'ShiftLeft':
       case 'ShiftRight':
@@ -171,7 +171,7 @@ export class FlyPointerLockControls extends EventDispatcher {
     this.updateRotationVector();
   }
 
-  mousedown(event: any) {
+  mousedown(event: any): void {
     if (this.dragToLook) {
       this.mouseStatus++;
     } else {
@@ -188,7 +188,7 @@ export class FlyPointerLockControls extends EventDispatcher {
     }
   }
 
-  mousemove(event: any) {
+  mousemove(event: any): void {
     if (this.isLocked === false) return;
 
     const movementX =
@@ -209,7 +209,7 @@ export class FlyPointerLockControls extends EventDispatcher {
     this.updateRotationVector();
   }
 
-  mouseup(event: any) {
+  mouseup(event: any): void {
     if (this.dragToLook) {
       this.mouseStatus--;
 

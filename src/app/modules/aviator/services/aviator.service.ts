@@ -22,7 +22,10 @@ import {
   Scene,
   Vector3,
 } from 'three';
-import { RollerCoasterGeometry, TreesGeometry, } from 'three/examples/jsm/misc/RollerCoaster';
+import {
+  RollerCoasterGeometry,
+  TreesGeometry,
+} from 'three/examples/jsm/misc/RollerCoaster';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { AviatorFacade } from '../store/aviator.facade';
 import { RollerCoasterCurve } from '../threejs';
@@ -47,7 +50,7 @@ export class AviatorService implements BuildUpdateScene {
 
   constructor(private store: StoreService, private facade: AviatorFacade) {}
 
-  buildScene(container: Container) {
+  buildScene(container: Container): void {
     if (this.completed) {
       this.update(container);
     } else {

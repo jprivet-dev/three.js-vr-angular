@@ -6,13 +6,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
-  @Input() hdDefinitionActive: boolean = true;
+  @Input() hdDefinitionEnable: boolean = true;
 
-  @Input() isflyMode!: boolean | null;
-  @Input() isHDDefinition!: boolean | null;
-  @Input() isAntialias!: boolean | null;
+  @Input() statsActive!: boolean | null;
+  @Input() flyModeActive!: boolean | null;
+  @Input() hdDefinitionActive!: boolean | null;
+  @Input() antialiasActive!: boolean | null;
 
   @Output() switchFlyMode = new EventEmitter();
+  @Output() switchStats = new EventEmitter();
   @Output() switchDefinition = new EventEmitter();
   @Output() switchAntialias = new EventEmitter();
 
@@ -20,6 +22,10 @@ export class MenuComponent implements OnInit {
 
   onSwitchFlyMode() {
     this.switchFlyMode.next();
+  }
+
+  onSwitchStats() {
+    this.switchStats.next();
   }
 
   onSwitchDefinition() {

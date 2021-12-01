@@ -30,7 +30,7 @@ export class OrbitControlsUpdater implements Loop {
     return controls;
   }
 
-  updateDomElement(domElement: HTMLElement) {
+  updateDomElement(domElement: HTMLElement): void {
     this.domElement = domElement;
     this.controls = this.createControls();
   }

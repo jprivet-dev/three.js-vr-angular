@@ -37,7 +37,7 @@ export class VRController {
     return this.index;
   }
 
-  private createController() {
+  private createController(): void {
     this.controller = this.renderer.xr.getController(this.index);
 
     this.controller.addEventListener('selectstart', () => {
@@ -61,7 +61,7 @@ export class VRController {
     this.scene.add(this.controller);
   }
 
-  private createControllerGrip() {
+  private createControllerGrip(): void {
     const controllerModelFactory = new XRControllerModelFactory();
     const controllerGrip = this.renderer.xr.getControllerGrip(this.index);
     controllerGrip.add(

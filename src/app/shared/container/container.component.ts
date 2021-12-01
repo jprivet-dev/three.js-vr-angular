@@ -1,5 +1,12 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  Output,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { Container } from './container';
@@ -10,20 +17,19 @@ import { Container } from './container';
   styleUrls: ['./container.component.scss'],
 })
 export class ContainerComponent implements AfterViewInit, OnDestroy {
+  @Input() stats$: Observable<boolean> = of(false);
   @Input() antialias$: Observable<boolean> = of(false);
-  @Input() vrButton: boolean = false;
-  @Input() statsEnable: boolean = false;
+  @Input() vrButtonEnable: boolean = false;
 
   @Output() containerInit = new EventEmitter<Container>();
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
 
-  @HostListener('window:resize')
-  resize(): void {
+  @HostListener('window:resize') resize(): void {
     this.container.resize();
   }
 
-  subscription!: Subscription;
+  subscription = new Subscription();
   container!: Container;
 
   constructor(private elementRef: ElementRef, private window: Window) {}
@@ -32,28 +38,43 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
     this.container = new Container(
       this.window,
       this.elementRef.nativeElement,
-      this.vrButton,
-      this.statsEnable
+      this.vrButtonEnable
     );
 
-    this.subscription = this.antialias$.subscribe((antialias) => {
-      this.container.createRenderer({
-        antialias,
-      });
+    this.subscription.add(
+      this.antialias$.subscribe((antialias) =>
+        this.forceCreateRenderer(antialias)
+      )
+    );
 
-      this.container.connectVRSessionEvents({
-        start: () => this.vrSessionStart.next(),
-        end: () => this.vrSessionEnd.next(),
-      });
-
-      this.containerInit.next(this.container);
-    });
+    // /!\ Stats subscription after Antialias subscription
+    this.subscription.add(
+      this.stats$.subscribe((stats) => this.container.updateStats(stats))
+    );
   }
 
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    this.container.disconnectVRSessionEvents();
+
+    if (this.container.vrSession) {
+      this.container.vrSession.disconnect();
+    }
+  }
+
+  private forceCreateRenderer(antialias: boolean): void {
+    this.container.createRenderer({
+      antialias,
+    });
+
+    if (this.container.vrSession) {
+      this.container.vrSession.connect({
+        start: () => this.vrSessionStart.next(),
+        end: () => this.vrSessionEnd.next(),
+      });
+    }
+
+    this.containerInit.next(this.container);
   }
 }

@@ -78,11 +78,11 @@ export class FlyDashboardPointerLockControls
     );
   }
 
-  dispose() {
+  dispose(): void {
     this.disconnect();
   }
 
-  update(delta: number) {
+  update(delta: number): void {
     if (this.enabled) {
       this.movements.update(delta);
     }

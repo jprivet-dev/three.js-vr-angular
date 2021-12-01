@@ -35,52 +35,52 @@ export class StoreService {
   private _vrSession = new BehaviorSubject<boolean>(false);
   public vrSession$ = this._vrSession.asObservable();
 
-  switchFlyMode() {
+  switchFlyMode(): void {
     const state = this.isFlyMode.getValue();
     this.isFlyMode.next(!state);
   }
 
-  flyModeOff() {
+  flyModeOff(): void {
     this.isFlyMode.next(false);
   }
 
-  switchAntialias() {
+  switchAntialias(): void {
     const value = !this.isAntialias.getValue();
     this.isAntialias.next(value);
     this.log('switchAntialias', value);
   }
 
-  vrControllerRightConnected() {
+  vrControllerRightConnected(): void {
     this.log('vrControllerRightConnected');
     this._vrControllerRightConnected.next(true);
   }
 
-  vrControllerRightDisconnected() {
+  vrControllerRightDisconnected(): void {
     this.log('vrControllerRightDisconnected');
     this._vrControllerRightConnected.next(false);
   }
 
-  vrControllerLeftConnected() {
+  vrControllerLeftConnected(): void {
     this.log('vrControllerLeftConnected');
     this._vrControllerLeftConnected.next(true);
   }
 
-  vrControllerLeftDisconnected() {
+  vrControllerLeftDisconnected(): void {
     this.log('vrControllerLeftDisconnected');
     this._vrControllerLeftConnected.next(false);
   }
 
-  vrControllerRightSelectStart() {
+  vrControllerRightSelectStart(): void {
     this.log('vrControllerRightSelectStart');
     this._vrControllerRightIsSelecting.next(true);
   }
 
-  vrControllerRightSelectEnd() {
+  vrControllerRightSelectEnd(): void {
     this.log('vrControllerRightSelectEnd');
     this._vrControllerRightIsSelecting.next(false);
   }
 
-  vrControllerLeftSelectStart() {
+  vrControllerLeftSelectStart(): void {
     this.log('vrControllerLeftSelectStart');
     this._vrControllerLeftIsSelecting.next(true);
   }

@@ -1,23 +1,20 @@
 import { WebGLRenderer } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Loop, WindowResize } from '../threejs/models';
-import { ConnectVRSessionParams } from './container.model';
+import { ContainerVRSession } from './container-vr-session';
 
 export class Container implements Loop, WindowResize {
   private list: WindowResize[] = [];
-  private onVRSessionStartCallback = () => {};
-  private onVRSessionEndCallback = () => {};
 
   public renderer!: WebGLRenderer;
+  public vrSession!: ContainerVRSession;
   public stats!: Stats;
 
   constructor(
     readonly window: Window,
     readonly domElement: HTMLElement,
-    private vrButton: boolean,
-    private statsEnable: boolean
+    private vrButtonEnable: boolean
   ) {}
 
   // ----------
@@ -73,10 +70,6 @@ export class Container implements Loop, WindowResize {
   // --------
 
   createRenderer(parameters: WebGLRendererParameters): void {
-    /**
-     * Renderer
-     */
-
     if (this.renderer) {
       this.empty();
       this.renderer.setAnimationLoop(null);
@@ -87,21 +80,11 @@ export class Container implements Loop, WindowResize {
     this.renderer.setSize(this.width(), this.height());
     this.appendChild(this.renderer.domElement);
 
-    /**
-     * VR button
-     */
-
-    if (this.vrButton) {
+    if (this.vrButtonEnable) {
       this.createVRButton();
     }
 
-    /**
-     * Stats
-     */
-
-    if (this.statsEnable) {
-      this.createStats();
-    }
+    this.createStats();
   }
 
   // ---------
@@ -109,46 +92,8 @@ export class Container implements Loop, WindowResize {
   // ---------
 
   private createVRButton(): void {
-    // https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
-    const button = VRButton.createButton(this.renderer);
-    this.renderer.xr.enabled = true; // enable XR rendering
-    this.renderer.xr.setReferenceSpaceType('local');
-    this.appendChild(button);
-  }
-
-  connectVRSessionEvents(params: ConnectVRSessionParams): void {
-    if (!this.renderer) {
-      return;
-    }
-
-    this.onVRSessionStartCallback = params.start;
-    this.onVRSessionEndCallback = params.end;
-
-    this.renderer.xr.addEventListener(
-      'sessionstart',
-      this.onVRSessionStartCallback
-    );
-
-    this.renderer.xr.addEventListener(
-      'sessionend',
-      this.onVRSessionEndCallback
-    );
-  }
-
-  disconnectVRSessionEvents(): void {
-    if (!this.renderer) {
-      return;
-    }
-
-    this.renderer.xr.removeEventListener(
-      'sessionstart',
-      this.onVRSessionStartCallback
-    );
-
-    this.renderer.xr.removeEventListener(
-      'sessionend',
-      this.onVRSessionEndCallback
-    );
+    this.vrSession = new ContainerVRSession(this.renderer);
+    this.appendChild(this.vrSession.createVRButton());
   }
 
   // -----
@@ -156,11 +101,6 @@ export class Container implements Loop, WindowResize {
   // -----
 
   private createStats(): void {
-    if (this.renderer === undefined) {
-      console.error('Create renderer element before.');
-      return;
-    }
-
     this.stats = Stats();
     this.stats.dom.style.top = '';
     this.stats.dom.style.left = '';
@@ -168,6 +108,10 @@ export class Container implements Loop, WindowResize {
     this.stats.dom.style.right = '0';
 
     this.appendChild(this.stats.dom);
+  }
+
+  updateStats(stats: boolean): void {
+    this.stats.dom.style.display = stats ? 'block' : 'none';
   }
 
   // ------

@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AppActions } from '@core/store/actions';
+import { AppFacade } from '@core/store/app.facade';
 import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
 import { AviatorService } from '../../services/aviator.service';
@@ -13,11 +14,13 @@ import { AviatorFacade } from '../../store/aviator.facade';
 })
 export class AviatorPageComponent implements OnDestroy {
   flyMode$: Observable<boolean> = this.facade.flyMode$;
-  antialias$: Observable<boolean> = this.facade.antialias$;
+  stats$: Observable<boolean> = this.app.stats$;
+  antialias$: Observable<boolean> = this.app.antialias$;
 
   constructor(
     private window: Window,
     private service: AviatorService,
+    private app: AppFacade,
     private facade: AviatorFacade
   ) {}
 
@@ -29,19 +32,23 @@ export class AviatorPageComponent implements OnDestroy {
     this.facade.dispatch(AviatorActions.switchFlyMode());
   }
 
-  onSwitchAntialias(): void {
-    this.facade.dispatch(AppActions.switchAntialias());
+  onSwitchStats(): void {
+    this.app.dispatch(AppActions.switchStats());
   }
 
-  onVRSessionStart() {
+  onSwitchAntialias(): void {
+    this.app.dispatch(AppActions.switchAntialias());
+  }
+
+  onVRSessionStart(): void {
     this.facade.dispatch(AviatorActions.vrSessionStart());
   }
 
-  onVRSessionEnd() {
+  onVRSessionEnd(): void {
     this.facade.dispatch(AviatorActions.vrSessionEnd());
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.service.unsubscribe();
   }
 }

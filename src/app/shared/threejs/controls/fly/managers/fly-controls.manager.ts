@@ -19,7 +19,7 @@ export class FlyControlsManager implements Loop {
     // this.vr = this.createFlyVRControls();
   }
 
-  update(delta: number) {
+  update(delta: number): void {
     // this.orbit.update();
     this.pointer.update(delta);
   }

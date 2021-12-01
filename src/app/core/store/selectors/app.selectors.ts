@@ -5,6 +5,11 @@ export const selectState = createFeatureSelector<AppReducer.State>(
   AppReducer.featureKey
 );
 
+export const getStats = createSelector(
+  selectState,
+  (state) => state.stats
+);
+
 export const getDefinition = createSelector(
   selectState,
   (state) => state.definition

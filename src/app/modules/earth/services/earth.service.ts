@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AppFacade } from '@core/store/app.facade';
 import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
@@ -28,9 +29,13 @@ export class EarthService implements BuildUpdateScene {
   private animate: () => void = () => {};
   private completed = false;
 
-  constructor(private store: StoreService, private facade: EarthFacade) {}
+  constructor(
+    private store: StoreService,
+    private app: AppFacade,
+    private facade: EarthFacade
+  ) {}
 
-  buildScene(container: Container) {
+  buildScene(container: Container): void {
     if (this.completed) {
       this.update(container);
     } else {
@@ -39,7 +44,7 @@ export class EarthService implements BuildUpdateScene {
     }
   }
 
-  create(container: Container) {
+  create(container: Container): void {
     /**
      * Managers
      */
@@ -116,7 +121,7 @@ export class EarthService implements BuildUpdateScene {
      */
 
     this.subscription.add(
-      this.facade.definition$.subscribe((definition) => {
+      this.app.definition$.subscribe((definition) => {
         texture.loadTexturesByDefinition(definition);
       })
     );

@@ -87,7 +87,7 @@ export class Saturn implements HasMesh, Loop, TexturesByDefinition {
     );
   }
 
-  update(delta: number) {
+  update(delta: number): void {
     rotateOrbitalAxis(this.mesh, delta, 5);
   }
 }

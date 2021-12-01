@@ -3,15 +3,19 @@
 </div>
 
 <div class="right">
-  <button (click)="onSwitchFlyMode()" [class.active]="isflyMode">
+  <button (click)="onSwitchFlyMode()" [class.active]="flyModeActive">
     FLY
   </button>
 
-  <button *ngIf="hdDefinitionActive" (click)="onSwitchDefinition()" [class.active]="isHDDefinition">
+  <button (click)="onSwitchStats()" [class.active]="statsActive">
+    STATS
+  </button>
+
+  <button *ngIf="hdDefinitionEnable" (click)="onSwitchDefinition()" [class.active]="hdDefinitionActive">
     HD
   </button>
 
-  <button (click)="onSwitchAntialias()" [class.active]="isAntialias">
+  <button (click)="onSwitchAntialias()" [class.active]="antialiasActive">
     ANTIALIAS
   </button>
 </div>

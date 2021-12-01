@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AppActions } from '@core/store/actions';
+import { AppFacade } from '@core/store/app.facade';
 import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
 import { PlanetsService } from '../../services/planets.service';
@@ -13,12 +14,14 @@ import { PlanetsFacade } from '../../store/planets.facade';
 })
 export class PlanetsPageComponent implements OnDestroy {
   flyMode$: Observable<boolean> = this.facade.flyMode$;
-  isHDDefinition$: Observable<boolean> = this.facade.isHDDefinition$;
-  antialias$: Observable<boolean> = this.facade.antialias$;
+  stats$: Observable<boolean> = this.app.stats$;
+  isHDDefinition$: Observable<boolean> = this.app.isHDDefinition$;
+  antialias$: Observable<boolean> = this.app.antialias$;
 
   constructor(
     private window: Window,
     private service: PlanetsService,
+    private app: AppFacade,
     private facade: PlanetsFacade
   ) {}
 
@@ -30,12 +33,16 @@ export class PlanetsPageComponent implements OnDestroy {
     this.facade.dispatch(PlanetsActions.switchFlyMode());
   }
 
+  onSwitchStats(): void {
+    this.app.dispatch(AppActions.switchStats());
+  }
+
   onSwitchDefinition(): void {
-    this.facade.dispatch(AppActions.switchDefinition());
+    this.app.dispatch(AppActions.switchDefinition());
   }
 
   onSwitchAntialias(): void {
-    this.facade.dispatch(AppActions.switchAntialias());
+    this.app.dispatch(AppActions.switchAntialias());
   }
 
   onVRSessionStart() {
