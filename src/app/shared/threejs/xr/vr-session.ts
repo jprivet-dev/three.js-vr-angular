@@ -1,8 +1,8 @@
 import { WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
-import { ContainerVRSessionCallbacks } from './container.model';
+import { VRSessionCallbacks } from './vr.model';
 
-export class ContainerVRSession {
+export class VRSession {
   private onStartCallback = () => {
   };
   private onEndCallback = () => {
@@ -19,7 +19,7 @@ export class ContainerVRSession {
     return VRButton.createButton(this.renderer);
   }
 
-  connect(callbacks: ContainerVRSessionCallbacks): void {
+  connect(callbacks: VRSessionCallbacks): void {
     this.onStartCallback = callbacks.start;
     this.onEndCallback = callbacks.end;
 

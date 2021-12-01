@@ -2,13 +2,13 @@ import { WebGLRenderer } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Loop, WindowResize } from '../threejs/models';
-import { ContainerVRSession } from './container-vr-session';
+import { VRSession } from '../threejs/xr';
 
 export class Container implements Loop, WindowResize {
   private list: WindowResize[] = [];
 
   public renderer!: WebGLRenderer;
-  public vrSession!: ContainerVRSession;
+  public vrSession!: VRSession;
   public stats!: Stats;
 
   constructor(
@@ -92,7 +92,7 @@ export class Container implements Loop, WindowResize {
   // ---------
 
   private createVRButton(): void {
-    this.vrSession = new ContainerVRSession(this.renderer);
+    this.vrSession = new VRSession(this.renderer);
     this.appendChild(this.vrSession.createVRButton());
   }
 
