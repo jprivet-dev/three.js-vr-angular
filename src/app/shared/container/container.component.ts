@@ -6,7 +6,6 @@ import {
   Input,
   OnDestroy,
   Output,
-  ViewChild,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { Container } from './container';
@@ -17,8 +16,6 @@ import { Container } from './container';
   styleUrls: ['./container.component.scss'],
 })
 export class ContainerComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('container') private containerRef!: ElementRef;
-
   @Input() antialias$: Observable<boolean> = of(false);
   @Input() vrButton: boolean = false;
   @Input() statsEnable: boolean = false;
@@ -30,12 +27,12 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   subscription!: Subscription;
   container!: Container;
 
-  constructor(private window: Window) {}
+  constructor(private elementRef: ElementRef, private window: Window) {}
 
   ngAfterViewInit(): void {
     this.container = new Container(
       this.window,
-      this.containerRef,
+      this.elementRef,
       this.vrButton,
       this.statsEnable
     );
