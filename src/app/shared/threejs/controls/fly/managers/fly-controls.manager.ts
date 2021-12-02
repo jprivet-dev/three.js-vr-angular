@@ -10,13 +10,13 @@ export class FlyControlsManager implements Loop {
   // orbit: OrbitControls;
   pointer: FlyDashboardPointerLockControls;
   // mobile: FlyMobileControls;
-  // vr: FlyVRControls;
+  vr: FlyVRControls;
 
   constructor(private container: Container, private dolly: DollyCamera) {
     // this.orbit = this.createOrbitControls();
     this.pointer = this.createFlyPointerLockControls();
     // this.mobile = this.createFlyMobileControls();
-    // this.vr = this.createFlyVRControls();
+    this.vr = this.createFlyVRControls();
   }
 
   update(delta: number): void {

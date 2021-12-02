@@ -1,3 +1,9 @@
+export enum DollyCameraDirection {
+  Stop = 0,
+  Forward = -1,
+  Backward = 1,
+}
+
 export interface DollyCameraPositionRotation {
   position: {
     x: number;

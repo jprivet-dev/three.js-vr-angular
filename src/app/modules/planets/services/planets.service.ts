@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { AppFacade } from '@core/store/app.facade';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
-import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
+import {
+  DollyCamera,
+  DollyCameraAnimation,
+  DollyCameraParams,
+} from '@shared/threejs/cameras';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
-import {
-  LoopManager,
-  TextureManager,
-  VRSessionManager,
-} from '@shared/threejs/managers';
+import { LoopManager, TextureManager } from '@shared/threejs/managers';
 import {
   Earth,
   Jupiter,
@@ -26,6 +26,7 @@ import {
   VRControllerLeft,
   VRControllerRight,
 } from '@shared/threejs/xr/controllers';
+import { VRSessionManager } from '@shared/threejs/xr/session';
 import { Subscription } from 'rxjs';
 import { PlanetsFacade } from '../store/planets.facade';
 import { planetsDollyCameraParams } from './planets.params';
@@ -35,11 +36,12 @@ import { planetsDollyCameraParams } from './planets.params';
 })
 export class PlanetsService implements BuildUpdateScene {
   private subscription = new Subscription();
-
   private dollyCameraParams: DollyCameraParams = planetsDollyCameraParams;
 
-  private controls!: OrbitControlsUpdater;
-  private animate: () => void = () => {};
+  private controlsUpdate: (container: Container) => void = () => {};
+  private vrControllersUpdate: (container: Container) => void = () => {};
+  private animate: (container: Container) => void = () => {};
+
   private completed = false;
 
   constructor(private app: AppFacade, private facade: PlanetsFacade) {}
@@ -156,36 +158,24 @@ export class PlanetsService implements BuildUpdateScene {
      * Controls
      */
 
-    this.controls = new OrbitControlsUpdater(
+    const controls = new OrbitControlsUpdater(
       dolly.camera,
       container.renderer.domElement,
       {
         autoRotateSpeed: 0.2,
         autoRotate: true,
-        target: earth.mesh.position,
+        target: earth.mesh.position.clone(),
       }
     );
 
-    loop.add(this.controls);
+    loop.add(controls);
+
+    this.controlsUpdate = (container: Container) => {
+      controls.updateDomElement(container.renderer.domElement);
+    };
 
     /**
-     * VR Controllers
-     */
-
-    if (container.vrSession) {
-      const vrControllerRight = new VRControllerRight(container);
-
-      scene.add(vrControllerRight.controller);
-      scene.add(vrControllerRight.controllerGrip);
-
-      const vrControllerLeft = new VRControllerLeft(container);
-
-      scene.add(vrControllerLeft.controller);
-      scene.add(vrControllerLeft.controllerGrip);
-    }
-
-    /**
-     * Subscription
+     * Textures By Definition
      */
 
     this.subscription.add(
@@ -194,6 +184,10 @@ export class PlanetsService implements BuildUpdateScene {
       })
     );
 
+    /**
+     * VR Session
+     */
+
     this.subscription.add(
       this.facade.vrSession$.subscribe((vrSession) => {
         vrSession ? vr.onSessionStart() : vr.onSessionEnd();
@@ -201,27 +195,70 @@ export class PlanetsService implements BuildUpdateScene {
     );
 
     /**
+     * VR Controllers
+     */
+
+    if (container.vrSession) {
+      // Controllers
+
+      const vrControllerRight = new VRControllerRight(container, 5);
+      scene.add(vrControllerRight.controller);
+      scene.add(vrControllerRight.controllerGrip);
+
+      const vrControllerLeft = new VRControllerLeft(container, 5);
+      scene.add(vrControllerLeft.controller);
+      scene.add(vrControllerLeft.controllerGrip);
+
+      // DollyCameraAnimation
+
+      const dollyCameraAnimation = new DollyCameraAnimation(dolly, container);
+
+      loop.add(dollyCameraAnimation);
+      vrControllerRight.onSelectStart(() => {
+        dollyCameraAnimation.moveSwitch();
+      });
+
+      vrControllerLeft.onSelectStart(() => {
+        dollyCameraAnimation.moveSwitch();
+      });
+
+      this.vrControllersUpdate = (container) => {
+        scene.remove(vrControllerRight.controller);
+        scene.remove(vrControllerRight.controllerGrip);
+        scene.remove(vrControllerLeft.controller);
+        scene.remove(vrControllerLeft.controllerGrip);
+
+        vrControllerRight.updateContainer(container);
+        scene.add(vrControllerRight.controller);
+        scene.add(vrControllerRight.controllerGrip);
+
+        vrControllerLeft.updateContainer(container);
+        scene.add(vrControllerLeft.controller);
+        scene.add(vrControllerLeft.controllerGrip);
+      };
+    }
+
+    /**
      * Animate
      */
 
-    this.animate = () => {
+    this.animate = (container: Container) => {
       container.renderer.setAnimationLoop(() => {
         loop.update();
         container.renderer.render(scene, dolly.camera);
       });
     };
 
-    this.animate();
+    this.animate(container);
   }
 
   update(container: Container): void {
-    this.animate();
-    this.controls.updateDomElement(container.renderer.domElement);
+    this.controlsUpdate(container);
+    this.vrControllersUpdate(container);
+    this.animate(container);
   }
 
-  private createVRControllers(container: Container) {
-
-  }
+  private createVRControllers(container: Container) {}
 
   unsubscribe(): void {
     this.completed = false;

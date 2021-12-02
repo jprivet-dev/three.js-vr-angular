@@ -8,10 +8,10 @@ import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
   TextureManager,
-  VRSessionManager,
 } from '@shared/threejs/managers';
 import { Earth, Moon } from '@shared/threejs/objects3d';
 import { StarsScene } from '@shared/threejs/scenes';
+import { VRSessionManager } from '@shared/threejs/xr/session';
 import { Subscription } from 'rxjs';
 import { EarthFacade } from '../store/earth.facade';
 import { earthDollyCameraParams } from './earth.params';
@@ -21,11 +21,11 @@ import { earthDollyCameraParams } from './earth.params';
 })
 export class EarthService implements BuildUpdateScene {
   private subscription = new Subscription();
-
   private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
 
-  private controls!: OrbitControlsUpdater;
-  private animate: () => void = () => {};
+  private controlsUpdate: (container: Container) => void = () => {};
+  private animate: (container: Container) => void = () => {};
+
   private completed = false;
 
   constructor(
@@ -102,20 +102,24 @@ export class EarthService implements BuildUpdateScene {
      * Controls
      */
 
-    this.controls = new OrbitControlsUpdater(
+    const controls = new OrbitControlsUpdater(
       dolly.camera,
       container.renderer.domElement,
       {
         autoRotateSpeed: 0.2,
         autoRotate: true,
-        target: earth.mesh.position,
+        target: earth.mesh.position.clone(),
       }
     );
 
-    loop.add(this.controls);
+    loop.add(controls);
+
+    this.controlsUpdate = (container: Container) => {
+      controls.updateDomElement(container.renderer.domElement);
+    };
 
     /**
-     * Subscription
+     * Textures By Definition
      */
 
     this.subscription.add(
@@ -123,6 +127,10 @@ export class EarthService implements BuildUpdateScene {
         texture.loadTexturesByDefinition(definition);
       })
     );
+
+    /**
+     * VR Session
+     */
 
     this.subscription.add(
       this.facade.vrSession$.subscribe((vrSession) => {
@@ -134,19 +142,19 @@ export class EarthService implements BuildUpdateScene {
      * Animate
      */
 
-    this.animate = () => {
+    this.animate = (container: Container) => {
       container.renderer.setAnimationLoop(() => {
         loop.update();
         container.renderer.render(scene, dolly.camera);
       });
     };
 
-    this.animate();
+    this.animate(container);
   }
 
   update(container: Container): void {
-    this.animate();
-    this.controls.updateDomElement(container.renderer.domElement);
+    this.controlsUpdate(container);
+    this.animate(container);
   }
 
   unsubscribe(): void {

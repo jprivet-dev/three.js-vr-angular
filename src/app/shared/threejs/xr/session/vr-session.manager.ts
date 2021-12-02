@@ -1,4 +1,4 @@
-import { VRSessionStartEnd } from '../models';
+import { VRSessionStartEnd } from '../../models';
 
 export class VRSessionManager implements VRSessionStartEnd {
   private list: VRSessionStartEnd[] = [];
