@@ -1,4 +1,4 @@
-export interface VRSession {
+export interface VRSessionStartEnd {
   onSessionStart(): void;
 
   onSessionEnd(): void;

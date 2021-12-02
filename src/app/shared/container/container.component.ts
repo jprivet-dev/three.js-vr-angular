@@ -22,8 +22,12 @@ export class ContainerComponent implements AfterViewInit, OnDestroy {
   @Input() vrButtonEnable: boolean = false;
 
   @Output() containerInit = new EventEmitter<Container>();
+
   @Output() vrSessionStart = new EventEmitter<void>();
   @Output() vrSessionEnd = new EventEmitter<void>();
+
+  @Output() vrControllerLeftEvent = new EventEmitter<string>();
+  @Output() vrControllerRightEvent = new EventEmitter<string>();
 
   @HostListener('window:resize') resize(): void {
     this.container.resize();

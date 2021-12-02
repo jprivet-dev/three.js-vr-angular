@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AppFacade } from '@core/store/app.facade';
-import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
@@ -23,6 +22,10 @@ import {
   Venus,
 } from '@shared/threejs/objects3d';
 import { StarsScene } from '@shared/threejs/scenes';
+import {
+  VRControllerLeft,
+  VRControllerRight,
+} from '@shared/threejs/xr/controllers';
 import { Subscription } from 'rxjs';
 import { PlanetsFacade } from '../store/planets.facade';
 import { planetsDollyCameraParams } from './planets.params';
@@ -39,11 +42,7 @@ export class PlanetsService implements BuildUpdateScene {
   private animate: () => void = () => {};
   private completed = false;
 
-  constructor(
-    private store: StoreService,
-    private app: AppFacade,
-    private facade: PlanetsFacade
-  ) {}
+  constructor(private app: AppFacade, private facade: PlanetsFacade) {}
 
   buildScene(container: Container) {
     if (this.completed) {
@@ -170,6 +169,22 @@ export class PlanetsService implements BuildUpdateScene {
     loop.add(this.controls);
 
     /**
+     * VR Controllers
+     */
+
+    if (container.vrSession) {
+      const vrControllerRight = new VRControllerRight(container);
+
+      scene.add(vrControllerRight.controller);
+      scene.add(vrControllerRight.controllerGrip);
+
+      const vrControllerLeft = new VRControllerLeft(container);
+
+      scene.add(vrControllerLeft.controller);
+      scene.add(vrControllerLeft.controllerGrip);
+    }
+
+    /**
      * Subscription
      */
 
@@ -202,6 +217,10 @@ export class PlanetsService implements BuildUpdateScene {
   update(container: Container): void {
     this.animate();
     this.controls.updateDomElement(container.renderer.domElement);
+  }
+
+  private createVRControllers(container: Container) {
+
   }
 
   unsubscribe(): void {

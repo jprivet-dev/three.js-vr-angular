@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AppFacade } from '@core/store/app.facade';
-import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
@@ -30,7 +29,6 @@ export class EarthService implements BuildUpdateScene {
   private completed = false;
 
   constructor(
-    private store: StoreService,
     private app: AppFacade,
     private facade: EarthFacade
   ) {}

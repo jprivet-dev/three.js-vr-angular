@@ -1,6 +1,6 @@
 import { WebGLRenderer } from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
-import { VRSessionCallbacks } from './vr.model';
+import { VRSessionCallbacks } from './vr-session.model';
 
 export class VRSession {
   private onStartCallback = () => {

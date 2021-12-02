@@ -2,7 +2,7 @@ import { WebGLRenderer } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer';
 import { Loop, WindowResize } from '../threejs/models';
-import { VRSession } from '../threejs/xr';
+import { VRSession } from '../threejs/xr/session';
 
 export class Container implements Loop, WindowResize {
   private list: WindowResize[] = [];

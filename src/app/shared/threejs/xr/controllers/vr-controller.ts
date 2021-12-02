@@ -1,4 +1,3 @@
-import { StoreService } from '@core/store/store.service';
 import {
   AdditiveBlending,
   Float32BufferAttribute,
@@ -7,67 +6,53 @@ import {
   Mesh,
   Object3D,
   RingGeometry,
-  Scene,
-  WebGLRenderer,
+  WebXRManager,
 } from 'three';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory';
 import { BufferGeometry } from 'three/src/core/BufferGeometry';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
-import { VRControllerIndex, VRControllerType } from './vr-controller.model';
+import { Container } from '../../../container';
+import { VRControllerIndex, VRControllerPosition } from './vr-controller.model';
 
-export class VRController {
-  private controller: any;
+export abstract class VRController {
+  readonly controller: any;
+  readonly controllerGrip: any;
+  protected xr: WebXRManager;
 
-  constructor(
-    private store: StoreService,
-    private scene: Scene,
-    private renderer: WebGLRenderer,
-    private type: VRControllerType,
-    private index: VRControllerIndex
+  protected constructor(
+    protected container: Container,
+    protected position: VRControllerPosition,
+    protected index: VRControllerIndex
   ) {
-    this.createController();
-    this.createControllerGrip();
+    this.xr = this.container.renderer.xr;
+
+    this.controller = this.xr.getController(this.index);
+    this.connectEvents();
+
+    this.controllerGrip = this.xr.getControllerGrip(this.index);
+    this.controllerGrip.add(
+      new XRControllerModelFactory().createControllerModel(this.controllerGrip)
+    );
   }
 
-  getType(): VRControllerType {
-    return this.type;
-  }
-
-  getIndex(): VRControllerIndex {
-    return this.index;
-  }
-
-  private createController(): void {
-    this.controller = this.renderer.xr.getController(this.index);
-
+  private connectEvents(): void {
     this.controller.addEventListener('selectstart', () => {
-      this.store.vrControllerSelectStartByType(this.type);
+      this.log('selectstart');
     });
 
     this.controller.addEventListener('selectend', () => {
-      this.store.vrControllerSelectEndByType(this.type);
+      this.log('selectend');
     });
 
     this.controller.addEventListener('connected', (event: any) => {
+      this.log('connected');
       this.controller.add(this.createPointer(event));
-      this.store.vrControllerConnectedByType(this.type);
     });
 
     this.controller.addEventListener('disconnected', () => {
+      this.log('disconnected');
       this.controller.remove(this.controller.children[0]);
-      this.store.vrControllerDisconnectedByType(this.type);
     });
-
-    this.scene.add(this.controller);
-  }
-
-  private createControllerGrip(): void {
-    const controllerModelFactory = new XRControllerModelFactory();
-    const controllerGrip = this.renderer.xr.getControllerGrip(this.index);
-    controllerGrip.add(
-      controllerModelFactory.createControllerModel(controllerGrip)
-    );
-    this.scene.add(controllerGrip);
   }
 
   private createPointer(event: any): Object3D | undefined {
@@ -93,7 +78,7 @@ export class VRController {
 
     geometry.setAttribute(
       'color',
-      new Float32BufferAttribute([0.5, 0.5, 0.5, 0, 0, 0], 3)
+      new Float32BufferAttribute([5, 5, 5, 0, 0, 0], 3)
     );
 
     const material = new LineBasicMaterial({
@@ -108,5 +93,9 @@ export class VRController {
     const geometry = new RingGeometry(0.2, 0.5, 32).translate(0, 0, -1);
     const material = new MeshBasicMaterial({ opacity: 0.5, transparent: true });
     return new Mesh(geometry, material);
+  }
+
+  private log(value: any): void {
+    console.log(`VRController | ${this.position} (${this.index}):`, value);
   }
 }

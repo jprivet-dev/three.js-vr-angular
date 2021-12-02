@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { StoreService } from '@core/store/store.service';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
@@ -48,7 +47,7 @@ export class AviatorService implements BuildUpdateScene {
   private animate: () => void = () => {};
   private completed = false;
 
-  constructor(private store: StoreService, private facade: AviatorFacade) {}
+  constructor(private facade: AviatorFacade) {}
 
   buildScene(container: Container): void {
     if (this.completed) {

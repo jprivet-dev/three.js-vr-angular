@@ -1,9 +1,9 @@
-import { VRSession } from '../models';
+import { VRSessionStartEnd } from '../models';
 
-export class VRSessionManager implements VRSession {
-  private list: VRSession[] = [];
+export class VRSessionManager implements VRSessionStartEnd {
+  private list: VRSessionStartEnd[] = [];
 
-  add(element: VRSession): void {
+  add(element: VRSessionStartEnd): void {
     if (this.list.includes(element)) {
       console.error('Element already exists:', element);
       return;
