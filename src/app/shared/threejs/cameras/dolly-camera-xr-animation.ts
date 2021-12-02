@@ -4,7 +4,7 @@ import { LoopControls } from '../models';
 import { DollyCamera } from './dolly-camera';
 import { DollyCameraDirection } from './dolly-camera.model';
 
-export class DollyCameraAnimation implements LoopControls {
+export class DollyCameraXRAnimation implements LoopControls {
   private xrCamera: Camera;
 
   private currentDirection: DollyCameraDirection = DollyCameraDirection.Stop;

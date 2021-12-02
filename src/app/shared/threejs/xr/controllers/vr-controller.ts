@@ -15,6 +15,7 @@ import {
 import { BufferGeometry } from 'three/src/core/BufferGeometry';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { Container } from '../../../container';
+import { Console } from '../../../utils';
 import {
   VRControllerIndex,
   VRControllerPosition,
@@ -23,11 +24,13 @@ import {
 
 export abstract class VRController {
   public controller: any;
-  public controllerGrip: any;
+  public grip: any;
 
   protected xr!: WebXRManager;
   protected selectStartCallback: VRControllerSelectCallback = () => {};
   protected selectEndCallback: VRControllerSelectCallback = () => {};
+
+  protected console: Console;
 
   protected constructor(
     container: Container,
@@ -35,6 +38,9 @@ export abstract class VRController {
     protected index: VRControllerIndex,
     protected size: number
   ) {
+    this.console = new Console(
+      `VRController | ${this.position} (${this.index})`
+    );
     this.create(container);
   }
 
@@ -49,10 +55,12 @@ export abstract class VRController {
     this.controller = this.xr.getController(this.index);
     this.connect();
 
-    this.controllerGrip = this.xr.getControllerGrip(this.index);
-    const xrController: XRControllerModel =
-      new XRControllerModelFactory().createControllerModel(this.controllerGrip);
-    this.controllerGrip.add(xrController);
+    this.grip = this.xr.getControllerGrip(this.index);
+    const xrFactory = new XRControllerModelFactory();
+    const xrController: XRControllerModel = xrFactory.createControllerModel(
+      this.grip
+    );
+    this.grip.add(xrController);
   }
 
   onSelectStart(callback: VRControllerSelectCallback): this {
@@ -106,22 +114,22 @@ export abstract class VRController {
   }
 
   private onSelectStartEvent() {
-    this.log('selectstart');
+    this.console.log('selectstart');
     this.selectStartCallback();
   }
 
   private onSelectEndEvent() {
-    this.log('selectend');
+    this.console.log('selectend');
     this.selectEndCallback();
   }
 
   private onConnectedEvent(event: any) {
-    this.log('connected');
+    this.console.log('connected');
     this.controller.add(this.createPointer(event));
   }
 
   private onDisconnectedEvent() {
-    this.log('disconnected');
+    this.console.log('disconnected');
     this.controller.remove(this.controller.children[0]);
   }
 
@@ -132,7 +140,7 @@ export abstract class VRController {
       case 'tracked-pointer':
         return this.createTrackedPointer();
       case 'gaze':
-        //return this.createGaze(); // TODO: do not work very well
+      //return this.createGaze(); // TODO: do not work very well
     }
 
     return;
@@ -163,20 +171,5 @@ export abstract class VRController {
     const geometry = new RingGeometry(0.2, 0.5, 32).translate(0, 0, -1);
     const material = new MeshBasicMaterial({ opacity: 0.5, transparent: true });
     return new Mesh(geometry, material);
-  }
-
-  private log(label: any, value?: any): void {
-    const base: string[] = [];
-    base.push(`VRController | ${this.position} (${this.index})`);
-
-    if (value) {
-      base.push(label);
-    } else {
-      value = label;
-    }
-
-    label = base.join(' | ') + ':';
-
-    console.log(label, value);
   }
 }

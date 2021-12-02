@@ -4,8 +4,8 @@ import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import {
   DollyCamera,
-  DollyCameraAnimation,
   DollyCameraParams,
+  DollyCameraXRAnimation,
 } from '@shared/threejs/cameras';
 import { OrbitControlsUpdater } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
@@ -203,38 +203,43 @@ export class PlanetsService implements BuildUpdateScene {
 
       const vrControllerRight = new VRControllerRight(container, 5);
       scene.add(vrControllerRight.controller);
-      scene.add(vrControllerRight.controllerGrip);
+      scene.add(vrControllerRight.grip);
 
       const vrControllerLeft = new VRControllerLeft(container, 5);
       scene.add(vrControllerLeft.controller);
-      scene.add(vrControllerLeft.controllerGrip);
+      scene.add(vrControllerLeft.grip);
 
-      // DollyCameraAnimation
+      // DollyCameraXRAnimation
 
-      const dollyCameraAnimation = new DollyCameraAnimation(dolly, container);
+      const dollyCameraXRAnimation = new DollyCameraXRAnimation(
+        dolly,
+        container
+      );
+      loop.add(dollyCameraXRAnimation);
 
-      loop.add(dollyCameraAnimation);
       vrControllerRight.onSelectStart(() => {
-        dollyCameraAnimation.moveSwitch();
+        dollyCameraXRAnimation.moveSwitch();
       });
 
       vrControllerLeft.onSelectStart(() => {
-        dollyCameraAnimation.moveSwitch();
+        dollyCameraXRAnimation.moveSwitch();
       });
 
       this.vrControllersUpdate = (container) => {
-        scene.remove(vrControllerRight.controller);
-        scene.remove(vrControllerRight.controllerGrip);
-        scene.remove(vrControllerLeft.controller);
-        scene.remove(vrControllerLeft.controllerGrip);
+        scene.remove(
+          vrControllerRight.controller,
+          vrControllerRight.grip,
+          vrControllerLeft.controller,
+          vrControllerLeft.grip
+        );
 
         vrControllerRight.updateContainer(container);
         scene.add(vrControllerRight.controller);
-        scene.add(vrControllerRight.controllerGrip);
+        scene.add(vrControllerRight.grip);
 
         vrControllerLeft.updateContainer(container);
         scene.add(vrControllerLeft.controller);
-        scene.add(vrControllerLeft.controllerGrip);
+        scene.add(vrControllerLeft.grip);
       };
     }
 
@@ -257,8 +262,6 @@ export class PlanetsService implements BuildUpdateScene {
     this.vrControllersUpdate(container);
     this.animate(container);
   }
-
-  private createVRControllers(container: Container) {}
 
   unsubscribe(): void {
     this.completed = false;

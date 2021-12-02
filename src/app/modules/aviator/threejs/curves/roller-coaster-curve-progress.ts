@@ -61,7 +61,10 @@ export class RollerCoasterCurveProgress implements Loop {
     this.velocity -= this.tangent.y * 0.0000001 * delta;
     this.velocity = Math.max(0.00008, Math.min(0.0002, this.velocity));
 
-    this.train.lookAt(this.lookAt.copy(this.position).sub(this.tangent));
+    // Look At
+
+    const vector: Vector3 = this.lookAt.copy(this.position).sub(this.tangent);
+    this.train.lookAt(vector);
 
     this.angleXZ.last = this.angleXZ.current;
   }
