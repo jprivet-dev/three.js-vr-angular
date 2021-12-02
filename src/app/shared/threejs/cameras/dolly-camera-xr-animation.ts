@@ -8,13 +8,13 @@ export class DollyCameraXRAnimation implements LoopControls {
   private xrCamera: Camera;
 
   private currentDirection: DollyCameraDirection = DollyCameraDirection.Stop;
+  private directionCycleIndex = 0;
   private directionCycle: DollyCameraDirection[] = [
     DollyCameraDirection.Stop,
     DollyCameraDirection.Forward,
     DollyCameraDirection.Stop,
     DollyCameraDirection.Backward,
   ];
-  private directionCycleIndex = 0;
 
   constructor(
     private dolly: DollyCamera,

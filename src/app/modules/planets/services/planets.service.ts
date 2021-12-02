@@ -4,6 +4,7 @@ import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import {
   DollyCamera,
+  DollyCameraFlyAnimation,
   DollyCameraParams,
   DollyCameraXRAnimation,
 } from '@shared/threejs/cameras';
@@ -28,6 +29,7 @@ import {
 } from '@shared/threejs/xr/controllers';
 import { VRSessionManager } from '@shared/threejs/xr/session';
 import { Subscription } from 'rxjs';
+import { PlanetsActions } from '../store/actions';
 import { PlanetsFacade } from '../store/planets.facade';
 import { planetsDollyCameraParams } from './planets.params';
 
@@ -155,10 +157,20 @@ export class PlanetsService implements BuildUpdateScene {
     loop.add(neptune);
 
     /**
-     * Controls
+     * Textures By Definition
      */
 
-    const controls = new OrbitControlsUpdater(
+    this.subscription.add(
+      this.app.definition$.subscribe((definition) => {
+        texture.loadTexturesByDefinition(definition);
+      })
+    );
+
+    /**
+     * Orbit Controls
+     */
+
+    const orbitControls = new OrbitControlsUpdater(
       dolly.camera,
       container.renderer.domElement,
       {
@@ -168,19 +180,34 @@ export class PlanetsService implements BuildUpdateScene {
       }
     );
 
-    loop.add(controls);
+    loop.add(orbitControls);
 
     this.controlsUpdate = (container: Container) => {
-      controls.updateDomElement(container.renderer.domElement);
+      orbitControls.updateDomElement(container.renderer.domElement);
     };
 
     /**
-     * Textures By Definition
+     * Fly Controls
      */
 
+    const flyAnimation = new DollyCameraFlyAnimation(dolly, container);
+    loop.add(flyAnimation);
+
+    flyAnimation.controls.onLock(() => {
+      orbitControls.disable();
+    });
+
+    flyAnimation.controls.onUnlock(() => {
+      orbitControls.enable();
+      this.facade.dispatch(PlanetsActions.flyModeOff());
+    });
+
+
     this.subscription.add(
-      this.app.definition$.subscribe((definition) => {
-        texture.loadTexturesByDefinition(definition);
+      this.facade.flyMode$.subscribe((flyMode) => {
+        if (flyMode) {
+          flyAnimation.start()
+        }
       })
     );
 

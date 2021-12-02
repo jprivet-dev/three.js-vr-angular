@@ -49,22 +49,6 @@ export class Container implements Loop, WindowResize {
     this.domElement.removeChild(child);
   }
 
-  // --------------------
-  // Pointer Lock Element
-  // --------------------
-
-  isPointerLockElement(): boolean {
-    return this.domElement.ownerDocument.pointerLockElement === this.domElement;
-  }
-
-  lock(): void {
-    this.domElement.requestPointerLock();
-  }
-
-  unlock(): void {
-    this.domElement.ownerDocument.exitPointerLock();
-  }
-
   // --------
   // Renderer
   // --------

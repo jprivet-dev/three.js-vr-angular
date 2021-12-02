@@ -6,12 +6,18 @@ export class Console {
   ) {}
 
   log(label: any, value?: any): void {
-    const base: string[] = [];
+    this.message('log', label, value);
+  }
 
+  error(label: any, value?: any): void {
+    this.message('error', label, value);
+  }
+
+  private message(type: 'log' | 'error', label: any, value?: any): void {
+    const base: string[] = [];
     base.push(this.base);
     value ? base.push(label) : (value = label);
-
     label = base.join(` ${this.separator} `) + this.end;
-    console.log(label, value);
+    console[type](label, value);
   }
 }

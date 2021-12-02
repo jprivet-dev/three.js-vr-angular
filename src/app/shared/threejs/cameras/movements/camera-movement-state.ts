@@ -1,20 +1,15 @@
-export class FlyMovementState {
+export class CameraMovementState {
   private _state: boolean = false;
 
-  constructor(readonly name: string = '') {}
-
   start(): void {
-    this.log('start');
     this._state = true;
   }
 
   stop(): void {
-    this.log('stop');
     this._state = false;
   }
 
   switch(): void {
-    this.log('switch');
     this._state = !this._state;
   }
 
@@ -24,9 +19,5 @@ export class FlyMovementState {
 
   get number(): number {
     return Number(this._state);
-  }
-
-  private log(label: string): void {
-    console.log(`FlyMovementState | ${this.name} | ${label}`);
   }
 }
