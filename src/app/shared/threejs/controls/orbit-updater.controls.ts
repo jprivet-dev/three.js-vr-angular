@@ -3,7 +3,7 @@ import { Camera } from 'three/src/Three';
 import { Loop } from '../models';
 import { OrbitControlsUpdaterParams } from '../models/orbit-controls-updater.model';
 
-export class OrbitControlsUpdater implements Loop {
+export class OrbitUpdaterControls implements Loop {
   private controls: OrbitControls;
   private enabled: boolean = true;
 

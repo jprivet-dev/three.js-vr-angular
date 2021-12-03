@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
-import { OrbitControlsUpdater } from '@shared/threejs/controls';
+import { OrbitUpdaterControls } from '@shared/threejs/controls';
 import { LoopManager } from '@shared/threejs/managers';
 import { VRSessionManager } from '@shared/threejs/xr/session';
 import { angleXZ } from '@shared/utils';
@@ -217,7 +217,7 @@ export class AviatorService implements BuildUpdateScene {
      */
 
     if (this.controlsActive) {
-      const controls = new OrbitControlsUpdater(
+      const controls = new OrbitUpdaterControls(
         dolly.camera,
         container.renderer.domElement,
         {

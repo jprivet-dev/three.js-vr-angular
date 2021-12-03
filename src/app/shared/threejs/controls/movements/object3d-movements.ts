@@ -1,13 +1,13 @@
 import { Quaternion, Vector3 } from 'three';
-import { Camera } from 'three/src/Three';
+import { Object3D } from 'three/src/core/Object3D';
 import { Loop } from '../../models';
-import { CameraMovementState } from './camera-movement-state';
+import { Object3DMovementState } from './object3d-movement-state';
 import {
-  CameraMovementsMove,
-  CameraMovementsRotation,
-} from './camera-movement.model';
+  Object3DMovementsMove,
+  Object3DMovementsRotation,
+} from './object3d-movement.model';
 
-export class CameraMovements implements Loop {
+export class Object3DMovements implements Loop {
   private quaternion = new Quaternion();
   private vector = {
     move: new Vector3(0, 0, 0),
@@ -17,31 +17,31 @@ export class CameraMovements implements Loop {
   moveSpeed: number = 10;
   rotationSpeed: number = 0.5;
 
-  move: CameraMovementsMove = {
-    forward: new CameraMovementState(),
-    backward: new CameraMovementState(),
-    right: new CameraMovementState(),
-    left: new CameraMovementState(),
-    up: new CameraMovementState(),
-    down: new CameraMovementState(),
+  move: Object3DMovementsMove = {
+    forward: new Object3DMovementState(),
+    backward: new Object3DMovementState(),
+    right: new Object3DMovementState(),
+    left: new Object3DMovementState(),
+    up: new Object3DMovementState(),
+    down: new Object3DMovementState(),
   };
 
-  rotation: CameraMovementsRotation = {
+  rotation: Object3DMovementsRotation = {
     pitch: {
-      up: new CameraMovementState(),
-      down: new CameraMovementState(),
+      up: new Object3DMovementState(),
+      down: new Object3DMovementState(),
     },
     yaw: {
-      right: new CameraMovementState(),
-      left: new CameraMovementState(),
+      right: new Object3DMovementState(),
+      left: new Object3DMovementState(),
     },
     roll: {
-      right: new CameraMovementState(),
-      left: new CameraMovementState(),
+      right: new Object3DMovementState(),
+      left: new Object3DMovementState(),
     },
   };
 
-  constructor(private camera: Camera) {}
+  constructor(private object: Object3D) {}
 
   update(delta: number): void {
     this.updateMove(delta);
@@ -57,14 +57,14 @@ export class CameraMovements implements Loop {
 
     this.quaternion
       .set(
-        -movementY * 0.002 * this.rotationSpeed,
-        -movementX * 0.002 * this.rotationSpeed,
+        -movementY * 0.001,
+        -movementX * 0.001,
         0,
         1
       )
       .normalize();
 
-    this.camera.quaternion.multiply(this.quaternion);
+    this.object.quaternion.multiply(this.quaternion);
   }
 
   private updateMove(delta: number): void {
@@ -77,9 +77,9 @@ export class CameraMovements implements Loop {
 
     // console.log( 'move:', [ v.x, v.y, v.z ] );
 
-    this.camera.translateX(v.x * delta * this.moveSpeed);
-    this.camera.translateY(v.y * delta * this.moveSpeed);
-    this.camera.translateZ(v.z * delta * this.moveSpeed);
+    this.object.translateX(v.x * delta * this.moveSpeed);
+    this.object.translateY(v.y * delta * this.moveSpeed);
+    this.object.translateZ(v.z * delta * this.moveSpeed);
   }
 
   private updateRotation(delta: number): void {
@@ -101,6 +101,6 @@ export class CameraMovements implements Loop {
       )
       .normalize();
 
-    this.camera.quaternion.multiply(this.quaternion);
+    this.object.quaternion.multiply(this.quaternion);
   }
 }

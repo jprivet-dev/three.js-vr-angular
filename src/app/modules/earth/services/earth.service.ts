@@ -3,7 +3,7 @@ import { AppFacade } from '@core/store/app.facade';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
 import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
-import { OrbitControlsUpdater } from '@shared/threejs/controls';
+import { OrbitUpdaterControls } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import {
   LoopManager,
@@ -102,7 +102,7 @@ export class EarthService implements BuildUpdateScene {
      * Controls
      */
 
-    const controls = new OrbitControlsUpdater(
+    const controls = new OrbitUpdaterControls(
       dolly.camera,
       container.renderer.domElement,
       {

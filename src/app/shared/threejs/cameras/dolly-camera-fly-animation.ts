@@ -1,12 +1,16 @@
 import { Container } from '../../container';
-import { DashboardPointerLockControls } from '../controls';
+import {
+  DashboardControls,
+  Object3DMovements,
+  PointerLockControls,
+} from '../controls';
 import { LoopControls } from '../models';
 import { DollyCamera } from './dolly-camera';
-import { CameraMovements } from './movements';
 
 export class DollyCameraFlyAnimation implements LoopControls {
-  readonly movements = new CameraMovements(this.dolly.camera);
-  readonly controls = new DashboardPointerLockControls(
+  readonly movements = new Object3DMovements(this.dolly.camera);
+  readonly dashboard = new DashboardControls(this.container, this.movements);
+  readonly pointerLock = new PointerLockControls(
     this.container,
     this.movements
   );
@@ -18,11 +22,13 @@ export class DollyCameraFlyAnimation implements LoopControls {
   ) {}
 
   start(): void {
-    this.controls.start();
+    this.dashboard.start();
+    this.pointerLock.start();
   }
 
   stop(): void {
-    this.controls.stop();
+    this.dashboard.stop();
+    this.pointerLock.stop();
   }
 
   update(delta: number): void {

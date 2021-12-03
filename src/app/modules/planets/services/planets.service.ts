@@ -8,7 +8,7 @@ import {
   DollyCameraParams,
   DollyCameraXRAnimation,
 } from '@shared/threejs/cameras';
-import { OrbitControlsUpdater } from '@shared/threejs/controls';
+import { OrbitUpdaterControls } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
 import { LoopManager, TextureManager } from '@shared/threejs/managers';
 import {
@@ -170,7 +170,7 @@ export class PlanetsService implements BuildUpdateScene {
      * Orbit Controls
      */
 
-    const orbitControls = new OrbitControlsUpdater(
+    const orbitControls = new OrbitUpdaterControls(
       dolly.camera,
       container.renderer.domElement,
       {
@@ -193,21 +193,18 @@ export class PlanetsService implements BuildUpdateScene {
     const flyAnimation = new DollyCameraFlyAnimation(dolly, container);
     loop.add(flyAnimation);
 
-    flyAnimation.controls.onLock(() => {
+    flyAnimation.pointerLock.onLock(() => {
       orbitControls.disable();
     });
 
-    flyAnimation.controls.onUnlock(() => {
+    flyAnimation.pointerLock.onUnlock(() => {
       orbitControls.enable();
       this.facade.dispatch(PlanetsActions.flyModeOff());
     });
 
-
     this.subscription.add(
       this.facade.flyMode$.subscribe((flyMode) => {
-        if (flyMode) {
-          flyAnimation.start()
-        }
+        flyMode ? flyAnimation.start() : flyAnimation.stop();
       })
     );
 

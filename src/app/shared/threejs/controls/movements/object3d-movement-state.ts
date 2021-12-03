@@ -1,4 +1,4 @@
-export class CameraMovementState {
+export class Object3DMovementState {
   private _state: boolean = false;
 
   start(): void {
