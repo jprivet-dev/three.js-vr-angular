@@ -3,7 +3,7 @@
 </div>
 
 <div class="right">
-  <button (click)="onSwitchFlyMode()" [class.active]="flyModeActive">
+  <button *ngIf="flyModeEnable" (click)="onSwitchFlyMode()" [class.active]="flyModeActive">
     FLY
   </button>
 

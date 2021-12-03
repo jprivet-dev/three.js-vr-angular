@@ -8,8 +8,7 @@
   (vrSessionEnd)="onVRSessionEnd()"
 ></app-container>
 <app-menu
-  [flyModeActive]="flyMode$ | async"
-  (switchFlyMode)="onSwitchFlyMode()"
+  [flyModeEnable]="false"
 
   [statsActive]="stats$ | async"
   (switchStats)="onSwitchStats()"

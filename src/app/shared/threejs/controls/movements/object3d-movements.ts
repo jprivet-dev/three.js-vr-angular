@@ -14,8 +14,9 @@ export class Object3DMovements implements Loop {
     rotation: new Vector3(0, 0, 0),
   };
 
-  moveSpeed: number = 10;
-  rotationSpeed: number = 0.5;
+  private velocity = new Vector3();
+  private moveSpeed: number = 10;
+  private rotationSpeed: number = 0.5;
 
   move: Object3DMovementsMove = {
     forward: new Object3DMovementState(),
@@ -56,12 +57,7 @@ export class Object3DMovements implements Loop {
       event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
     this.quaternion
-      .set(
-        -movementY * 0.001,
-        -movementX * 0.001,
-        0,
-        1
-      )
+      .set(-movementY * 0.0008, -movementX * 0.0008, 0, 1)
       .normalize();
 
     this.object.quaternion.multiply(this.quaternion);
@@ -71,15 +67,19 @@ export class Object3DMovements implements Loop {
     const v = this.vector.move;
     const m = this.move;
 
-    v.x = -m.left.number + m.right.number;
-    v.y = -m.down.number + m.up.number;
-    v.z = -m.forward.number + m.backward.number;
+    this.velocity.x -= this.velocity.x * 8 * delta;
+    this.velocity.y -= this.velocity.y * 8 * delta;
+    this.velocity.z -= this.velocity.z * 8 * delta;
+
+    this.velocity.x += (m.right.number - m.left.number) * 1 * delta;
+    this.velocity.y += (m.up.number - m.down.number) * 1 * delta;
+    this.velocity.z += (m.backward.number - m.forward.number) * 3 * delta;
 
     // console.log( 'move:', [ v.x, v.y, v.z ] );
 
-    this.object.translateX(v.x * delta * this.moveSpeed);
-    this.object.translateY(v.y * delta * this.moveSpeed);
-    this.object.translateZ(v.z * delta * this.moveSpeed);
+    this.object.translateX(this.velocity.x);
+    this.object.translateY(this.velocity.y);
+    this.object.translateZ(this.velocity.z);
   }
 
   private updateRotation(delta: number): void {

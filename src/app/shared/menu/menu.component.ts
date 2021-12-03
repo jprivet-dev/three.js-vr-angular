@@ -6,6 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+  @Input() flyModeEnable: boolean = true;
   @Input() hdDefinitionEnable: boolean = true;
 
   @Input() statsActive!: boolean | null;

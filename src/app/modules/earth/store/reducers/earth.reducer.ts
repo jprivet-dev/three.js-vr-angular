@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { PlanetsActions } from '../../../planets/store/actions';
 import { EarthActions } from '../actions';
 
 export const featureKey = 'earth';
@@ -18,6 +19,10 @@ export const reducer = createReducer(
   on(EarthActions.switchFlyMode, (state) => ({
     ...state,
     flyMode: !state.flyMode,
+  })),
+  on(EarthActions.flyModeOff, (state) => ({
+    ...state,
+    flyMode: false,
   })),
   on(EarthActions.vrSessionStart, (state) => ({
     ...state,

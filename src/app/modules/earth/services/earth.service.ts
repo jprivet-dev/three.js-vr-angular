@@ -2,17 +2,24 @@ import { Injectable } from '@angular/core';
 import { AppFacade } from '@core/store/app.facade';
 import { Container } from '@shared/container';
 import { BuildUpdateScene } from '@shared/models';
-import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
+import {
+  DollyCamera,
+  DollyCameraFlyAnimation,
+  DollyCameraParams,
+  DollyCameraXRAnimation,
+} from '@shared/threejs/cameras';
 import { OrbitUpdaterControls } from '@shared/threejs/controls';
 import { SunLight } from '@shared/threejs/lights';
-import {
-  LoopManager,
-  TextureManager,
-} from '@shared/threejs/managers';
+import { LoopManager, TextureManager } from '@shared/threejs/managers';
 import { Earth, Moon } from '@shared/threejs/objects3d';
 import { StarsScene } from '@shared/threejs/scenes';
+import {
+  VRControllerLeft,
+  VRControllerRight,
+} from '@shared/threejs/xr/controllers';
 import { VRSessionManager } from '@shared/threejs/xr/session';
 import { Subscription } from 'rxjs';
+import { EarthActions } from '../store/actions';
 import { EarthFacade } from '../store/earth.facade';
 import { earthDollyCameraParams } from './earth.params';
 
@@ -24,14 +31,12 @@ export class EarthService implements BuildUpdateScene {
   private dollyCameraParams: DollyCameraParams = earthDollyCameraParams;
 
   private controlsUpdate: (container: Container) => void = () => {};
+  private vrControllersUpdate: (container: Container) => void = () => {};
   private animate: (container: Container) => void = () => {};
 
   private completed = false;
 
-  constructor(
-    private app: AppFacade,
-    private facade: EarthFacade
-  ) {}
+  constructor(private app: AppFacade, private facade: EarthFacade) {}
 
   buildScene(container: Container): void {
     if (this.completed) {
@@ -99,10 +104,20 @@ export class EarthService implements BuildUpdateScene {
     loop.add(moon);
 
     /**
-     * Controls
+     * Textures By Definition
      */
 
-    const controls = new OrbitUpdaterControls(
+    this.subscription.add(
+      this.app.definition$.subscribe((definition) => {
+        texture.loadTexturesByDefinition(definition);
+      })
+    );
+
+    /**
+     * Orbit Controls
+     */
+
+    const orbitControls = new OrbitUpdaterControls(
       dolly.camera,
       container.renderer.domElement,
       {
@@ -112,19 +127,31 @@ export class EarthService implements BuildUpdateScene {
       }
     );
 
-    loop.add(controls);
+    loop.add(orbitControls);
 
     this.controlsUpdate = (container: Container) => {
-      controls.updateDomElement(container.renderer.domElement);
+      orbitControls.updateDomElement(container.renderer.domElement);
     };
 
     /**
-     * Textures By Definition
+     * Fly Controls
      */
 
+    const flyAnimation = new DollyCameraFlyAnimation(dolly, container);
+    loop.add(flyAnimation);
+
+    flyAnimation.pointerLock.onLock(() => {
+      orbitControls.disable();
+    });
+
+    flyAnimation.pointerLock.onUnlock(() => {
+      orbitControls.enable();
+      this.facade.dispatch(EarthActions.flyModeOff());
+    });
+
     this.subscription.add(
-      this.app.definition$.subscribe((definition) => {
-        texture.loadTexturesByDefinition(definition);
+      this.facade.flyMode$.subscribe((flyMode) => {
+        flyMode ? flyAnimation.start() : flyAnimation.stop();
       })
     );
 
@@ -137,6 +164,55 @@ export class EarthService implements BuildUpdateScene {
         vrSession ? vr.onSessionStart() : vr.onSessionEnd();
       })
     );
+
+    /**
+     * VR Controllers
+     */
+
+    if (container.vrSession) {
+      // Controllers
+
+      const vrControllerRight = new VRControllerRight(container, 5);
+      scene.add(vrControllerRight.controller);
+      scene.add(vrControllerRight.grip);
+
+      const vrControllerLeft = new VRControllerLeft(container, 5);
+      scene.add(vrControllerLeft.controller);
+      scene.add(vrControllerLeft.grip);
+
+      // DollyCameraXRAnimation
+
+      const dollyCameraXRAnimation = new DollyCameraXRAnimation(
+        dolly,
+        container
+      );
+      loop.add(dollyCameraXRAnimation);
+
+      vrControllerRight.onSelectStart(() => {
+        dollyCameraXRAnimation.moveSwitch();
+      });
+
+      vrControllerLeft.onSelectStart(() => {
+        dollyCameraXRAnimation.moveSwitch();
+      });
+
+      this.vrControllersUpdate = (container) => {
+        scene.remove(
+          vrControllerRight.controller,
+          vrControllerRight.grip,
+          vrControllerLeft.controller,
+          vrControllerLeft.grip
+        );
+
+        vrControllerRight.updateContainer(container);
+        scene.add(vrControllerRight.controller);
+        scene.add(vrControllerRight.grip);
+
+        vrControllerLeft.updateContainer(container);
+        scene.add(vrControllerLeft.controller);
+        scene.add(vrControllerLeft.grip);
+      };
+    }
 
     /**
      * Animate
@@ -154,6 +230,7 @@ export class EarthService implements BuildUpdateScene {
 
   update(container: Container): void {
     this.controlsUpdate(container);
+    this.vrControllersUpdate(container);
     this.animate(container);
   }
 
