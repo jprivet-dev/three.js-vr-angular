@@ -5,7 +5,6 @@ import { DollyCamera, DollyCameraParams } from '@shared/threejs/cameras';
 import { OrbitUpdaterControls } from '@shared/threejs/controls';
 import { LoopManager } from '@shared/threejs/managers';
 import { VRSessionManager } from '@shared/threejs/xr/session';
-import { angleXZ } from '@shared/utils';
 import { Subscription } from 'rxjs';
 import {
   AmbientLight,
@@ -28,7 +27,7 @@ import {
 } from 'three/examples/jsm/misc/RollerCoaster';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { AviatorFacade } from '../store/aviator.facade';
-import { RollerCoasterCurve } from '../threejs';
+import { RollerCoasterCurve, Spaceship } from '../threejs';
 import { RollerCoasterCurveProgress } from '../threejs/curves/roller-coaster-curve-progress';
 import { AirPlane } from '../threejs/objects3d/airplane';
 import { aviatorDollyCameraParams } from './aviator.params';
@@ -175,41 +174,59 @@ export class AviatorService implements BuildUpdateScene {
      * AirPlane
      */
 
-    const airplane = new AirPlane();
-    const airplaneScale = 0.01;
-    airplane.mesh.scale.set(airplaneScale, airplaneScale, airplaneScale);
-    train.add(airplane.mesh);
-    loop.add(airplane);
+    // const airplane = new AirPlane();
+    // const airplaneScale = 0.01;
+    // airplane.mesh.scale.set(airplaneScale, airplaneScale, airplaneScale);
+    // train.add(airplane.mesh);
+    // loop.add(airplane);
+
+    /**
+     * SpaceShip
+     */
+
+    const spaceship = new Spaceship();
+    const spaceshipScale = 0.01;
+    spaceship.mesh.scale.set(spaceshipScale, spaceshipScale, spaceshipScale);
+    train.add(spaceship.mesh);
+    loop.add(spaceship);
+
+    const flyingObject = spaceship;
 
     /**
      * Curve
      */
 
-    const curve = new RollerCoasterCurve(50);
-    const curveProgress = new RollerCoasterCurveProgress(
-      curve, dolly, train, airplane.mesh
-    )
+    if (this.controlsActive) {
+      flyingObject.mesh.position.y = 2;
+    } else {
+      const curve = new RollerCoasterCurve(50);
+      const curveProgress = new RollerCoasterCurveProgress(
+        curve,
+        dolly,
+        train,
+        flyingObject.mesh
+      );
 
-    loop.add(curveProgress);
+      loop.add(curveProgress);
 
-    const createRollerCoaster = () => {
-      const geometry = new RollerCoasterGeometry(curve, 1500);
-      const material = new MeshPhongMaterial({
-        vertexColors: true,
-      });
-      const mesh = new Mesh(geometry, material);
-      scene.add(mesh);
-    };
+      const createRollerCoaster = () => {
+        const geometry = new RollerCoasterGeometry(curve, 1500);
+        const material = new MeshPhongMaterial({
+          vertexColors: true,
+        });
+        const mesh = new Mesh(geometry, material);
+        scene.add(mesh);
+      };
 
-    //createRollerCoaster();
+      //createRollerCoaster();
+    }
 
     /**
      * Global Animation
      */
 
     loop.add({
-      update: (delta: number) => {
-      },
+      update: (delta: number) => {},
     });
 
     /**
@@ -223,7 +240,7 @@ export class AviatorService implements BuildUpdateScene {
         {
           autoRotateSpeed: 0.2,
           autoRotate: true,
-          target: airplane.mesh.position.clone(),
+          target: flyingObject.mesh.position.clone(),
         }
       );
 
