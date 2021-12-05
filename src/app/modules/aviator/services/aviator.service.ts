@@ -27,7 +27,7 @@ import {
 } from 'three/examples/jsm/misc/RollerCoaster';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { AviatorFacade } from '../store/aviator.facade';
-import { AirPlane, RollerCoasterCurve, Spaceship } from '../threejs';
+import { AirPlane, Rabbit, RollerCoasterCurve, Spaceship } from '../threejs';
 import { RollerCoasterCurveProgress } from '../threejs/curves/roller-coaster-curve-progress';
 import { aviatorDollyCameraParams } from './aviator.params';
 
@@ -42,7 +42,7 @@ export class AviatorService implements BuildUpdateScene {
   private subscription = new Subscription();
   private dollyCameraParams: DollyCameraParams = aviatorDollyCameraParams;
 
-  private controlsActive: boolean = true;
+  private controlsActive: boolean = false;
   private controlsUpdate: (container: Container) => void = () => {};
   private animate: (container: Container) => void = () => {};
 
@@ -190,6 +190,14 @@ export class AviatorService implements BuildUpdateScene {
     spaceship.mesh.scale.set(spaceshipScale, spaceshipScale, spaceshipScale);
     loop.add(spaceship);
 
+    /**
+     * Rabbit
+     */
+
+    const rabbit = new Rabbit();
+    const rabbitScale = 0.05;
+    rabbit.mesh.scale.set(rabbitScale, rabbitScale, rabbitScale);
+    loop.add(rabbit);
 
     /**
      * Flying Object
@@ -197,14 +205,27 @@ export class AviatorService implements BuildUpdateScene {
 
     this.subscription.add(
       this.facade.flyingObject$.subscribe((flyingObject) => {
+        spaceship.disableLoop();
+        this.flyingObjectMesh.remove(spaceship.mesh);
+
+        airplane.disableLoop();
+        this.flyingObjectMesh.remove(airplane.mesh);
+
+        rabbit.disableLoop();
+        this.flyingObjectMesh.remove(rabbit.mesh);
+
         switch (flyingObject) {
           case 'aviator':
-            this.flyingObjectMesh.remove(spaceship.mesh);
+            airplane.enableLoop();
             this.flyingObjectMesh.add(airplane.mesh);
             break;
           case 'spaceship':
-            this.flyingObjectMesh.remove(airplane.mesh);
+            spaceship.enableLoop();
             this.flyingObjectMesh.add(spaceship.mesh);
+            break;
+          case 'rabbit':
+            rabbit.enableLoop();
+            this.flyingObjectMesh.add(rabbit.mesh);
             break;
         }
       })
@@ -260,6 +281,8 @@ export class AviatorService implements BuildUpdateScene {
           autoRotateSpeed: 0.2,
           autoRotate: true,
           target: this.flyingObjectMesh.position.clone(),
+          minDistance: 1,
+          maxDistance: 200,
         }
       );
 

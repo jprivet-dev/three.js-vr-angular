@@ -31,4 +31,10 @@
   >
     Spaceship
   </button>
+  <button
+    (click)="onChangeFlyingObject('rabbit')"
+    [class.active]="(flyingObject$ | async) === 'rabbit'"
+  >
+    Rabbit
+  </button>
 </div>

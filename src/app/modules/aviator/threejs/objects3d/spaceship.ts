@@ -1,14 +1,16 @@
-import { HasMesh, Loop } from '@shared/threejs/models';
+import { HasMesh, Loop, LoopWithControls } from '@shared/threejs/models';
 import { applyOffsetXYZAs } from '@shared/utils';
 import { CylinderGeometry, Mesh, MeshPhongMaterial, Object3D } from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { AviatorColors } from '../../models/aviator-colors.model';
 
-export class Spaceship implements HasMesh, Loop {
+export class Spaceship extends LoopWithControls implements HasMesh, Loop {
   mesh: Object3D;
   flames: Mesh[] = [];
 
   constructor() {
+    super();
+
     const all = new Object3D();
 
     this.mesh = new Object3D();
@@ -99,6 +101,7 @@ export class Spaceship implements HasMesh, Loop {
   }
 
   update(delta: number): void {
+    if(this.isLoopDisabled) return;
     this.flames.map((flame, index) => {
       const scale = Math.random() * 0.4 + 0.8;
       this.flames[index].scale.set(1, scale, 1);

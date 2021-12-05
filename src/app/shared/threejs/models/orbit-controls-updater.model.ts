@@ -5,4 +5,6 @@ export interface OrbitControlsUpdaterParams {
   autoRotate?: boolean;
   enableDamping?: boolean;
   target?: Vector3;
+  minDistance?: number;
+  maxDistance?: number;
 }

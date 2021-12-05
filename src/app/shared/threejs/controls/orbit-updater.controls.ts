@@ -28,6 +28,9 @@ export class OrbitUpdaterControls implements Loop {
 
     controls.target = this.params?.target ?? controls.target;
 
+    controls.minDistance = this.params?.minDistance ?? controls.minDistance;
+    controls.maxDistance = this.params?.maxDistance ?? controls.maxDistance;
+
     return controls;
   }
 

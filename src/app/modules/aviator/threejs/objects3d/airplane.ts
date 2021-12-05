@@ -1,15 +1,16 @@
-import { HasMesh, Loop } from '@shared/threejs/models';
+import { HasMesh, Loop, LoopWithControls } from '@shared/threejs/models';
 import { applyOffsetXYZAs } from '@shared/utils';
 import { BoxGeometry, Matrix4, Mesh, MeshPhongMaterial, Object3D } from 'three';
 import { AviatorColors } from '../../models/aviator-colors.model';
 import { Pilot } from './pilot';
 
-export class AirPlane implements HasMesh, Loop {
+export class AirPlane extends LoopWithControls implements HasMesh, Loop {
   mesh: Object3D;
   propeller: Mesh;
   pilot: Pilot;
 
   constructor() {
+    super();
     const all = new Object3D();
 
     this.mesh = new Object3D();
@@ -190,6 +191,7 @@ export class AirPlane implements HasMesh, Loop {
   }
 
   update(delta: number): void {
+    if (this.isLoopDisabled) return;
     this.propeller.rotation.x += 0.3;
     this.pilot.update(delta);
   }

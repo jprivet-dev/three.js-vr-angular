@@ -7,4 +7,4 @@ export enum AviatorColors {
   blue = 0x68c3c0,
 }
 
-export type FlyingObject = 'aviator' | 'spaceship';
+export type FlyingObject = 'aviator' | 'spaceship' | 'rabbit';
