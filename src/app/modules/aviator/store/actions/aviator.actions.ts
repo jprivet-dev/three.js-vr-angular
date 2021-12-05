@@ -1,8 +1,10 @@
-import { createAction } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
+import { FlyingObject } from '../../models/aviator-colors.model';
 
-export const switchFlyMode = createAction('[Aviator] switch fly mode');
-
-export const switchAntialias = createAction('[Aviator] switch antialias');
+export const changeFlyingObject = createAction(
+  '[Aviator] change flying object',
+  props<{ flyingObject: FlyingObject }>()
+);
 
 export const vrSessionStart = createAction('[Aviator] VR session start');
 

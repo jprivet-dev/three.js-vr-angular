@@ -27,9 +27,8 @@ import {
 } from 'three/examples/jsm/misc/RollerCoaster';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { AviatorFacade } from '../store/aviator.facade';
-import { RollerCoasterCurve, Spaceship } from '../threejs';
+import { AirPlane, RollerCoasterCurve, Spaceship } from '../threejs';
 import { RollerCoasterCurveProgress } from '../threejs/curves/roller-coaster-curve-progress';
-import { AirPlane } from '../threejs/objects3d/airplane';
 import { aviatorDollyCameraParams } from './aviator.params';
 
 /**
@@ -43,9 +42,11 @@ export class AviatorService implements BuildUpdateScene {
   private subscription = new Subscription();
   private dollyCameraParams: DollyCameraParams = aviatorDollyCameraParams;
 
-  private controlsActive: boolean = false;
+  private controlsActive: boolean = true;
   private controlsUpdate: (container: Container) => void = () => {};
   private animate: (container: Container) => void = () => {};
+
+  private flyingObjectMesh: Object3D = new Object3D();
 
   private completed = false;
 
@@ -93,6 +94,7 @@ export class AviatorService implements BuildUpdateScene {
 
     const train = new Object3D();
     train.add(dolly);
+    train.add(this.flyingObjectMesh);
     scene.add(train);
 
     /**
@@ -174,11 +176,10 @@ export class AviatorService implements BuildUpdateScene {
      * AirPlane
      */
 
-    // const airplane = new AirPlane();
-    // const airplaneScale = 0.01;
-    // airplane.mesh.scale.set(airplaneScale, airplaneScale, airplaneScale);
-    // train.add(airplane.mesh);
-    // loop.add(airplane);
+    const airplane = new AirPlane();
+    const airplaneScale = 0.01;
+    airplane.mesh.scale.set(airplaneScale, airplaneScale, airplaneScale);
+    loop.add(airplane);
 
     /**
      * SpaceShip
@@ -187,24 +188,42 @@ export class AviatorService implements BuildUpdateScene {
     const spaceship = new Spaceship();
     const spaceshipScale = 0.01;
     spaceship.mesh.scale.set(spaceshipScale, spaceshipScale, spaceshipScale);
-    train.add(spaceship.mesh);
     loop.add(spaceship);
 
-    const flyingObject = spaceship;
+
+    /**
+     * Flying Object
+     */
+
+    this.subscription.add(
+      this.facade.flyingObject$.subscribe((flyingObject) => {
+        switch (flyingObject) {
+          case 'aviator':
+            this.flyingObjectMesh.remove(spaceship.mesh);
+            this.flyingObjectMesh.add(airplane.mesh);
+            break;
+          case 'spaceship':
+            this.flyingObjectMesh.remove(airplane.mesh);
+            this.flyingObjectMesh.add(spaceship.mesh);
+            break;
+        }
+      })
+    );
+
 
     /**
      * Curve
      */
 
     if (this.controlsActive) {
-      flyingObject.mesh.position.y = 2;
+      this.flyingObjectMesh.position.y = 2;
     } else {
       const curve = new RollerCoasterCurve(50);
       const curveProgress = new RollerCoasterCurveProgress(
         curve,
         dolly,
         train,
-        flyingObject.mesh
+        this.flyingObjectMesh
       );
 
       loop.add(curveProgress);
@@ -240,7 +259,7 @@ export class AviatorService implements BuildUpdateScene {
         {
           autoRotateSpeed: 0.2,
           autoRotate: true,
-          target: flyingObject.mesh.position.clone(),
+          target: this.flyingObjectMesh.position.clone(),
         }
       );
 
@@ -255,9 +274,11 @@ export class AviatorService implements BuildUpdateScene {
      * VR Session
      */
 
-    this.subscription = this.facade.vrSession$.subscribe((vrSession) => {
-      vrSession ? vr.onSessionStart() : vr.onSessionEnd();
-    });
+    this.subscription.add(
+      this.facade.vrSession$.subscribe((vrSession) => {
+        vrSession ? vr.onSessionStart() : vr.onSessionEnd();
+      })
+    );
 
     /**
      * Animate

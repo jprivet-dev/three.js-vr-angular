@@ -6,3 +6,5 @@ export enum AviatorColors {
   brownDark = 0x23190f,
   blue = 0x68c3c0,
 }
+
+export type FlyingObject = 'aviator' | 'spaceship';

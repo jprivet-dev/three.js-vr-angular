@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { FlyingObject } from '../../models/aviator-colors.model';
 import { AviatorActions } from '../actions';
 
 export const featureKey = 'aviator';
@@ -6,18 +7,20 @@ export const featureKey = 'aviator';
 export interface State {
   flyMode: boolean;
   vrSession: boolean;
+  flyingObject: FlyingObject;
 }
 
 export const initialState: State = {
   flyMode: false,
   vrSession: false,
+  flyingObject: 'aviator',
 };
 
 export const reducer = createReducer(
   initialState,
-  on(AviatorActions.switchFlyMode, (state) => ({
+  on(AviatorActions.changeFlyingObject, (state, { flyingObject }) => ({
     ...state,
-    flyMode: !state.flyMode,
+    flyingObject,
   })),
   on(AviatorActions.vrSessionStart, (state) => ({
     ...state,

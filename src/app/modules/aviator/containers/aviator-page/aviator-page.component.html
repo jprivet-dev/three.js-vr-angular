@@ -18,3 +18,17 @@
   [antialiasActive]="antialias$ | async"
   (switchAntialias)="onSwitchAntialias()"
 ></app-menu>
+<div class="options">
+  <button
+    (click)="onChangeFlyingObject('aviator')"
+    [class.active]="(flyingObject$ | async) === 'aviator'"
+  >
+    Aviator
+  </button>
+  <button
+    (click)="onChangeFlyingObject('spaceship')"
+    [class.active]="(flyingObject$ | async) === 'spaceship'"
+  >
+    Spaceship
+  </button>
+</div>

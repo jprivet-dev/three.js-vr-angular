@@ -1,3 +1,45 @@
 ::ng-deep canvas {
   background: linear-gradient(#e4e0ba, #f7d9aa);
 }
+
+.options {
+  display: flex;
+  justify-content: space-between;
+
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+
+  .button,
+  button {
+    display: inline-block;
+    padding: 12px 6px;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font: 13px sans-serif;
+    text-align: center;
+    opacity: 0.5;
+    outline: none;
+    cursor: pointer;
+
+    font-weight: 400;
+    line-height: 1;
+    text-decoration: none;
+    margin: 0.25rem;
+    text-transform: uppercase;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+    &.active {
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+      opacity: 1;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { AppActions } from '@core/store/actions';
 import { AppFacade } from '@core/store/app.facade';
 import { Container } from '@shared/container';
 import { Observable } from 'rxjs';
+import { FlyingObject } from '../../models/aviator-colors.model';
 import { AviatorService } from '../../services/aviator.service';
 import { AviatorActions } from '../../store/actions';
 import { AviatorFacade } from '../../store/aviator.facade';
@@ -13,9 +14,9 @@ import { AviatorFacade } from '../../store/aviator.facade';
   styleUrls: ['./aviator-page.component.scss'],
 })
 export class AviatorPageComponent implements OnDestroy {
-  flyMode$: Observable<boolean> = this.facade.flyMode$;
   stats$: Observable<boolean> = this.app.stats$;
   antialias$: Observable<boolean> = this.app.antialias$;
+  flyingObject$: Observable<FlyingObject> = this.facade.flyingObject$;
 
   constructor(
     private window: Window,
@@ -28,16 +29,16 @@ export class AviatorPageComponent implements OnDestroy {
     this.service.buildScene(container);
   }
 
-  onSwitchFlyMode(): void {
-    this.facade.dispatch(AviatorActions.switchFlyMode());
-  }
-
   onSwitchStats(): void {
     this.app.dispatch(AppActions.switchStats());
   }
 
   onSwitchAntialias(): void {
     this.app.dispatch(AppActions.switchAntialias());
+  }
+
+  onChangeFlyingObject(flyingObject: FlyingObject): void {
+    this.facade.dispatch(AviatorActions.changeFlyingObject({ flyingObject }));
   }
 
   onVRSessionStart(): void {

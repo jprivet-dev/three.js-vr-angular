@@ -1,17 +1,12 @@
 import { HasMesh, Loop } from '@shared/threejs/models';
 import { applyOffsetXYZAs } from '@shared/utils';
-import {
-  BoxGeometry,
-  CylinderGeometry,
-  Mesh,
-  MeshPhongMaterial,
-  Object3D,
-} from 'three';
+import { CylinderGeometry, Mesh, MeshPhongMaterial, Object3D } from 'three';
 import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
 import { AviatorColors } from '../../models/aviator-colors.model';
 
 export class Spaceship implements HasMesh, Loop {
   mesh: Object3D;
+  flames: Mesh[] = [];
 
   constructor() {
     const all = new Object3D();
@@ -19,41 +14,44 @@ export class Spaceship implements HasMesh, Loop {
     this.mesh = new Object3D();
     this.mesh.name = 'airPlane';
 
-    // Cockpit
+    // Body
 
-    const geomBody = new CylinderGeometry(35, 35, 120, 16, 1);
-    const matBody = new MeshPhongMaterial({
-      color: AviatorColors.red,
-      flatShading: true,
-    });
-    const body = new Mesh(geomBody, matBody);
-    body.rotation.x = Math.PI / 2;
+    const createBody = (): Mesh => {
+      const geomBody = new CylinderGeometry(35, 35, 120, 8, 1);
+      const matBody = new MeshPhongMaterial({
+        color: AviatorColors.red, flatShading: true,
+      });
+      const body = new Mesh(geomBody, matBody);
+      body.rotation.x = Math.PI / 2;
+
+      const geomBodyFront = new CylinderGeometry(35, 0, 40, 8, 1);
+      const verticesBodyFront = geomBodyFront.getAttribute('position');
+        applyOffsetXYZAs(verticesBodyFront, 9, 0, 0, 10);
+
+      const matBodyFront = new MeshPhongMaterial({
+        color: AviatorColors.red, flatShading: true,
+      });
+      const bodyFront = new Mesh(geomBodyFront, matBodyFront);
+      bodyFront.position.y = -80;
+      body.add(bodyFront);
+
+      return body;
+    };
+
+    const body = createBody();
     all.add(body);
 
-    const geomBodyHead = new CylinderGeometry(35, 0, 60, 16, 1);
-    const verticesBodyHead = geomBodyHead.getAttribute('position');
-    applyOffsetXYZAs(verticesBodyHead, 20, 0, 0, 10);
-
-    const matBodyHead = new MeshPhongMaterial({
-      color: AviatorColors.red,
-      flatShading: true,
-    });
-    const bodyHead = new Mesh(geomBodyHead, matBodyHead);
-    bodyHead.position.y = -90;
-    body.add(bodyHead);
     // Flames
 
-    const reactor = (): Mesh => {
-      const geomReactor = new BoxGeometry(20, 30, 20, 1, 1, 1);
+    const createReactor = (): Mesh => {
+      const geomReactor = new CylinderGeometry(14, 14, 30, 8, 1);
       const matReactor = new MeshPhongMaterial({
-        color: 0x1d1e1c,
-        flatShading: true,
+        color: 0x1d1e1c, flatShading: true,
       });
 
       const geomFlame = new CylinderGeometry(0, 8, 30, 16, 1);
       const matFlame = new MeshBasicMaterial({
-        color: 0xffa435,
-        transparent: true,
+        color: 0xffa435, transparent: true,
       });
 
       const reactor = new Mesh(geomReactor, matReactor);
@@ -63,31 +61,34 @@ export class Spaceship implements HasMesh, Loop {
       flame.position.y = -30;
       reactor.add(flame);
 
+      this.flames.push(flame);
+
       return reactor;
     };
 
-    const reactorX = 55;
-    const reactorZ = 45;
+    const reactorPos = {
+      x: 55, z: 45,
+    };
 
-    const reactor1 = reactor();
-    reactor1.position.set(reactorX, 0, reactorZ);
+    const reactor1 = createReactor();
+    reactor1.position.set(reactorPos.x, 0, reactorPos.z);
     all.add(reactor1);
 
-    const reactor2 = reactor1.clone();
-    reactor2.position.set(-reactorX, 0, reactorZ);
+    const reactor2 = createReactor();
+    reactor2.position.set(-reactorPos.x, 0, reactorPos.z);
     all.add(reactor2);
 
-    const reactor3 = reactor1.clone();
-    reactor3.position.set(reactorX, 0, -reactorZ);
+    const reactor3 = createReactor();
+    reactor3.position.set(reactorPos.x, 0, -reactorPos.z);
     all.add(reactor3);
 
-    const reactor4 = reactor1.clone();
-    reactor4.position.set(-reactorX, 0, -reactorZ);
+    const reactor4 = createReactor();
+    reactor4.position.set(-reactorPos.x, 0, -reactorPos.z);
     all.add(reactor4);
 
-    const reactor5: Mesh = reactor1.clone();
-    reactor5.scale.set(2, 2, 2);
-    reactor5.position.set(0, 0, 50);
+    const reactor5: Mesh = createReactor();
+    reactor5.scale.set(1.8, 1.8, 1.8);
+    reactor5.position.set(0, 0, 40);
     reactor5.rotation.x = -Math.PI / 2;
     all.add(reactor5);
 
@@ -97,5 +98,11 @@ export class Spaceship implements HasMesh, Loop {
     this.mesh.add(all);
   }
 
-  update(delta: number): void {}
+  update(delta: number): void {
+    this.flames.map((flame, index) => {
+      const scale = Math.random() * 0.4 + 0.8;
+      this.flames[index].scale.set(1, scale, 1);
+      this.flames[index].position.y = -15 - 15 * scale;
+    })
+  }
 }
