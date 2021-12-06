@@ -38,6 +38,14 @@ export class OrbitUpdaterControls implements Loop {
     this.controls = this.createControls();
   }
 
+  saveState(): void {
+    this.controls.saveState();
+  }
+
+  reset(): void {
+    this.controls.reset();
+  }
+
   enable(): void {
     this.controls.enabled = true;
   }

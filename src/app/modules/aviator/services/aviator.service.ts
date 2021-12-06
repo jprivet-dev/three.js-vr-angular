@@ -274,7 +274,7 @@ export class AviatorService implements BuildUpdateScene {
       {
         autoRotateSpeed: 0.2,
         autoRotate: true,
-        target: this.flyingObjectMesh.position,
+        target: train.position,
         minDistance: 1,
         maxDistance: 200,
       }
@@ -309,7 +309,10 @@ export class AviatorService implements BuildUpdateScene {
         curveProgress.enableLoop();
       } else {
         curveProgress.disableLoop();
-        this.flyingObjectMesh.position.copy(new Vector3(0, 2, 0));
+        train.position.set(0,2,0);
+        train.rotation.set(0, 0, 0);
+        this.flyingObjectMesh.position.set(0,0,0);
+        this.flyingObjectMesh.rotation.set(0,0,0);
         controls.enable();
       }
     });
