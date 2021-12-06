@@ -5,7 +5,6 @@ import { OrbitControlsUpdaterParams } from '../models/orbit-controls-updater.mod
 
 export class OrbitUpdaterControls implements Loop {
   private controls: OrbitControls;
-  private enabled: boolean = true;
 
   constructor(
     private camera: Camera,
@@ -40,15 +39,15 @@ export class OrbitUpdaterControls implements Loop {
   }
 
   enable(): void {
-    this.enabled = true;
+    this.controls.enabled = true;
   }
 
   disable(): void {
-    this.enabled = false;
+    this.controls.enabled = false;
   }
 
   update() {
-    if(this.enabled === false) return;
+    if (this.controls.enabled === false) return;
     this.controls.update();
   }
 }

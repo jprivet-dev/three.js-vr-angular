@@ -17,6 +17,7 @@ export class AviatorPageComponent implements OnDestroy {
   stats$: Observable<boolean> = this.app.stats$;
   antialias$: Observable<boolean> = this.app.antialias$;
   flyingObject$: Observable<FlyingObject> = this.facade.flyingObject$;
+  play$: Observable<boolean> = this.facade.play$;
 
   constructor(
     private window: Window,
@@ -39,6 +40,10 @@ export class AviatorPageComponent implements OnDestroy {
 
   onChangeFlyingObject(flyingObject: FlyingObject): void {
     this.facade.dispatch(AviatorActions.changeFlyingObject({ flyingObject }));
+  }
+
+  onSwitchPlay(): void {
+    this.facade.dispatch(AviatorActions.switchPlay());
   }
 
   onVRSessionStart(): void {

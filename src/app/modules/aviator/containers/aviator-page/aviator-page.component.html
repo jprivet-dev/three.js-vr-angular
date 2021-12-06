@@ -37,4 +37,10 @@
   >
     Rabbit
   </button>
+  <button
+    (click)="onSwitchPlay()"
+    [class.active]="(play$ | async) === true"
+  >
+    Play
+  </button>
 </div>

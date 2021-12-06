@@ -10,6 +10,7 @@ import { getFlyingObject } from './selectors/aviator.selectors';
 export class AviatorFacade {
   readonly vrSession$ = this.store.select(AviatorSelectors.getVRSession);
   readonly flyingObject$ = this.store.select(AviatorSelectors.getFlyingObject);
+  readonly play$ = this.store.select(AviatorSelectors.getPlay);
 
   constructor(private store: Store) {
   }

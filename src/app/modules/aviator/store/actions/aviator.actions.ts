@@ -6,6 +6,8 @@ export const changeFlyingObject = createAction(
   props<{ flyingObject: FlyingObject }>()
 );
 
+export const switchPlay = createAction('[Aviator] switch play');
+
 export const vrSessionStart = createAction('[Aviator] VR session start');
 
 export const vrSessionEnd = createAction('[Aviator] VR session end');

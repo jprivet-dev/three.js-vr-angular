@@ -14,3 +14,9 @@ export const getFlyingObject = createSelector(
   selectState,
   (state) => state.flyingObject
 );
+
+export const getPlay = createSelector(
+  selectState,
+  (state) => state.play
+);
+

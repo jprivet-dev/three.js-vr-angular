@@ -16,19 +16,19 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(EarthActions.switchFlyMode, (state) => ({
+  on(EarthActions.switchFlyMode, (state): State => ({
     ...state,
     flyMode: !state.flyMode,
   })),
-  on(EarthActions.flyModeOff, (state) => ({
+  on(EarthActions.flyModeOff, (state): State => ({
     ...state,
     flyMode: false,
   })),
-  on(EarthActions.vrSessionStart, (state) => ({
+  on(EarthActions.vrSessionStart, (state): State => ({
     ...state,
     vrSession: true,
   })),
-  on(EarthActions.vrSessionEnd, (state) => ({
+  on(EarthActions.vrSessionEnd, (state): State => ({
     ...state,
     vrSession: false,
   }))

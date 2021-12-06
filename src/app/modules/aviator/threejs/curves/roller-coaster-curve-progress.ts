@@ -1,10 +1,10 @@
 import { DollyCamera } from '@shared/threejs/cameras';
-import { Loop } from '@shared/threejs/models';
+import { Loop, LoopWithControls } from '@shared/threejs/models';
 import { angleXZ } from '@shared/utils';
 import { Object3D, Vector3 } from 'three';
 import { RollerCoasterCurve } from './roller-coaster-curve';
 
-export class RollerCoasterCurveProgress implements Loop {
+export class RollerCoasterCurveProgress extends LoopWithControls implements Loop {
   private position = new Vector3();
   private positionOffset = new Vector3();
   private tangent = new Vector3();
@@ -25,9 +25,13 @@ export class RollerCoasterCurveProgress implements Loop {
     private dolly: DollyCamera,
     private train: Object3D,
     private object: Object3D
-  ) {}
+  ) {
+    super();
+  }
 
   update(delta: number): void {
+    if(this.isLoopDisabled) return;
+
     this.progress += this.velocity;
     this.progress = this.progress % 1;
 
@@ -67,5 +71,9 @@ export class RollerCoasterCurveProgress implements Loop {
     this.train.lookAt(vector);
 
     this.angleXZ.last = this.angleXZ.current;
+  }
+
+  reset(): void {
+    this.progress = 0;
   }
 }

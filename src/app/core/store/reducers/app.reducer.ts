@@ -18,15 +18,15 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(AppActions.switchStats, (state) => ({
+  on(AppActions.switchStats, (state): State => ({
     ...state,
     stats: !state.stats,
   })),
-  on(AppActions.switchDefinition, (state) => ({
+  on(AppActions.switchDefinition, (state): State => ({
     ...state,
     definition: state.definition === 'sd' ? 'hd' : 'sd',
   })),
-  on(AppActions.switchAntialias, (state) => ({
+  on(AppActions.switchAntialias, (state): State => ({
     ...state,
     antialias: !state.antialias,
   }))

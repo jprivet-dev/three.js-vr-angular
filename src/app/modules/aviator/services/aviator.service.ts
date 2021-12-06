@@ -42,7 +42,7 @@ export class AviatorService implements BuildUpdateScene {
   private subscription = new Subscription();
   private dollyCameraParams: DollyCameraParams = aviatorDollyCameraParams;
 
-  private controlsActive: boolean = false;
+  private controlsActive: boolean = true;
   private controlsUpdate: (container: Container) => void = () => {};
   private animate: (container: Container) => void = () => {};
 
@@ -231,35 +231,30 @@ export class AviatorService implements BuildUpdateScene {
       })
     );
 
-
     /**
      * Curve
      */
 
-    if (this.controlsActive) {
-      this.flyingObjectMesh.position.y = 2;
-    } else {
-      const curve = new RollerCoasterCurve(50);
-      const curveProgress = new RollerCoasterCurveProgress(
-        curve,
-        dolly,
-        train,
-        this.flyingObjectMesh
-      );
+    const curve = new RollerCoasterCurve(50);
+    const curveProgress = new RollerCoasterCurveProgress(
+      curve,
+      dolly,
+      train,
+      this.flyingObjectMesh
+    );
 
-      loop.add(curveProgress);
+    loop.add(curveProgress);
 
-      const createRollerCoaster = () => {
-        const geometry = new RollerCoasterGeometry(curve, 1500);
-        const material = new MeshPhongMaterial({
-          vertexColors: true,
-        });
-        const mesh = new Mesh(geometry, material);
-        scene.add(mesh);
-      };
+    const createRollerCoaster = () => {
+      const geometry = new RollerCoasterGeometry(curve, 1500);
+      const material = new MeshPhongMaterial({
+        vertexColors: true,
+      });
+      const mesh = new Mesh(geometry, material);
+      scene.add(mesh);
+    };
 
-      //createRollerCoaster();
-    }
+    //createRollerCoaster();
 
     /**
      * Global Animation
@@ -273,25 +268,23 @@ export class AviatorService implements BuildUpdateScene {
      * Controls
      */
 
-    if (this.controlsActive) {
-      const controls = new OrbitUpdaterControls(
-        dolly.camera,
-        container.renderer.domElement,
-        {
-          autoRotateSpeed: 0.2,
-          autoRotate: true,
-          target: this.flyingObjectMesh.position.clone(),
-          minDistance: 1,
-          maxDistance: 200,
-        }
-      );
+    const controls = new OrbitUpdaterControls(
+      dolly.camera,
+      container.renderer.domElement,
+      {
+        autoRotateSpeed: 0.2,
+        autoRotate: true,
+        target: this.flyingObjectMesh.position,
+        minDistance: 1,
+        maxDistance: 200,
+      }
+    );
 
-      loop.add(controls);
+    loop.add(controls);
 
-      this.controlsUpdate = (container: Container) => {
-        controls.updateDomElement(container.renderer.domElement);
-      };
-    }
+    this.controlsUpdate = (container: Container) => {
+      controls.updateDomElement(container.renderer.domElement);
+    };
 
     /**
      * VR Session
@@ -302,6 +295,24 @@ export class AviatorService implements BuildUpdateScene {
         vrSession ? vr.onSessionStart() : vr.onSessionEnd();
       })
     );
+
+    /**
+     * Play
+     */
+
+    this.facade.play$.subscribe((play) => {
+      dolly.onSessionEnd();
+
+      if (play) {
+        controls.disable();
+        curveProgress.reset();
+        curveProgress.enableLoop();
+      } else {
+        curveProgress.disableLoop();
+        this.flyingObjectMesh.position.copy(new Vector3(0, 2, 0));
+        controls.enable();
+      }
+    });
 
     /**
      * Animate
