@@ -6,8 +6,7 @@
 * https://medium.com/geekculture/hello-cube-your-first-three-js-scene-in-angular-176c44b9c6c0
 
 ```
-$ npm install --save three
-$ npm install --save @types/three
+$ npm install --save three @types/three
 ```
 
 ```
@@ -24,5 +23,8 @@ import { Scene } from 'three';
 const scene = new Scene();
 ```
 
+== Install Gsap
 
-
+```
+npm install --save gsap @types/gsap
+```
