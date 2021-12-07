@@ -206,13 +206,10 @@ export class AviatorService implements BuildUpdateScene {
     this.subscription.add(
       this.facade.flyingObject$.subscribe((flyingObject) => {
         spaceship.disableLoop();
-        this.flyingObjectMesh.remove(spaceship.mesh);
-
         airplane.disableLoop();
-        this.flyingObjectMesh.remove(airplane.mesh);
-
         rabbit.disableLoop();
-        this.flyingObjectMesh.remove(rabbit.mesh);
+
+        this.flyingObjectMesh.remove(...this.flyingObjectMesh.children);
 
         switch (flyingObject) {
           case 'aviator':
@@ -268,22 +265,36 @@ export class AviatorService implements BuildUpdateScene {
      * Controls
      */
 
-    const controls = new OrbitUpdaterControls(
-      dolly.camera,
-      container.renderer.domElement,
-      {
-        autoRotateSpeed: 0.2,
-        autoRotate: true,
-        target: train.position,
-        minDistance: 1,
-        maxDistance: 200,
+    let controls: OrbitUpdaterControls | null;
+
+    const createControls = (): void => {
+      controls = new OrbitUpdaterControls(
+        dolly.camera,
+        container.renderer.domElement,
+        {
+          autoRotateSpeed: 0.2,
+          autoRotate: true,
+          target: this.flyingObjectMesh.position,
+          minDistance: 1,
+          maxDistance: 200,
+        }
+      );
+
+      loop.add(controls);
+
+      this.controlsUpdate = (container: Container) => {
+        if (controls) {
+          controls.updateDomElement(container.renderer.domElement);
+        }
+      };
+    };
+
+    const removeControls = (): void => {
+      if (controls) {
+        controls.disable();
+        loop.remove(controls);
+        controls = null;
       }
-    );
-
-    loop.add(controls);
-
-    this.controlsUpdate = (container: Container) => {
-      controls.updateDomElement(container.renderer.domElement);
     };
 
     /**
@@ -301,19 +312,19 @@ export class AviatorService implements BuildUpdateScene {
      */
 
     this.facade.play$.subscribe((play) => {
-      dolly.onSessionEnd();
 
       if (play) {
-        controls.disable();
+        removeControls();
+        dolly.onSessionEnd();
         curveProgress.reset();
         curveProgress.enableLoop();
       } else {
         curveProgress.disableLoop();
-        train.position.set(0,2,0);
+        train.position.set(0, 0, 0);
         train.rotation.set(0, 0, 0);
-        this.flyingObjectMesh.position.set(0,0,0);
-        this.flyingObjectMesh.rotation.set(0,0,0);
-        controls.enable();
+        this.flyingObjectMesh.position.set(0, 2, 0);
+        this.flyingObjectMesh.rotation.set(0, 0, 0);
+        createControls();
       }
     });
 
