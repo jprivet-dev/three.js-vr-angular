@@ -1,4 +1,5 @@
 import { HasMesh, Loop, LoopWithControls } from '@shared/threejs/models';
+import { gsap } from 'gsap';
 import {
   BoxGeometry,
   CylinderGeometry,
@@ -229,10 +230,24 @@ export class Rabbit extends LoopWithControls implements HasMesh, Loop {
 
   get mesh(): Object3D {
     return this.carrot.mesh;
+    this.animate();
+  }
+
+  animate() {
+    gsap.to(this.carrot.pilot.earPivotL.rotation, 0.1, {
+      x: () => Math.sin(-Math.PI / 3),
+      repeat: -1,
+      yoyo: true,
+    });
+
+    gsap.to(this.carrot.pilot.earPivotR.rotation, 0.1, {
+      x: () => -Math.PI / 2.25,
+      repeat: -1,
+      yoyo: true,
+    });
   }
 
   update(delta: number): void {
     if (this.isLoopDisabled) return;
-    const earPivotL = this.carrot.pilot.earPivotL;
   }
 }
