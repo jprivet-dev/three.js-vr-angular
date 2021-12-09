@@ -208,6 +208,7 @@ export class AviatorService implements BuildUpdateScene {
         spaceship.disableLoop();
         airplane.disableLoop();
         rabbit.disableLoop();
+        rabbit.gsapControls.pause();
 
         this.flyingObjectMesh.remove(...this.flyingObjectMesh.children);
 
@@ -222,6 +223,7 @@ export class AviatorService implements BuildUpdateScene {
             break;
           case 'rabbit':
             rabbit.enableLoop();
+            rabbit.gsapControls.play();
             this.flyingObjectMesh.add(rabbit.mesh);
             break;
         }

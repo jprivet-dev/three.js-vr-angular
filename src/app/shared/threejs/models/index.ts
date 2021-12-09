@@ -1,3 +1,4 @@
+export * from './gsap.model';
 export * from './has-light.model';
 export * from './has-mesh.model';
 export * from './has-scene.model';

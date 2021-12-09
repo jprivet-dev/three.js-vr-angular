@@ -1,5 +1,6 @@
-import { HasMesh, Loop, LoopWithControls } from '@shared/threejs/models';
-import { gsap } from 'gsap';
+import { GSAPControls, HasMesh, Loop, LoopWithControls } from '@shared/threejs/models';
+import { applyOffsetXYZ, applyOffsetXYZAs } from '@shared/utils';
+import { gsap, Power0 } from 'gsap';
 import {
   BoxGeometry,
   CylinderGeometry,
@@ -34,7 +35,7 @@ class Carrot {
   public mesh: any;
   private body: any;
   private wings: any;
-  private leafs: any;
+  public leafs: any;
   public pilot: any;
 
   constructor() {
@@ -72,6 +73,8 @@ class Carrot {
     const group = new Group();
     const geometry = new BoxGeometry(7, 7, 0.5);
 
+    // const vertices= geometry.getAttribute('position');
+    // applyOffsetXYZ(vertices, 5, 20, 0, 0);
     // geometry.vertices[2].y += 2;
     // geometry.vertices[3].y += 2;
     // geometry.vertices[2].x -= 1;
@@ -222,29 +225,64 @@ class Pilot {
  */
 export class Rabbit extends LoopWithControls implements HasMesh, Loop {
   private carrot: Carrot;
+  readonly gsapControls = new GSAPControls();
 
   constructor() {
     super();
     this.carrot = new Carrot();
+    this.animate();
   }
 
   get mesh(): Object3D {
     return this.carrot.mesh;
-    this.animate();
   }
 
   animate() {
-    gsap.to(this.carrot.pilot.earPivotL.rotation, 0.1, {
-      x: () => Math.sin(-Math.PI / 3),
-      repeat: -1,
-      yoyo: true,
-    });
+    this.gsapControls.add(
+      gsap.to(this.carrot.pilot.earPivotL.rotation, 0.1, {
+        x: () => Math.sin(-Math.PI / 3),
+        repeat: -1,
+        yoyo: true,
+      })
+    );
 
-    gsap.to(this.carrot.pilot.earPivotR.rotation, 0.1, {
-      x: () => -Math.PI / 2.25,
-      repeat: -1,
-      yoyo: true,
-    });
+    this.gsapControls.add(
+      gsap.to(this.carrot.pilot.earPivotR.rotation, 0.1, {
+        x: () => -Math.PI / 2.25,
+        repeat: -1,
+        yoyo: true,
+      })
+    );
+
+    this.gsapControls.add(
+      gsap.to(this.carrot.pilot.eye.scale, 0.5, {
+        y: 0.1,
+        repeat: Infinity,
+        yoyo: true,
+        delay: 5,
+        repeatDelay: 3,
+      })
+    );
+
+    this.gsapControls.add(
+      gsap.to(this.carrot.pilot.eyeb.scale, 0.5, {
+        y: 0.1,
+        repeat: Infinity,
+        yoyo: true,
+        delay: 5,
+        repeatDelay: 3,
+      })
+    );
+
+    this.gsapControls.add(
+      gsap.to(this.carrot.leafs.rotation, 0.1, {
+        y: Math.PI,
+        repeat: Infinity,
+        ease: Power0.easeNone,
+      })
+    );
+
+    this.gsapControls.pause();
   }
 
   update(delta: number): void {
