@@ -14,9 +14,13 @@ export class Object3DMovements implements Loop {
     rotation: new Vector3(0, 0, 0),
   };
 
-  private velocity = new Vector3();
-  private moveSpeed: number = 10;
+  private moveSpeed: number = 1;
+  private moveSpeedBackwardForward: number = 3;
+  private moveVelocity = new Vector3();
+  private moveDeceleration: number = 8;
+
   private rotationSpeed: number = 0.5;
+  private rotationVelocity = new Vector3();
 
   move: Object3DMovementsMove = {
     forward: new Object3DMovementState(),
@@ -64,22 +68,24 @@ export class Object3DMovements implements Loop {
   }
 
   private updateMove(delta: number): void {
-    const v = this.vector.move;
-    const m = this.move;
+    const right = this.move.right.number;
+    const left = this.move.left.number;
+    const up = this.move.up.number;
+    const down = this.move.down.number;
+    const backward = this.move.backward.number;
+    const forward = this.move.forward.number;
+    const velocity = this.moveVelocity;
+    const deceleration = this.moveDeceleration;
+    const speed = this.moveSpeed;
+    const speedBF = this.moveSpeedBackwardForward;
 
-    this.velocity.x -= this.velocity.x * 8 * delta;
-    this.velocity.y -= this.velocity.y * 8 * delta;
-    this.velocity.z -= this.velocity.z * 8 * delta;
+    velocity.x += (right - left - velocity.x * deceleration) * delta * speed;
+    velocity.y += (up - down - velocity.y * deceleration) * delta * speed;
+    velocity.z += (backward - forward - velocity.z * deceleration) * delta * speedBF;
 
-    this.velocity.x += (m.right.number - m.left.number) * 1 * delta;
-    this.velocity.y += (m.up.number - m.down.number) * 1 * delta;
-    this.velocity.z += (m.backward.number - m.forward.number) * 3 * delta;
-
-    // console.log( 'move:', [ v.x, v.y, v.z ] );
-
-    this.object.translateX(this.velocity.x);
-    this.object.translateY(this.velocity.y);
-    this.object.translateZ(this.velocity.z);
+    this.object.translateX(velocity.x);
+    this.object.translateY(velocity.y);
+    this.object.translateZ(velocity.z);
   }
 
   private updateRotation(delta: number): void {
