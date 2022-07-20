@@ -1,9 +1,58 @@
-= Angular & Three.js
+:toc: macro
+:toc-title: Summary
+:toclevels: 3
+:numbered:
 
-== Install three.js
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
 
-* https://threejs.org/docs/#manual/en/introduction/Installation
-* https://medium.com/geekculture/hello-cube-your-first-three-js-scene-in-angular-176c44b9c6c0
+:back_to_top_target: top-target
+:back_to_top_label: ⬆ Back to top
+:back_to_top: <<{back_to_top_target},{back_to_top_label}>>
+
+:main_title: Three.js, VR & Angular
+:git_project: three.js-vr-angular
+:git_username: jprivet-dev
+:git_url: https://github.com/{git_username}/{git_project}
+:git_clone_ssh: git@github.com:{git_username}/{git_project}.git
+
+[#{back_to_top_target}]
+= {main_title}
+
+toc::[]
+
+== EXPERIMENTAL AREA!
+
+WARNING: Be careful with this project. They work but I am still in a phase of uncertainty and doubt about the path to follow. Which patterns to apply? Which architecture to build? Which best practices to follow? And many other questions to which I try to find satisfactory answers.
+
+{back_to_top}
+
+== Presentation
+
+EXPERIMENTAL AREA! - Platform (made with Angular) to manage mini 3D projects with Three.js, and to experiment VR - (dockerized project)
+
+{back_to_top}
+
+== Installation
+
+[subs=attributes+]
+```
+$ git clone {git_clone_ssh}
+```
+
+{back_to_top}
+
+== Notes & Tips
+
+=== Install three.js
 
 ```
 $ npm install --save three @types/three
@@ -23,8 +72,35 @@ import { Scene } from 'three';
 const scene = new Scene();
 ```
 
-== Install Gsap
+[NOTE]
+--
+More information on:
+
+* https://threejs.org/docs/#manual/en/introduction/Installation
+* https://medium.com/geekculture/hello-cube-your-first-three-js-scene-in-angular-176c44b9c6c0
+--
+
+{back_to_top}
+
+=== Install Gsap
 
 ```
 npm install --save gsap @types/gsap
 ```
+
+{back_to_top}
+
+== Resources & Inspiration
+
+* https://threejs.org/docs/#manual/en/introduction/Installation
+* https://medium.com/geekculture/hello-cube-your-first-three-js-scene-in-angular-176c44b9c6c0
+
+{back_to_top}
+
+== License
+
+"{main_title}" is released under the {git_url}/blob/main/LICENSE[*MIT License*]
+
+---
+
+{back_to_top}
