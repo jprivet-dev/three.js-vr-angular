@@ -7,4 +7,4 @@ alias reload=". .bash_aliases"
 alias ng="docker-compose exec --user 1000:1000 node ng"
 alias npm="docker-compose exec --user 1000:1000 node npm"
 
-echo -e '\033[1;42mangular-threejs: aliases loaded\033[0m'
+echo -e '\033[1;42mthree.js-vr-angular: aliases loaded\033[0m'
